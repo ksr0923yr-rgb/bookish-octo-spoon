@@ -160,6 +160,20 @@
       animation: retroPop 0.16s steps(3) forwards;
     }
 
+    /* 合格発表：結果を一枚ずつ開く控えめな演出 */
+    @keyframes announcementPulse {
+      0%,100% { opacity:.55; }
+      50% { opacity:1; }
+    }
+    @keyframes announcementReveal {
+      0% { opacity:0; transform:translateY(5px); }
+      100% { opacity:1; transform:translateY(0); }
+    }
+    .announcement-pulse { animation:announcementPulse 1s steps(2) infinite; }
+    .announcement-card { transition:opacity .25s ease, filter .25s ease; }
+    .announcement-card.is-pending { opacity:.58; filter:grayscale(.8); }
+    .announcement-card.is-revealed { animation:announcementReveal .32s ease-out both; }
+
     /* ドット風ステータスバー */
     .stat-bar-fill {
       transition: width 0.25s steps(6), background-color 0.2s steps(2);
@@ -210,7 +224,14 @@
       border-radius: 0;
       cursor: pointer;
     }
-  </style>
+  
+    /* 控えめな実績スパークル：画面を覆わず、達成時だけ一瞬きらめく */
+    .achievement-sparkle-layer{position:fixed;inset:0;z-index:9998;pointer-events:none;overflow:hidden}
+    .achievement-sparkle{position:absolute;color:#fde68a;text-shadow:0 0 5px rgba(250,204,21,.9),0 0 12px rgba(250,204,21,.45);font-size:17px;opacity:0;animation:achievementTwinkle 760ms ease-out forwards}
+    .achievement-sparkle.cool{color:#bfdbfe;text-shadow:0 0 5px rgba(96,165,250,.9),0 0 12px rgba(96,165,250,.45)}
+    .achievement-sparkle.rare{font-size:21px;color:#fef3c7;text-shadow:0 0 7px rgba(250,204,21,1),0 0 17px rgba(250,204,21,.7)}
+    @keyframes achievementTwinkle{0%{opacity:0;transform:translate(-50%,-50%) scale(.35) rotate(-18deg)}28%{opacity:.95;transform:translate(-50%,-50%) scale(1.12) rotate(8deg)}62%{opacity:.75;transform:translate(-50%,-50%) scale(.82) rotate(0)}100%{opacity:0;transform:translate(-50%,-50%) scale(.45) rotate(20deg)}}
+</style>
 </head>
 <body>
 
@@ -379,7 +400,7 @@
         <div class="flex items-center justify-between">
           <span id="setup-roll-header" class="text-xs text-yellow-300">▶ 生まれガチャ</span>
           <span id="reroll-badge" class="text-[11px] border border-white px-2 py-0.5 text-neutral-200">
-            引き直し：残り1回
+            引き直し：最大2回
           </span>
         </div>
 
@@ -530,6 +551,9 @@
           </div>
         </div>
       </div>
+
+      <!-- 特別な模試解放・大学招待状のお知らせ -->
+      <div id="meta-notice-panel" class="space-y-2"></div>
 
       <!-- アクション／週間1時間単位勉強配分／イベント選択ウィンドウ -->
       <div id="command-panel" class="rpg-window p-3 space-y-2.5"></div>
@@ -1122,32 +1146,24 @@ const RetroAudio=(()=>{
   }
 
   function scheduleStep(step,time,stepDur,tr){
-    // 1. ベース（丸みのある三角波）
-    const bNote=tr.bass[step];
-    if(bNote!=null){
-      trigVoice(mtof(bNote),time,stepDur*2.6,'triangle',0.24,bgmFilter);
-    }
-    // 2. アルペジオ／コード伴奏（オルゴール風三角波）
-    const aNote=tr.arp[step];
-    if(aNote!=null){
-      trigVoice(mtof(aNote),time,stepDur*1.45,'triangle',0.11,bgmFilter);
-    }
-    // 3. メロディ（温かみのあるソフト矩形波＋三角波レイヤー）
-    const lNote=tr.lead[step];
-    if(lNote!=null){
-      // 後続の休符数を数えて自然な音価にする
+    // 元の旋律を残し、単音中心の穏やかなBGMに簡略化。
+    // メロディが休符の箇所だけ、4ステップごとに伴奏音を補う。
+    const leadNote=tr.lead[step];
+    const note=leadNote!=null?leadNote:(step%4===0?tr.arp[step]:null);
+    if(note!=null){
       let hold=1;
-      for(let k=1;k<6;k++){
+      for(let k=1;k<5;k++){
         if(tr.lead[(step+k)%tr.steps]==null)hold++;
         else break;
       }
-      const noteDur=stepDur*Math.min(hold,3.2)*0.9;
-      trigVoice(mtof(lNote),time,noteDur,'square',0.065,bgmFilter);
-      trigVoice(mtof(lNote),time,noteDur,'triangle',0.10,bgmFilter);
+      const noteDur=stepDur*Math.min(hold,2.4)*0.88;
+      trigVoice(mtof(note),time,noteDur,'triangle',0.095,bgmFilter);
     }
-    // 4. Lo-Fi リズム（主張しすぎない小さなブラシ＆キック）
-    if(tr.hat[step])trigBrush(time,bgmFilter);
-    if(tr.kick[step])trigKick(time,bgmFilter);
+    // 低音は8ステップごとに小さく添える。ドラムやノイズは使わない。
+    const bassNote=tr.bass[step];
+    if(step%8===0&&bassNote!=null){
+      trigVoice(mtof(bassNote),time,stepDur*3.2,'triangle',0.055,bgmFilter);
+    }
   }
 
   function scheduler(){
@@ -1393,6 +1409,7 @@ const $=s=>document.querySelector(s),cl=v=>v<0?0:v>100?100:v;
 const RR=(s,t,k)=>{let x=(Math.imul(s|0,374761393)+Math.imul(t|0,668265263)+Math.imul(k|0,2246822519))|0;x=Math.imul(x^x>>>13,1274126177);x^=x>>>16;x=Math.imul(x,2246822507);x^=x>>>13;return(x>>>0)/4294967296};
 const G=(s,t,k)=>Math.sqrt(-2*Math.log(RR(s,t,k)+1e-9))*Math.cos(6.2832*RR(s,t,k+1));
 const CO=['#facc15','#c084fc','#38bdf8','#a3a3a3'],RA=['SSR','SR','R','N','UR','UR'];
+const rankName=(key,r)=>key==='k'&&r===4?'神脳（理系）':key==='k'&&r===5?'神脳（文系）':RA[r];
 
 /* =================================================================
    1. 生まれガチャ：SSR確率1% & 地頭(TAL)が偏差値に最強に効くバランス
@@ -1624,6 +1641,7 @@ const MOCK_LIST=[
     {grade:1,name:'中2 Vもぎ・全県公開模試',diff:-2.0,min:0,pop:52000,tag:'中2・広域標準',desc:'中2の公立・私立志望者向け広域模試。'},
     {grade:2,name:'中3 駿台高校受験公開テスト',diff:5.5,min:72,pop:11500,isKanmuri:true,tag:'中3・最難関冠',desc:'開成・筑駒・慶應女子など最難関志望層中心。'},
     {grade:2,name:'中3 SAPIX中学部 公開模試',diff:2.5,min:68,pop:7400,tag:'中3・やや難',desc:'首都圏難関校志望層向けの記述・応用模試。'},
+    {grade:2,name:'中学生・駿台全国模試（飛び級挑戦）',diff:7.0,min:75,pop:30000,qualifiesSundaiTop10:true,tag:'大学受験級・超難',desc:'中学生が大学受験生の母集団に挑むゲーム内特別枠。全国10傑に入ると、大学受験模試の飛び級受験が解放される。'},
     {grade:2,name:'中3 Vもぎ・Wもぎ（そっくり）',diff:0.0,min:60,pop:38000,tag:'中3・標準',desc:'都県立・私立対策の標準そっくり模試。'},
     {grade:2,name:'中3 北辰・全県模試・五ツ木',diff:-3.5,min:0,pop:65000,tag:'中3・広域出やすい',desc:'地域の幅広い受験生が参加し偏差値が出やすい。'}
   ],
@@ -1687,9 +1705,17 @@ function autoMockIdx(si,fi,g=2){
   return found?found.i:candidates[candidates.length-1].i;
 }
 
+function getMockList(S){
+  const base=MOCK_LIST[S.si];
+  if(S.si===1&&ensureCareerMeta(S).sundai10){
+    const uni=MOCK_LIST[2].map(m=>({...m,uniFlyin:true,name:'【大学受験・特別枠】'+m.name,tag:'中学生特別解放',desc:m.desc+'（駿台全国模試の全国10傑達成により解放）'}));
+    return base.concat(uni);
+  }
+  return base;
+}
 function getMockSpec(S){
   const g=curGrade(S);
-  const list=MOCK_LIST[S.si];
+  const list=getMockList(S);
   if(S.mockMode==='manual'&&S.mockIdx!=null&&list[S.mockIdx]&&list[S.mockIdx].grade>=g){
     return list[S.mockIdx];
   }
@@ -1697,6 +1723,7 @@ function getMockSpec(S){
 }
 
 function calcJumpPenalty(S,spec){
+  if(spec.uniFlyin)return spec.grade===0?25:spec.grade===1?28:30;
   const gap=spec.grade-curGrade(S);
   if(gap<=0)return 0;
   if(spec.isKanmuri)return gap===1?25:30;
@@ -1806,6 +1833,37 @@ const EV=[
 const TT=[['はじめの一歩','N',()=>true],['青春を謳歌','N',(p,S)=>S.y>=80],['健康第一','N',(p,S)=>S.h>=80],['全入の洗礼','N',(p,S)=>S.bn===SCH[S.si].length-1],['悪運の持ち主','N',p=>p[1]>=97],['勉強の虫','R',(p,S)=>S.hrs>=6000],['鉄のメンタル','R',(p,S)=>S.m>=85],['自信満々','R',(p,S)=>S.c>=90],['模試マニア','R',(p,S)=>(S.mocks||[]).length>=10],['塾選びの達人','R',(p,S)=>(S.jb||0)>=.06&&S.bn!==SCH[S.si].length-1],['努力の鬼','R',p=>p[3]<=5],['判断の天才','R',p=>p[2]<=5],['全教科バランス','SR',(p,S)=>!!S.subA&&Math.max(...S.subA)-Math.min(...S.subA)<=6],['一点突破','SR',(p,S)=>!!S.subA&&Math.max(...S.subA)-Math.min(...S.subA)>=22],['苦手を克服','SR',(p,S)=>{if(!S.sk)return false;const c=getCurriculum(S).findIndex(x=>x.key===S.sk.w);return c>=0&&S.subA[c]>=S.a}],['才能を努力で超えた','SR',(p,S)=>S.b.k===3&&S.rv>=62],['最貧からの勝利','SR',(p,S)=>S.b.f===3&&S.b.t===3&&p[4]<=15],['生まれながらの勝者','SR',p=>p[0]<=5&&p[4]<=10],['強運の持ち主','SR',p=>p[1]<=3],['難関突破','SR',(p,S)=>S.rv>=66],['奇跡の下剋上','SSR',p=>p[0]>=60&&p[4]<=5],['全SSRの生まれ','SSR',(p,S)=>!S.b.f&&!S.b.t&&!S.b.k],['頂点に立つ者','SSR',(p,S)=>S.rv>=70],['通し人生・全勝','SSR',(p,S)=>S.stages.length===2&&(S.rvh||[]).length>=2&&S.rvh.slice(-2).every(v=>v>=62)],['自己分析の達人','R',(p,S)=>!!S.isDiag],['リアル下剋上','SSR',(p,S)=>!!S.isDiag&&p[0]>=45&&p[4]<=10]];
 const ld=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 let S=null;
+const makeCareerMeta=()=>({sundai10:false,olyGoldCount:0,crownTop1Streak:0,earlyInvite:false,earlyInviteSources:[]});
+function ensureCareerMeta(x){
+  if(!x.meta||typeof x.meta!=='object')x.meta=makeCareerMeta();
+  const d=makeCareerMeta();
+  Object.keys(d).forEach(k=>{if(x.meta[k]==null)x.meta[k]=d[k]});
+  if(!Array.isArray(x.meta.earlyInviteSources))x.meta.earlyInviteSources=[];
+  return x.meta;
+}
+function grantEarlyUniversityInvite(x,reason){
+  const m=ensureCareerMeta(x);
+  const isNewReason=!m.earlyInviteSources.includes(reason);
+  if(isNewReason)m.earlyInviteSources.push(reason);
+  if(!m.earlyInvite){
+    m.earlyInvite=true;
+    if(x===S)showAchievementSparkle('invite');
+    x.log=x.log||[];
+    x.log.push(`【大学飛び級・特別招待状】${reason}を達成。千葉大学・東北大学・京都大学・東京科学大学などから、早期進学特別選抜への招待状が届いた！`);
+    if(x===S)showToast('＊ 大学から早期進学・飛び級の招待状が届いた！');
+  }else if(x===S&&isNewReason){
+    x.log=x.log||[];
+    x.log.push(`【招待状の追加認定】${reason}も達成！`);
+    showToast('＊ 追加の招待条件も達成！');
+  }
+  save();
+}
+function renderCareerNotices(x){
+  const m=ensureCareerMeta(x),out=[];
+  if(m.sundai10)out.push(`<div class="rpg-window border-sky-400 bg-[#071522] p-2.5 text-xs space-y-1"><div class="font-bold text-sky-300">★ 大学受験模試 解放済み</div><div class="text-neutral-200">駿台全国模試で全国10傑を達成。中学生でも大学受験模試に飛び級挑戦できる。</div></div>`);
+  if(m.earlyInvite)out.push(`<div class="rpg-window-gold p-3 text-xs space-y-1.5"><div class="font-bold text-yellow-300">✉ 大学飛び級・早期進学 特別招待状</div><div class="text-white">千葉大学・東北大学・京都大学・東京科学大学などから、在学中に挑戦できる特別選抜への招待が届いている。</div><div class="text-[10px] text-amber-200">獲得条件：${m.earlyInviteSources.join(' ／ ')}</div><div class="text-[10px] text-neutral-300">大学受験の出願画面で「招待制・早期進学選抜」を選択可能。</div></div>`);
+  return out.join('');
+}
 const save=()=>S&&sv('jg_s',S);
 const lab=s=>{const y=Math.floor(s.t/12);return(y>2?'浪人':LB[s.si*3+y])+' '+((s.t+3)%12+1)+'月'};
 const mock=S=>Math.round((S.a+G(S.seed,S.t+1000*S.si,5)*1.6)*10)/10;
@@ -1990,7 +2048,7 @@ function step(S){
     const prevAvg=S.avgMock!=null?S.avgMock:rawScore;
     const prevSingle=S.lastMock!=null?S.lastMock:rawScore;
     const recObj={
-      lab:lab(S),name:spec.name,diff:spec.diff,jumpPen,aEst:Math.round(exInv(spec,rawScore+jumpPen)*10)/10,tag:spec.tag,
+      lab:lab(S),name:spec.name,diff:spec.diff,jumpPen,isKanmuri:!!spec.isKanmuri,qualifiesSundaiTop10:!!spec.qualifiesSundaiTop10,aEst:Math.round(exInv(spec,rawScore+jumpPen)*10)/10,tag:spec.tag,
       score:rawScore,totScore,totMax,pop,natRank,natTopPct,
       targetName:f[0],targetDev,targetPop,targetRank,judgment,
       subs:subResults
@@ -2121,7 +2179,7 @@ function examUniFull(S){
   const stratNoise=strat===0?1.1:strat===2?2.8:1.8;
   S.xs=S.a+(S.h-60)/12+(S.c-50)/35+stratShift+G(S.seed,T,50)*stratNoise;
 
-  let best=L[L.length-1][1],bn=L.length-1;
+  let best=L[L.length-1][1],bn=L.length-1,bestSurplus=-Infinity;
   const res=[];
   (S.ap||[]).forEach((item,i)=>{
     const u=L[item.idx];
@@ -2129,12 +2187,20 @@ function examUniFull(S){
     const meta=getUniMeta(u);
     const bunriPen=isBunriMatch(S.bunri,meta.bunri)?0:5.5;
 
-    if(item.mode==='priv_kyote'){
+    if(item.mode==='early'){
+      const eff=S.xs+6.5-bunriPen+(secDevOf(S,meta)-S.a);
+      const pz=1/(1+Math.exp(-(eff-d)/2.25));
+      const ok=RR(S.seed,T,100+i)<pz;
+      const surplus=eff-d;
+      res.push({idx:item.idx,mode:item.mode,pz,ok,surplus,detail:`招待制・早期進学特別選抜（指数 ${eff.toFixed(1)} / 目安 ${d}）`});
+      if(ok&&d>best){best=d;bn=item.idx;bestSurplus=surplus;}
+    }else if(item.mode==='priv_kyote'){
       const kr=(S.kyoteResults||[]).find(x=>x.idx===item.idx);
       const ok=kr?kr.ok:false;
       const pz=kr?kr.pz:0;
-      res.push({idx:item.idx,mode:item.mode,pz,ok,detail:`共テ ${S.kt.total}点 / ボーダー ${meta.kyoteBorderPct*10}点`});
-      if(ok&&d>best){best=d;bn=item.idx;}
+      const surplus=kr?(S.kt.pct-meta.kyoteBorderPct)/1.6:-99;
+      res.push({idx:item.idx,mode:item.mode,pz,ok,surplus,detail:`共テ ${S.kt.total}点 / ボーダー ${meta.kyoteBorderPct*10}点`});
+      if(ok&&d>best){best=d;bn=item.idx;bestSurplus=surplus;}
     }else if(meta.isNat){
       const ktPct=S.kt.pct;
       const ashikiri=ktPct<meta.ashikiriPct;
@@ -2147,24 +2213,26 @@ function examUniFull(S){
       const detail=ashikiri
         ?`共テ ${ktPct.toFixed(1)}%（足切り ${meta.ashikiriPct}%未満）`
         :`共テ${100-meta.secRatio}%＋二次${meta.secRatio}%${bunriPen>0?' [文理不一致減点]':''}`;
-      res.push({idx:item.idx,mode:item.mode,tag,pz,ok,detail});
-      if(ok&&d>best){best=d;bn=item.idx;}
+      const surplus=ashikiri?-99:effDev-d;
+      res.push({idx:item.idx,mode:item.mode,tag,pz,ok,surplus,detail});
+      if(ok&&d>best){best=d;bn=item.idx;bestSurplus=surplus;}
     }else{
       const ktBonus=(S.kt.pct-meta.kyoteBorderPct)*0.08;
       const eff=S.xs+ktBonus-bunriPen+(secDevOf(S,meta)-S.a);
       const pz=1/(1+Math.exp(-(eff-d)/2.4));
       const ok=RR(S.seed,T,100+i)<pz;
-      res.push({idx:item.idx,mode:item.mode,pz,ok,detail:`個別学力試験（指数 ${eff.toFixed(1)} / 目安 ${d}${bunriPen>0?' 文理不一致':''}）`});
-      if(ok&&d>best){best=d;bn=item.idx;}
+      const surplus=eff-d;
+      res.push({idx:item.idx,mode:item.mode,pz,ok,surplus,detail:`個別学力試験（指数 ${eff.toFixed(1)} / 目安 ${d}${bunriPen>0?' 文理不一致':''}）`});
+      if(ok&&d>best){best=d;bn=item.idx;bestSurplus=surplus;}
     }
   });
-  return{rv:best,bn,res};
+  return{rv:best,bn,res,bestSurplus};
 }
 
 function exam(S,ap){const L=SCH[S.si],T=S.t+1000*S.si;S.xs=S.a+(S.h-60)/12+G(S.seed,T,50)*1.8;
- let best=L[L.length-1][1],bn=L.length-1;const res=[];
- ap.forEach((j,i)=>{const d=L[j][1],pz=1/(1+Math.exp(-(S.xs-d+PZ0)/2.5)),ok=RR(S.seed,T,100+i)<pz;res.push([j,pz,ok]);if(ok&&d>best){best=d;bn=j}});
- return{rv:best,bn,res}}
+ let best=L[L.length-1][1],bn=L.length-1,bestSurplus=-Infinity;const res=[];
+ ap.forEach((j,i)=>{const d=L[j][1],pz=1/(1+Math.exp(-(S.xs-d+PZ0)/2.5)),ok=RR(S.seed,T,100+i)<pz;res.push([j,pz,ok]);if(ok&&d>best){best=d;bn=j;bestSurplus=S.xs-d}});
+ return{rv:best,bn,res,bestSurplus}}
 
 const auto=S=>{const L=SCH[S.si].slice(0,-1),f=x=>L.findIndex(s=>s[1]<=x&&okSx(S,s));return[...new Set([f(S.a+6),f(S.a-2),f(S.a-7)].filter(i=>i>=0))]};
 function sim(o){const S=ns(o.b,o.si,o.seed,o.a,o.p);S.len=o.len;rollEv(S);
@@ -2200,9 +2268,9 @@ function rec(){const r=ld('jg_r')||{pl:[],tt:{}},a=S.an;S.nt=[];(S.rvh=S.rvh||[]
  r.n=(r.n||0)+1;(r.sch=r.sch||{})[SCH[S.si][S.bn][0]]=1;r.pl.unshift([ST[S.si],SCH[S.si][S.bn][0],a.sc,new Date().toLocaleDateString('ja-JP')]);r.pl=r.pl.slice(0,30);sv('jg_r',r)}
 
 function init(){
-  const prevMode=S.mockMode||'auto',prevIdx=S.mockIdx!=null?S.mockIdx:null,prevUi=S.ui||{hideStat:false,hideLog:false},prevName=S.name||'ロト';
+  const prevMode=S.mockMode||'auto',prevIdx=S.mockIdx!=null?S.mockIdx:null,prevUi=S.ui||{hideStat:false,hideLog:false},prevName=S.name||'ロト',prevMeta=ensureCareerMeta(S);
   const n=ns(S.b,S.si,S.seed,S.a,S.p);
-  Object.assign(S,n,{sx:S.sx||n.sx,acts:[],act:0,a0:S.a,p0:S.p,fi:0,ap:null,mockMode:prevMode,mockIdx:prevIdx,ui:prevUi,name:prevName});
+  Object.assign(S,n,{sx:S.sx||n.sx,acts:[],act:0,a0:S.a,p0:S.p,fi:0,ap:null,mockMode:prevMode,mockIdx:prevIdx,ui:prevUi,name:prevName,meta:prevMeta});
 }
 
 const SC=['top','diag','setup','game','exam','result'],H=i=>document.getElementById(i),CC=['#facc15','#c084fc','#38bdf8','#a3a3a3','#f43f5e','#f43f5e'];
@@ -2258,6 +2326,18 @@ function go(v){S.v=v;save();R()}
 function R(){if(S)applySex(S.sx||'m');({diag:Diag,setup:Setup,play:Play,kt:Kt,app:App,niji:Niji,ann:Ann,res:Res})[S.v]()}
 function goHome(){Home()}
 
+function showAchievementSparkle(kind='normal'){
+  const presets={ssr:{count:5,cls:'rare',spread:1},a:{count:3,cls:'cool',spread:.78},top10:{count:4,cls:'cool',spread:.9},first:{count:7,cls:'rare',spread:1.2},scholarship:{count:6,cls:'rare',spread:1.15},gold:{count:5,cls:'',spread:1},invite:{count:7,cls:'rare',spread:1.25}};
+  const cfg=presets[kind]||{count:3,cls:'',spread:.8};
+  const layer=document.createElement('div');layer.className='achievement-sparkle-layer';
+  const pts=[[-12,-9],[10,-12],[-17,5],[16,7],[0,-18],[-4,13],[22,-2]];
+  for(let i=0;i<cfg.count;i++){
+    const star=document.createElement('span');star.className='achievement-sparkle '+(cfg.cls||'');star.textContent='✦';
+    const [dx,dy]=pts[i%pts.length];star.style.left=`calc(50% + ${dx*cfg.spread}px)`;star.style.top=`calc(43% + ${dy*cfg.spread}px)`;star.style.animationDelay=`${i*48}ms`;layer.appendChild(star);
+  }
+  document.body.appendChild(layer);setTimeout(()=>layer.remove(),1250);
+}
+
 function showToast(msg){
   const el=H('toast-notification');
   el.textContent=msg;
@@ -2281,7 +2361,7 @@ function togglePanel(key){
 function startDiag(){
   S={
     isDiag:true,diagStep:0,diagAns:{},ed:'full',stages:ED.full[2],k:0,si:0,t:0,
-    seed:Math.random()*1e9|0,b:{},ex:true,rr:0,name:'ロト',log:[],
+    seed:Math.random()*1e9|0,b:{},ex:true,rr:0,name:'ロト',log:[],meta:makeCareerMeta(),
     mocks:[],avgMock:null,lastMock:null,mockMode:'auto',mockIdx:null,
     ui:{hideStat:false,hideLog:false}
   };
@@ -2404,7 +2484,7 @@ function Diag(){
       const r=S.b[x];
       return`<div class="border-2 p-2 text-left text-xs" style="border-color:${CC[r]}">
         <span class="text-[10px] text-neutral-300">${N[i]}ランク</span><br>
-        <b style="color:${CC[r]}">${RA[r]}</b>　${T[i][r][0]}
+        <b style="color:${CC[r]}">${rankName(x,r)}</b>　${T[i][r][0]}
       </div>`;
     }).join('');
 
@@ -2508,8 +2588,8 @@ function Diag(){
       sub:'ガチャの「才能（地頭）ランク」と初期ステータスを決定します。',
       opts:[
         [0,'本や図鑑を読みふけり、何でもすぐ吸収していた','才能 SSR（神童レベルの地頭）＋初期自信UP'],
-        [1,'パズル・計算・工作に熱中する理数キッズだった','才能 UR（理系科目が超伸びる）＋初期自信UP'],
-        [2,'言葉遊び・読書・外国語や歴史にハマっていた','才能 UR（文系科目が超伸びる）＋初期自信UP'],
+        [1,'パズル・計算・工作に熱中する理数キッズだった','才能「神脳（理系）」＋初期自信UP'],
+        [2,'言葉遊び・読書・外国語や歴史にハマっていた','才能「神脳（文系）」＋初期自信UP'],
         [3,'新しいことを覚える要領の良さがあった','才能 SR（覚えが早い）＋初期やる気UP'],
         [4,'外で遊び回る体力お化けだった','才能 R ＋ 初期体調+18・やる気+6・青春+8'],
         [5,'習い事や宿題を毎日コツコツ続けていた','才能 R ＋ 初期やる気+12・自信+6'],
@@ -2563,7 +2643,7 @@ function Diag(){
           const arg=typeof val==='string'?`'${val}'`:val;
           return`<button onclick="diagPick(${st},${arg})" class="rpg-cmd w-full p-2.5 min-h-[48px] text-left ${selected?'border-yellow-300 text-yellow-300 bg-[#141a33]':''}">
             <div class="text-xs sm:text-sm font-bold"><span class="cursor-arrow">▶</span> ${label}</div>
-            ${hint?`<div class="text-[10px] text-neutral-300 pl-3.5 mt-0.5">${hint}</div>`:''}
+
           </button>`;
         }).join('')}
       </div>
@@ -2581,6 +2661,7 @@ function Home(){S=null;show('top');const r=ld('jg_r')||{pl:[],tt:{}},s=ld('jg_s'
 function cont(){
   S=ld('jg_s');
   if(S){
+    ensureCareerMeta(S);
     S.mocks=S.mocks||[];
     S.mockMode=S.mockMode||'auto';
     S.ui=S.ui||{hideStat:false,hideLog:false};
@@ -2591,8 +2672,8 @@ function cont(){
   }
   R();
 }
-function newG(k){S={ed:k,stages:ED[k][2],k:0,si:ED[k][2][0],t:0,seed:Math.random()*1e9|0,b:{},ex:true,rr:1,name:'ロト',log:[],mocks:[],avgMock:null,lastMock:null,mockMode:'auto',mockIdx:null,ui:{hideStat:false,hideLog:false}};go('setup')}
-function rerollG(){S.rr--;rollG()}
+function newG(k){S={ed:k,stages:ED[k][2],k:0,si:ED[k][2][0],t:0,seed:Math.random()*1e9|0,b:{},ex:true,rr:0,name:'ロト',log:[],meta:makeCareerMeta(),mocks:[],avgMock:null,lastMock:null,mockMode:'auto',mockIdx:null,ui:{hideStat:false,hideLog:false}};S.rr=2;go('setup')}
+function rerollG(){if(!S||S.k!==0||S.rr<=0)return;S.rr--;rollG()}
 
 function setMockSetting(mode,idx,inModal){
   S.mockMode=mode;
@@ -2622,6 +2703,7 @@ function openMockReportModal(mockIdx){
   const idx=mockIdx!=null?mockIdx:S.mocks.length-1;
   const m=S.mocks[idx];
   if(!m)return;
+  if(m.judgment==='A'&&!m._aSparkleShown){m._aSparkleShown=true;showAchievementSparkle('a');save()}
 
   const avgUpTo=(S.mocks.slice(0,idx+1).reduce((a,b)=>a+b.score,0)/(idx+1)).toFixed(1);
   if(typeof RetroAudio!=='undefined'){
@@ -2708,6 +2790,21 @@ function openMockReportModal(mockIdx){
   openModal('modal-mock-report');
 }
 
+function processMockMilestones(x,r){
+  const m=ensureCareerMeta(x);
+  if(r.natRank===1&&!r._firstSparkleShown){r._firstSparkleShown=true;if(x===S)showAchievementSparkle('first')}
+  else if(r.natRank<=10&&!r._top10SparkleShown){r._top10SparkleShown=true;if(x===S)showAchievementSparkle('top10')}
+  if(x.si===1&&r.qualifiesSundaiTop10&&r.natRank<=10&&!m.sundai10){
+    m.sundai10=true;
+    x.log.push('【特別解放】駿台全国模試で全国10傑を達成！中学生向けに大学受験模試の飛び級枠が解放された。');
+    if(x===S)showToast('＊ 駿台模試10傑！大学受験模試が解放！');
+  }
+  if(r.isKanmuri){
+    m.crownTop1Streak=r.natRank===1?(m.crownTop1Streak||0)+1:0;
+    if(m.crownTop1Streak===2)grantEarlyUniversityInvite(x,'冠模試で全国1位を連続達成');
+  }
+  save();
+}
 function st1(){
   const o=lab(S),wTotal=getTotalWeekHrs(S);
   step(S);
@@ -2715,6 +2812,7 @@ function st1(){
     const r=S.lastMockRec;
     const jumpStr=r.jumpPen>0?`【飛び級-${r.jumpPen}】`:'';
     S.log.push(`【模試】${o}：${jumpStr}${r.name} → 総合 ${r.score.toFixed(1)}（${r.judgment}判定／全国${r.natRank.toLocaleString()}位）${S.msg?' ＊'+S.msg:''}`);
+    processMockMilestones(S,r);
   }else{
     const avgTxt=S.avgMock!=null?`平均 ${S.avgMock.toFixed(1)} 維持`:'模試なし';
     S.log.push(`${o}：週${wTotal}h学習（${avgTxt}）${S.msg?' ＊'+S.msg:''}`);
@@ -2740,6 +2838,7 @@ function Play(){
 
   const _y=window.scrollY,_same=window._curScr==='game';
   show('game');
+  H('meta-notice-panel').innerHTML=renderCareerNotices(S);
 
   const L=SCH[S.si],f=L[S.fi],ne=S.ex===false,spec=getMockSpec(S);
   const jumpPen=calcJumpPenalty(S,spec);
@@ -2865,16 +2964,16 @@ function Play(){
         選択すると週間勉強配分の科目と模試の集計科目が切り替わります。（現在の第一志望：${f[0]} ${bTag}）
       </p>
       <div class="grid grid-cols-1 gap-2">
-        ${cmd('pick(0)','文系コースに進む（英語・国語・地歴公民重視）','文系学部向け。理系・医学部志望だと二次試験で不利になります。',false)}
-        ${cmd('pick(1)','理系コースに進む（英語・数学・理科重視）','理系・医歯薬学部向け。文系学部志望だと二次試験で不利になります。',false)}
+        ${cmd('pick(0)','文系コースに進む（英語・国語・地歴公民重視）','',false)}
+        ${cmd('pick(1)','理系コースに進む（英語・数学・理科重視）','',false)}
       </div>`;
   }else if(S.ev==='elec'){
     const k=elecNext(S),opts=ELEC[S.bunri][k];
     H('command-panel').className='rpg-window-gold p-3 space-y-2.5 animate-retro-pop';
-    H('command-panel').innerHTML=`<div class="flex items-center justify-between"><span class="text-xs font-bold text-yellow-300">★ 科目選択</span><span class="text-[10px] text-amber-300">必須選択</span></div><div class="text-sm font-bold text-white leading-snug">受験で使う${k==='soc'?'地歴公民':'理科'}を選ぼう</div><div class="grid grid-cols-1 gap-2">${opts.map((o,i)=>cmd(`pick(${i})`,o[0],o[3],false)).join('')}</div>`;
+    H('command-panel').innerHTML=`<div class="flex items-center justify-between"><span class="text-xs font-bold text-yellow-300">★ 科目選択</span><span class="text-[10px] text-amber-300">必須選択</span></div><div class="text-sm font-bold text-white leading-snug">受験で使う${k==='soc'?'地歴公民':'理科'}を選ぼう</div><div class="grid grid-cols-1 gap-2">${opts.map((o,i)=>cmd(`pick(${i})`,o[0],'',false)).join('')}</div>`;
   }else if(S.ev!=null){
     H('command-panel').className='rpg-window-gold p-3 space-y-2.5 animate-retro-pop';
-    H('command-panel').innerHTML=`<div class="flex items-center justify-between"><span class="text-xs font-bold text-yellow-300">★ 出来事発生！</span><span class="text-[10px] text-neutral-300">選択してください</span></div><div class="text-sm font-bold text-white border-b border-yellow-300/40 pb-2 leading-snug">${EV[S.ev][0]}</div><div class="grid grid-cols-1 gap-2">${[0,1].map(i=>cmd(`pick(${i})`,EV[S.ev][i+1][0],effTxt(EV[S.ev][i+1][1],EV[S.ev][i+1][2]))).join('')}</div>`;
+    H('command-panel').innerHTML=`<div class="flex items-center justify-between"><span class="text-xs font-bold text-yellow-300">★ 出来事発生！</span><span class="text-[10px] text-neutral-300">選択してください</span></div><div class="text-sm font-bold text-white border-b border-yellow-300/40 pb-2 leading-snug">${EV[S.ev][0]}</div><div class="grid grid-cols-1 gap-2">${[0,1].map(i=>cmd(`pick(${i})`,EV[S.ev][i+1][0],'')).join('')}</div>`;
   }else{
     H('command-panel').className='rpg-window p-3 space-y-2.5';
     const nextIsMock=!ne&&isMockMonth(S);
@@ -2946,10 +3045,35 @@ function Play(){
         </div>
       </div>`;
   }
+  if(S.ev==null&&S.choiceResult){
+    const r=S.choiceResult;
+    H('command-panel').innerHTML=`
+      <div class="border-2 border-emerald-300 bg-[#07140e] p-2.5 space-y-1.5">
+        <div class="text-xs font-bold text-emerald-300">★ 選択の結果</div>
+        <div class="text-xs text-neutral-200">${r.title}</div>
+        <div class="text-sm font-bold text-white">▶ ${r.choice}</div>
+        <div class="text-xs text-emerald-200">${r.summary}</div>
+        ${r.changes.length?`<div class="text-[11px] text-yellow-200 border-t border-emerald-900 pt-1">ステータス変化：${r.changes.join(' ／ ')}</div>`:''}
+      </div>`+H('command-panel').innerHTML;
+  }
   save();
   {const e=H('hud-hero-name');if(e){e.textContent='';e.insertAdjacentHTML('beforeend',HERO+' ');e.append(S.name||'ロト')}}
   if(_same)scrollTo(0,_y);
 }
+
+function setChoiceResult(title,choice,summary,before=null){
+  const now={h:S.h,m:S.m,c:S.c,y:S.y,a:S.a};
+  const fields=[['体調','h'],['やる気','m'],['自信','c'],['青春','y'],['学力','a']];
+  const changes=before?fields.map(([label,key])=>{
+    const d=Math.round((now[key]-before[key])*10)/10;
+    if(!d)return null;
+    const value=Number.isInteger(d)?String(d):d.toFixed(1);
+    return label+(d>0?'+':'')+value;
+  }).filter(Boolean):[];
+  S.choiceResult={title,choice,summary,changes};
+}
+
+function choiceStatsSnapshot(){return{h:S.h,m:S.m,c:S.c,y:S.y,a:S.a}}
 
 function pick(i){
   if(S.ev==='elec'){
@@ -2957,27 +3081,35 @@ function pick(i){
     S.elec=S.elec||{};S.elec[k]=i;S.ev=null;
     S.subHrs=distributeIntHours(getTotalWeekHrs(S)||BASE_WEEK_HRS[2],getCurriculum(S).map(c=>c.w));
     S.log.push(`【重要】科目選択 →「${o[0]}」を選択！`);
+    setChoiceResult('科目選択',o[0],`${k==='soc'?'地歴公民':'理科'}の選択を週間勉強配分に反映しました。`);
     if(typeof RetroAudio!=='undefined')RetroAudio.playSE('good');
-    Play();showToast(`＊ ${o[0]}を選択しました！`);return;
+    Play();return;
   }
   if(S.ev==='bunri'){
     const label=i===0?'文系コース':'理系コース';
+    const before=choiceStatsSnapshot();
     S.log.push(`【重要】高1 11月 文理選択 →「${label}」を選択！`);
     pk(S,i);
+    setChoiceResult('高1 11月・文理選択',label,`週間勉強配分と模試の集計科目を${i===0?'文系':'理系'}向けに切り替えました。`,before);
     if(typeof RetroAudio!=='undefined')RetroAudio.playSE('good');
     Play();
-    showToast(`＊ ${label}を選択しました！`);
     return;
   }
   const e=EV[S.ev];
+  const choice=e[i+1][0];
+  const before=choiceStatsSnapshot();
   const delta=(e&&e[i+1]&&e[i+1][1])||[0,0,0,0,0];
   const isPositive=(delta[0]+delta[1]+delta[4]*4)>=0;
-  pk(S,i);S.log.push(`出来事「${e[0]}」→「${e[i+1][0]}」${S.evRes||''}`);
+  pk(S,i);
+  const outcome=S.evRes||'選択した内容が反映されました。';
+  setChoiceResult(e[0],choice,outcome,before);
+  S.log.push(`出来事「${e[0]}」→「${choice}」${S.evRes||''}`);
   if(typeof RetroAudio!=='undefined')RetroAudio.playSE(isPositive?'good':'bad');
-  Play();if(S.evRes)showToast('＊ '+S.evRes);
+  Play();
 }
 
 function nx(){
+  S.choiceResult=null;
   st1();
   const tookMock=!!S.lastMockRec;
   if(typeof RetroAudio!=='undefined'){
@@ -2989,6 +3121,7 @@ function nx(){
 }
 
 function au(){
+  S.choiceResult=null;
   let n=0;
   do{st1()}while(S.t<S.len&&S.ev==null&&++n<60);
   const tookMock=!!S.lastMockRec;
@@ -3001,6 +3134,7 @@ function au(){
 }
 
 function auMock(){
+  S.choiceResult=null;
   let n=0;
   do{
     st1();
@@ -3127,6 +3261,7 @@ function setAppUniFilter(f){appUniFilter=f;renderAppUniList();}
 
 function AppUni(){
   if(!S.kt)runKyotsu(S);
+  ensureCareerMeta(S);
   if(!S.ap||!Array.isArray(S.ap)||(S.ap.length&&typeof S.ap[0]!=='object'))S.ap=autoUniApp(S);
   H('exam-phase-sub').textContent='★ 1月下旬 出願戦略（全61大学・国公立/私立一般/共テ利用） ★';
   H('exam-boss-header').textContent='大学受験　出願（最大5枠）';
@@ -3143,6 +3278,7 @@ function AppUni(){
       </div>
       <button onclick="S.ap=autoUniApp(S);renderAppUniList()" class="rpg-cmd text-[11px] px-2.5 py-1.5 min-h-[36px] text-sky-300 border-sky-300 shrink-0">▶ おすすめ出願</button>
     </div>
+    ${S.meta.earlyInvite?`<div class="rpg-window-gold p-2.5 text-xs space-y-1"><div class="font-bold text-yellow-300">✉ 招待制・大学早期進学選抜が解放されています</div><div class="text-neutral-200">招待状の条件：${S.meta.earlyInviteSources.join(' ／ ')}。各大学の「招待制・早期進学選抜」から出願できます。</div><div class="text-[10px] text-neutral-400">ゲーム内の架空の特別選抜です。招待は合格を保証するものではありません。</div></div>`:''}
 
     <div class="flex items-center justify-between">
       <span id="app-uni-count-label" class="text-yellow-300 font-bold">▼ 出願リスト（${S.ap.length}/5枠）</span>
@@ -3164,6 +3300,7 @@ function AppUni(){
 }
 
 function toggleUniApp(idx,mode){
+  if(mode==='early'&&!ensureCareerMeta(S).earlyInvite){showToast('＊ 大学からの招待状が必要です！');return;}
   const pos=S.ap.findIndex(x=>x.idx===idx&&x.mode===mode);
   if(pos>=0){
     S.ap.splice(pos,1);
@@ -3184,7 +3321,7 @@ function toggleUniApp(idx,mode){
 }
 
 function modeLabel(mode){
-  return({nat_zenki:'国公立・前期',nat_koki:'国公立・後期',priv_ippan:'私立・一般',priv_kyote:'私立・共テ利用'})[mode]||mode;
+  return({nat_zenki:'国公立・前期',nat_koki:'国公立・後期',priv_ippan:'私立・一般',priv_kyote:'私立・共テ利用',early:'招待制・早期進学選抜'})[mode]||mode;
 }
 
 function renderAppUniList(){
@@ -3212,10 +3349,11 @@ function renderAppUniList(){
     if(meta.isNat){
       const onZenki=S.ap.some(x=>x.idx===i&&x.mode==='nat_zenki');
       const onKoki=S.ap.some(x=>x.idx===i&&x.mode==='nat_koki');
+      const onEarly=S.ap.some(x=>x.idx===i&&x.mode==='early');
       const ashikiri=ktPct<meta.ashikiriPct;
       const diffPct=Math.round((ktPct-meta.ktBorderPct)*10)/10;
       const bCol=ashikiri?'text-red-400':diffPct>=0?'text-emerald-300':'text-yellow-300';
-      return`<div class="border ${onZenki||onKoki?'border-emerald-300 bg-[#071812]':'border-neutral-600 bg-[#0c0c14]'} p-2.5 space-y-1.5">
+      return`<div class="border ${onZenki||onKoki||onEarly?'border-emerald-300 bg-[#071812]':'border-neutral-600 bg-[#0c0c14]'} p-2.5 space-y-1.5">
         <div class="flex justify-between items-center gap-1">
           <span class="font-bold text-white"><span class="text-[10px] border border-emerald-400 text-emerald-300 px-1 mr-1">国公立・${meta.bunri}</span>${s[0]}</span>
           <span class="text-[10px] text-neutral-300 shrink-0">目安${s[1]}</span>
@@ -3232,14 +3370,16 @@ function renderAppUniList(){
             ${onKoki?'☑ 後期 出願中':'▶ 後期日程に出願'}
           </button>`:''}
         </div>
+        ${S.meta?.earlyInvite?`<button onclick="toggleUniApp(${i},'early')" class="rpg-cmd w-full py-2 px-2 min-h-[38px] text-[11px] font-bold ${onEarly?'border-yellow-300 text-yellow-300 bg-[#141a33]':'text-amber-200 border-amber-400'}">${onEarly?'☑ 招待制・早期進学選抜 出願中':'✉ 招待制・早期進学選抜で出願'}</button>`:''}
       </div>`;
     }else{
       const onIppan=S.ap.some(x=>x.idx===i&&x.mode==='priv_ippan');
       const onKyote=S.ap.some(x=>x.idx===i&&x.mode==='priv_kyote');
+      const onEarly=S.ap.some(x=>x.idx===i&&x.mode==='early');
       const pzIppan=Math.round(100/(1+Math.exp(-(S.a-(mismatch?5.5:0)-s[1])/2.4)));
       const diffKyote=Math.round((ktPct-meta.kyoteBorderPct)*10)/10;
       const pzKyote=Math.round(100/(1+Math.exp(-diffKyote/1.35)));
-      return`<div class="border ${onIppan||onKyote?'border-yellow-300 bg-[#121629]':'border-neutral-600 bg-[#0c0c14]'} p-2.5 space-y-1.5">
+      return`<div class="border ${onIppan||onKyote||onEarly?'border-yellow-300 bg-[#121629]':'border-neutral-600 bg-[#0c0c14]'} p-2.5 space-y-1.5">
         <div class="flex justify-between items-center gap-1">
           <span class="font-bold text-white"><span class="text-[10px] border border-sky-400 text-sky-300 px-1 mr-1">私立・${meta.bunri}</span>${s[0]}</span>
           <span class="text-[10px] text-neutral-300 shrink-0">目安${s[1]} ${mismatch?'<b class="text-red-400">⚠不一致</b>':''}</span>
@@ -3254,6 +3394,7 @@ function renderAppUniList(){
             <div class="text-neutral-300">ボーダー${meta.kyoteBorderPct}% (${pzKyote}%)</div>
           </button>
         </div>
+        ${S.meta?.earlyInvite?`<button onclick="toggleUniApp(${i},'early')" class="rpg-cmd w-full py-2 px-2 min-h-[38px] text-[11px] font-bold ${onEarly?'border-yellow-300 text-yellow-300 bg-[#141a33]':'text-amber-200 border-amber-400'}">${onEarly?'☑ 招待制・早期進学選抜 出願中':'✉ 招待制・早期進学選抜で出願'}</button>`:''}
       </div>`;
     }
   }).join('')+(filtered.length>80?`<p class="text-[10px] text-neutral-400 text-center py-1">ほか ${filtered.length-80}件（検索ワードで絞り込めます）</p>`:'')||'<p class="text-xs text-neutral-400 py-2 text-center">該当する大学・学部が見つかりません</p>';
@@ -3280,11 +3421,21 @@ function olyList(S){const m=S.t%12,y=Math.floor(S.t/12);S.oly=S.oly||{};return O
 function olyHtml(S){const l=olyList(S);if(!l.length)return'';return`<div class="border border-sky-400/60 bg-[#08121c] p-2 space-y-1"><div class="text-[11px] font-bold text-sky-300">▼ 今月のコンテスト（任意・体力-6）</div>${l.map(({o,k})=>{const r=S.oly[k];return`<button onclick="olyEnter('${o[0]}')" ${r?'disabled':''} class="rpg-cmd w-full p-1.5 min-h-[38px] text-left text-[11px]"><span class="cursor-arrow">▶</span> ${o[1]} <span class="text-[10px] text-neutral-400">（${o[5]}）</span>${r?`<b class="text-yellow-300 float-right">${r}</b>`:''}</button>`}).join('')}</div>`}
 function olyEnter(id){const o=OLY.find(x=>x[0]===id),k=id+'_'+S.si+'_'+Math.floor(S.t/12);S.oly=S.oly||{};if(!o||S.oly[k])return;
  const cur=getCurriculum(S),v=o[3].map(key=>{const i=cur.findIndex(c=>c.key===key);return i>=0?S.subA[i]:S.a}),base=v.reduce((a,b)=>a+b,0)/v.length;
- const sc=base+(RR(S.seed,S.t+1000*S.si,90+OLY.indexOf(o))-.5)*16;
- const g=sc>=88?['金賞',12,12,5,.6]:sc>=78?['銀賞',8,8,3,.4]:sc>=68?['銅賞',5,5,2,.25]:sc>=58?['優秀賞',2,3,1,.1]:['参加',0,1,1,0];
+ // オリンピック系は世界・全国上位級。通常の学力では入賞しにくく、
+ // UR級の科目力が複数そろって初めて金〜銅賞が狙える。
+ // 学年ボーナスは残すが小さくし、学年だけで入賞できないようにする。
+ const gradeLevel=S.si*3+Math.floor(S.t/12);
+ const gradeAdvantage=gradeLevel*0.5;
+ const sc=base+(RR(S.seed,S.t+1000*S.si,90+OLY.indexOf(o))-.5)*6+gradeAdvantage;
+ const g=sc>=99.5?['金賞',12,12,5,.6]:sc>=98?['銀賞',8,8,3,.4]:sc>=96?['銅賞',5,5,2,.25]:sc>=92?['優秀賞',2,3,1,.1]:['参加',0,1,1,0];
  S.h=cl(S.h-6);S.m=cl(S.m-3+g[1]);S.c=cl(S.c+g[2]);S.y=cl(S.y+g[3]);
  cur.forEach((c,i)=>{if(o[3].includes(c.key))S.subA[i]=Math.min(AMAX(S),S.subA[i]+g[4])});syncOverallFromSubs(S);
- S.oly[k]=g[0];S.log.push(`【コンテスト】${o[1]}で「${g[0]}」！`);save();Play();showToast(`＊ ${o[1]}：${g[0]}`)}
+ S.oly[k]=g[0];S.log.push(`【コンテスト】${o[1]}で「${g[0]}」！`);
+ if(g[0]==='金賞'){
+   const meta=ensureCareerMeta(S);meta.olyGoldCount++;
+   if(meta.olyGoldCount===2){showAchievementSparkle('gold');grantEarlyUniversityInvite(S,'オリンピック系コンテストで金賞を2回獲得')}
+ }
+ save();Play();showToast(`＊ ${o[1]}：${g[0]}`)}
 
 function startNijiPhase(){
   S.kyoteChecked=false;
@@ -3351,17 +3502,27 @@ function Niji(){
   save();
 }
 
+function awardScholarship(x,surplus){
+  const L=SCH[x.si];
+  if(x.bn==null||x.bn===L.length-1||!Number.isFinite(surplus)||surplus<8){x.scholarship=null;return;}
+  const tier=surplus>=14?'S特待':surplus>=11?'A特待':'B特待';
+  const benefit=tier==='S特待'?'入学金＋授業料 全額免除':tier==='A特待'?'授業料 全額免除':'授業料 半額免除';
+  x.scholarship={tier,benefit,margin:Math.round(surplus*10)/10,school:L[x.bn][0]};
+  if(x===S)showAchievementSparkle('scholarship');
+  x.log=x.log||[];
+  x.log.push(`【特待生認定】${x.scholarship.school}に${tier}で合格！${benefit}。`);
+}
 function finUni(){
   const x=examUniFull(S);
-  S.rv=x.rv;
-  S.bn=x.bn;
-  S.xr=x.res;
-  S.an=analyze(S);
-  rec();
-  go('ann');
+  S.rv=x.rv;S.bn=x.bn;S.xr=x.res;S.admissionSurplus=x.bestSurplus;
+  awardScholarship(S,x.bestSurplus);
+  S.an=analyze(S);rec();go('ann');
 }
-
-function fin(){const x=exam(S,S.ap);S.rv=x.rv;S.bn=x.bn;S.xr=x.res;S.an=analyze(S);rec();go('ann')}
+function fin(){
+  const x=exam(S,S.ap);S.rv=x.rv;S.bn=x.bn;S.xr=x.res;S.admissionSurplus=x.bestSurplus;
+  awardScholarship(S,x.bestSurplus);
+  S.an=analyze(S);rec();go('ann');
+}
 
 function Ann(){
   show('exam');
@@ -3370,25 +3531,119 @@ function Ann(){
   H('exam-boss-header').textContent=ST[S.si]+'　合格発表';
   ['kyotsu-battle-box','boss-battle-arena'].forEach(i=>H(i).classList.add('hidden'));
   H('exam-announcement-area').classList.remove('hidden');
-  if(typeof RetroAudio!=='undefined'){
-    const anyPass=S.si===2?(S.xr||[]).some(x=>x.ok):(S.bn!=L.length-1);
-    RetroAudio.playSE(anyPass?'pass':'fail');
-  }
 
-  if(S.si===2){
-    H('exam-results-cards').innerHTML=(S.xr.length?S.xr.map(x=>`
-      <div class="${x.ok?'rpg-window-gold':'rpg-window'} p-2.5 flex justify-between items-center gap-2 text-xs">
-        <div class="min-w-0">
-          <div class="font-bold text-white truncate">${L[x.idx][0]} <span class="text-[10px] text-amber-300">[${modeLabel(x.mode)}]</span></div>
-          <div class="text-[10px] text-neutral-300 truncate">${x.detail}</div>
-        </div>
-        <b class="${x.ok?'text-yellow-300':'text-red-400'} shrink-0">${x.ok?'🌸 合格！':'💀 不合格'}</b>
-      </div>`).join(''):'<div class="rpg-window p-2.5 text-xs text-neutral-400">一般・共テ利用の出願なし</div>')+
-      `<div class="rpg-window-gold p-3 text-xs">最終進学先：<b class="text-yellow-300 text-sm">${L[S.bn][0]}</b></div>`;
-  }else{
-    H('exam-results-cards').innerHTML=S.xr.map(x=>`<div class="${x[2]?'rpg-window-gold':'rpg-window'} p-3 flex justify-between items-center text-xs"><span>${L[x[0]][0]}</span><b class="${x[2]?'text-yellow-300':'text-red-400'}">${x[2]?'🌸 合格！':'💀 不合格'}</b></div>`).join('')+`<div class="rpg-window p-3 text-xs">進学先：<b class="text-yellow-300 text-sm">${L[S.bn][0]}</b></div>`;
+  // 画面を開き直した際、前回のタイマーが混ざらないよう世代番号で管理。
+  const announceToken=window._announcementToken=(window._announcementToken||0)+1;
+  const results=S.xr||[];
+  const anyPass=S.si===2?results.some(x=>x.ok):(S.bn!=L.length-1);
+  const resultItems=S.si===2
+    ?(results.length?results.map(x=>({name:L[x.idx][0],meta:`[${modeLabel(x.mode)}]`,detail:x.detail||'',ok:!!x.ok})):[{name:'一般・共通テスト利用',meta:'',detail:'出願はありません',ok:null}])
+    :results.map(x=>({name:L[x[0]][0],meta:'',detail:'',ok:!!x[2]}));
+
+  const rowsHtml=resultItems.map((item,i)=>`
+    <div id="announcement-row-${i}" class="rpg-window announcement-card is-pending p-2.5 flex justify-between items-center gap-2 text-xs">
+      <div class="min-w-0">
+        <div class="font-bold text-white truncate">${item.name} <span class="text-[10px] text-amber-300">${item.meta}</span></div>
+        <div id="announcement-detail-${i}" class="hidden text-[10px] text-neutral-300 mt-1">${item.detail}</div>
+      </div>
+      <b id="announcement-status-${i}" class="text-yellow-200 shrink-0 announcement-pulse">？？？</b>
+    </div>`).join('');
+
+  H('exam-results-cards').innerHTML=`
+    <div id="announcement-suspense" class="rpg-window p-3 text-center space-y-2">
+      <div class="text-[11px] text-red-300">受験番号・出願情報を照合中</div>
+      <div id="announcement-stage" class="text-sm font-bold text-white">合格発表まで、あと少し。</div>
+      <div id="announcement-countdown" class="text-3xl font-bold text-yellow-300 announcement-pulse">3</div>
+      <div class="text-[10px] text-neutral-400">掲示板に接続しています……</div>
+    </div>
+    <div class="space-y-2">${rowsHtml}</div>
+    <div id="announcement-final" class="hidden rpg-window-gold p-3 text-center space-y-1">
+      <div class="text-[11px] text-amber-200">最終進路</div>
+      <div class="text-xs text-white">${anyPass?'合格を確認しました':'今回の受験結果'}</div>
+      <div class="text-lg font-bold text-yellow-300">${L[S.bn][0]}</div>
+    </div>
+    ${S.scholarship?`<div id="announcement-scholarship" class="hidden rpg-window-gold p-3 space-y-1">
+      <div class="text-yellow-300 font-bold text-sm">★ ${S.scholarship.tier} 認定！</div>
+      <div class="text-white font-bold">${S.scholarship.school}</div>
+      <div class="text-amber-200">${S.scholarship.benefit}</div>
+      <div class="text-[10px] text-neutral-300">合格ラインを実力指数で +${S.scholarship.margin.toFixed(1)} 上回ったため、特待生に選ばれました。</div>
+    </div>`:''}`;
+  H('choice-buttons-container').innerHTML='';
+
+  const stillHere=()=>window._announcementToken===announceToken&&S&&S.v==='ann'&&!H('screen-exam').classList.contains('hidden');
+  const later=(ms,fn)=>setTimeout(()=>{if(stillHere())fn()},ms);
+  const stage=H('announcement-stage');
+  const countdown=H('announcement-countdown');
+  const cardDelay=760;
+  let count=3;
+  let rowIndex=0;
+
+  if(typeof RetroAudio!=='undefined')RetroAudio.playSE('decide');
+  const beginReveal=()=>{
+    if(!stillHere())return;
+    stage.textContent='掲示板を開きます。';
+    countdown.textContent='発表';
+    countdown.classList.remove('announcement-pulse');
+    if(typeof RetroAudio!=='undefined')RetroAudio.playSE('step');
+    later(650,revealNext);
+  };
+  const revealNext=()=>{
+    if(!stillHere())return;
+    if(rowIndex>=resultItems.length){
+      stage.textContent='すべての結果が公開されました。';
+      countdown.textContent='完';
+      if(typeof RetroAudio!=='undefined')RetroAudio.playSE(anyPass?'pass':'fail');
+      later(650,()=>{
+        H('announcement-final').classList.remove('hidden');
+        if(S.scholarship){
+          later(650,()=>{
+            H('announcement-scholarship').classList.remove('hidden');
+            if(typeof RetroAudio!=='undefined')RetroAudio.playSE('good');
+            revealChoices();
+          });
+        }else{
+          revealChoices();
+        }
+      });
+      return;
+    }
+    const item=resultItems[rowIndex];
+    const card=H(`announcement-row-${rowIndex}`);
+    const status=H(`announcement-status-${rowIndex}`);
+    const detail=H(`announcement-detail-${rowIndex}`);
+    if(card){
+      card.classList.remove('is-pending','rpg-window');
+      card.classList.add('is-revealed',item.ok===true?'rpg-window-gold':'rpg-window');
+    }
+    if(status){
+      status.classList.remove('announcement-pulse');
+      status.className=`shrink-0 font-bold ${item.ok===true?'text-yellow-300':item.ok===false?'text-red-400':'text-neutral-400'}`;
+      status.textContent=item.ok===true?'🌸 合格！':item.ok===false?'不合格':'出願なし';
+    }
+    if(detail&&item.detail)detail.classList.remove('hidden');
+    rowIndex++;
+    stage.textContent=`合格発表　${rowIndex} / ${resultItems.length} 件を確認`;
+    countdown.textContent='…';
+    if(typeof RetroAudio!=='undefined')RetroAudio.playSE('step');
+    later(cardDelay,revealNext);
+  };
+  function revealChoices(){
+    if(!stillHere())return;
+    H('choice-buttons-container').innerHTML=(S.si==2&&S.len==34&&S.rv<L[S.fi][1]?btn('ro()','もう1年がんばる（浪人する）','text-red-400 border-red-400'):'')+btn("go('res')",'結果の分析を見る','text-yellow-300 border-yellow-300');
   }
-  H('choice-buttons-container').innerHTML=(S.si==2&&S.len==34&&S.rv<L[S.fi][1]?btn('ro()','もう1年がんばる（浪人する）','text-red-400 border-red-400'):'')+btn("go('res')",'結果の分析を見る','text-yellow-300 border-yellow-300');
+  const countdownTick=()=>{
+    if(!stillHere())return;
+    if(count>1){
+      count--;
+      countdown.textContent=String(count);
+      if(typeof RetroAudio!=='undefined')RetroAudio.playSE('step');
+      later(720,countdownTick);
+    }else{
+      countdown.textContent='1';
+      later(720,beginReveal);
+    }
+  };
+  later(720,countdownTick);
 }
 
 function ro(){
@@ -3482,7 +3737,7 @@ function renderMocksModal(){
 
 function renderTargetModal(){
   if(!S)return;
-  const L=SCH[S.si],list=MOCK_LIST[S.si],g=curGrade(S);
+  const L=SCH[S.si],list=getMockList(S),g=curGrade(S);
   const gNames=STAGE_GRADE_NAMES[S.si];
   H('modal-target-body').innerHTML=`
     ${S.si===1?`<div class="border border-yellow-300/60 bg-[#120e02] p-2.5 flex items-center justify-between gap-2">
@@ -3539,7 +3794,7 @@ const X=()=>ld('jg_x');
 function dflt(){S.fi=auto(S)[0]||0}
 function setB(x,r){S.b[x]=r;Object.assign(S,st0(S.b,S.si));init();dflt();go('setup')}
 function setJ(i){S.juku=i;S.jb=JUKU[S.si][i][1]/150;save();Setup()}
-function rollG(){if(typeof RetroAudio!=='undefined')RetroAudio.playSE('gacha');S.b={f:roll(Math.random(),'f'),t:roll(Math.random(),'t'),k:roll(Math.random(),'k')};Object.assign(S,st0(S.b,S.si));init();dflt();go('setup')}
+function rollG(){if(typeof RetroAudio!=='undefined')RetroAudio.playSE('gacha');S.b={f:roll(Math.random(),'f'),t:roll(Math.random(),'t'),k:roll(Math.random(),'k')};const gotSSR=Object.values(S.b).some(v=>v===0);Object.assign(S,st0(S.b,S.si));init();dflt();go('setup');if(gotSSR)showAchievementSparkle('ssr')}
 function resetCode(){try{localStorage.removeItem('jg_x')}catch(e){}S.b={};S.juku=null;showToast('＊ 秘密コードをリセットしました');go('setup')}
 function chkCode(){if(H('secret-code').value.trim()=='923710'){sv('jg_x',1);go('setup')}else H('code-msg').textContent='コードがちがいます'}
 function toggleHighSchoolExam(wantExam){
@@ -3580,11 +3835,11 @@ function Setup(){
  H('setup-mode-title').textContent='▼ '+ST[S.si]+'の準備';
  H('input-player-name').value=S.name||'ロト';
  H('setup-roll-header').textContent='▶ 生まれガチャ';
- H('reroll-badge').textContent=cx?'秘密コード：自由選択':S.k>0?'生まれは引き継ぎ':'引き直し：残り'+S.rr+'回';
+ H('reroll-badge').textContent=cx?'秘密コード：自由選択':S.k>0?'生まれは引き継ぎ':`引き直し：残り${S.rr||0}回（最大2回）`;
  let c;
- if(S.isDiag)c=`<div class="border border-amber-300/60 bg-[#141002] p-2 text-left text-xs space-y-1"><div class="text-amber-300 font-bold">★ 診断タイプ：${S.bg||''}</div><div class="text-[11px] text-neutral-200">得意：<b>${S.sk?SUBN[S.sk.s]:'―'}</b>（1.3倍） ／ 苦手：<b>${S.sk&&S.sk.w?SUBN[S.sk.w]:'なし'}</b>${S.sk&&S.sk.w?'（0.8倍）':''}</div></div>`+K.map((x,i)=>{const r=S.b[x];return`<div class="border-2 p-2.5 text-left text-xs" style="border-color:${CC[r]}"><span class="text-[10px] text-neutral-300">${N[i]}</span><br><b style="color:${CC[r]}">${RA[r]}</b>　${T[i][r][0]}</div>`}).join('')+(S.k==0?btn('startDiag()','もう一度診断し直す','text-amber-300 border-amber-300'):'');
- else if(cx)c=K.map((x,i)=>`<div class="text-left text-xs"><span class="text-[10px] text-neutral-300">${N[i]}</span><div class="grid grid-cols-2 gap-1.5 mt-1">${T[i].map((v,r)=>`<button onclick="setB('${x}',${r})" class="rpg-cmd p-2 min-h-[42px] text-left text-[11px] ${S.b[x]==r?'border-yellow-300 text-yellow-300':''}"><b style="color:${CC[r]}">${RA[r]}</b> ${v[0]}</button>`).join('')}</div></div>`).join('');
- else c=ok?K.map((x,i)=>{const r=S.b[x];return`<div class="border-2 p-2.5 text-left text-xs" style="border-color:${CC[r]}"><span class="text-[10px] text-neutral-300">${N[i]}</span><br><b style="color:${CC[r]}">${RA[r]}</b>　${T[i][r][0]}</div>`}).join('')+(S.k==0&&S.rr>0?btn('rerollG()','引き直す','text-white'):''):btn('rollG()','運命の生まれガチャを回す（SSR 1%）','text-yellow-300 border-yellow-300 bg-[#111936]');
+ if(S.isDiag)c=`<div class="border border-amber-300/60 bg-[#141002] p-2 text-left text-xs space-y-1"><div class="text-amber-300 font-bold">★ 診断タイプ：${S.bg||''}</div><div class="text-[11px] text-neutral-200">得意：<b>${S.sk?SUBN[S.sk.s]:'―'}</b>（1.3倍） ／ 苦手：<b>${S.sk&&S.sk.w?SUBN[S.sk.w]:'なし'}</b>${S.sk&&S.sk.w?'（0.8倍）':''}</div></div>`+K.map((x,i)=>{const r=S.b[x];return`<div class="border-2 p-2.5 text-left text-xs" style="border-color:${CC[r]}"><span class="text-[10px] text-neutral-300">${N[i]}</span><br><b style="color:${CC[r]}">${rankName(x,r)}</b>　${T[i][r][0]}</div>`}).join('')+(S.k==0?btn('startDiag()','もう一度診断し直す','text-amber-300 border-amber-300'):'');
+ else if(cx)c=K.map((x,i)=>`<div class="text-left text-xs"><span class="text-[10px] text-neutral-300">${N[i]}</span><div class="grid grid-cols-2 gap-1.5 mt-1">${T[i].map((v,r)=>`<button onclick="setB('${x}',${r})" class="rpg-cmd p-2 min-h-[42px] text-left text-[11px] ${S.b[x]==r?'border-yellow-300 text-yellow-300':''}"><b style="color:${CC[r]}">${rankName(x,r)}</b> ${v[0]}</button>`).join('')}</div></div>`).join('');
+ else c=ok?K.map((x,i)=>{const r=S.b[x];return`<div class="border-2 p-2.5 text-left text-xs" style="border-color:${CC[r]}"><span class="text-[10px] text-neutral-300">${N[i]}</span><br><b style="color:${CC[r]}">${rankName(x,r)}</b>　${T[i][r][0]}</div>`}).join('')+(S.k==0?(S.rr>0?btn('rerollG()',`引き直す（残り${S.rr}回）`,'text-white'):'<div class="text-[10px] text-neutral-400 text-center">引き直し回数を使い切りました</div>'):''):btn('rollG()','運命の生まれガチャを回す（SSR 1%）','text-yellow-300 border-yellow-300 bg-[#111936]');
  if(ok){if(S.juku==null){S.juku=0;S.jb=JUKU[S.si][0][1]/150}c+=`<div class="border-t border-neutral-700 pt-2.5 text-left"><span class="text-[10px] text-neutral-300">塾・予備校を選ぶ（任意）</span><div class="grid grid-cols-2 gap-1.5 mt-1">${JUKU[S.si].map((j,i)=>`<button onclick="setJ(${i})" class="rpg-cmd p-2 min-h-[42px] text-left text-[11px] ${S.juku==i?'border-yellow-300 text-yellow-300 bg-[#141a33]':''}">${j[0]}</button>`).join('')}</div></div>`}
  if(X()&&S.k==0)c+=`<div class="border-t border-neutral-700 pt-2.5">${btn('resetCode()','秘密コードをリセット','text-red-400 border-red-400')}</div>`;
  if(!X()&&S.k==0)c+=`<div class="border-t border-neutral-700 pt-2.5 text-left flex items-center gap-1.5"><input id="secret-code" type="password" inputmode="numeric" placeholder="秘密コード" class="bg-[#08080c] border border-white px-2.5 py-1.5 text-xs text-white outline-none w-32 min-h-[38px]"> <button onclick="chkCode()" class="rpg-cmd text-xs px-3 py-1.5 min-h-[38px]">▶ 入力</button> <span id="code-msg" class="text-[10px] text-red-400"></span></div>`;
@@ -3615,7 +3870,7 @@ function renderSetupMockAndList(){
   const target=L[S.fi||0];
   const spec=getMockSpec(S);
   const pen=calcJumpPenalty(S,spec);
-  const list=MOCK_LIST[S.si];
+  const list=getMockList(S);
   const bTag=target[2]?.bunri&&target[2].bunri!=='共'?` [${target[2].bunri}]`:'';
 
   H('setup-mock-config-box').innerHTML=`
