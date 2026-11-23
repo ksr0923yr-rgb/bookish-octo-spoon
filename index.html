@@ -5,14 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <!-- 検索エンジンの検索結果に表示しない（アクセス制限ではありません） -->
   <meta name="robots" content="noindex, nofollow">
-  <title>受験ガチャ ― 小4から高校受験まで ―</title>
+  <title>受験ガチャ ― 小4から高校入学まで―</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <!-- Google Fonts: レトロRPGドットフォント DotGothic16 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Zen+Maru+Gothic:wght@400;500;700&family=Sorts+Mill+Goudy&display=swap" rel="stylesheet">
 
+  <script>try{var _d=document.documentElement,_g=function(k,ok,df){var v=localStorage.getItem(k);return ok.indexOf(v)<0?df:v};_d.setAttribute('data-layout',_g('jg_layout',['rpg','report'],'rpg'));_d.setAttribute('data-font',_g('jg_font',['dot','sans','maru','mincho','gothic7'],'dot'));_d.setAttribute('data-latin',_g('jg_latin',['off','century'],'off'));_d.setAttribute('data-zoom',_g('jg_zoom',['0','1','2'],'0'));_d.setAttribute('data-scr','other')}catch(e){var _d=document.documentElement;_d.setAttribute('data-layout','rpg');_d.setAttribute('data-font','dot');_d.setAttribute('data-latin','off');_d.setAttribute('data-zoom','0');_d.setAttribute('data-scr','other')}</script>
   <style>
     /* =================================================================
        8ビット レトロRPG（ファミコン／ドラクエ風）デザインシステム
@@ -194,7 +195,7 @@
     @keyframes jgtw{0%,100%{opacity:.25}50%{opacity:1}}
     .sprite{display:inline-block;vertical-align:middle;animation:jgbob .9s steps(2) infinite}
     .tw{display:inline-block;animation:jgtw 1.4s steps(3) infinite}
-    html{font-size:clamp(16px,4.6vw,18px)}
+    html{font-size:clamp(14px,3.8vw,15px)}
   
     /* 8ビット風ボリュームスライダー */
     input[type="range"].rpg-slider {
@@ -231,6 +232,193 @@
     .achievement-sparkle.cool{color:#bfdbfe;text-shadow:0 0 5px rgba(96,165,250,.9),0 0 12px rgba(96,165,250,.45)}
     .achievement-sparkle.rare{font-size:21px;color:#fef3c7;text-shadow:0 0 7px rgba(250,204,21,1),0 0 17px rgba(250,204,21,.7)}
     @keyframes achievementTwinkle{0%{opacity:0;transform:translate(-50%,-50%) scale(.35) rotate(-18deg)}28%{opacity:.95;transform:translate(-50%,-50%) scale(1.12) rotate(8deg)}62%{opacity:.75;transform:translate(-50%,-50%) scale(.82) rotate(0)}100%{opacity:0;transform:translate(-50%,-50%) scale(.45) rotate(20deg)}}
+
+/* ===== フォント（data-font / data-latin / data-zoom） ===== */
+@font-face{font-family:"JGLatin";font-weight:100 900;src:local("Century Old Style"),local("CenturyOldStyle"),local("Century Old Style Std"),local("CenturyOldst"),local("Century Old Style Std Regular"),local("Century Old Style MT");unicode-range:U+0020-007E,U+00A0-00FF,U+2018-201D}
+html[data-font="sans"]{--font:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","BIZ UDPGothic","Yu Gothic UI","Yu Gothic","Meiryo",system-ui,sans-serif}
+html[data-font="maru"]{--font:"Heisei Maru Gothic W4","HeiseiMaruGo-W4","平成丸ゴシック W4","Zen Maru Gothic","Hiragino Maru Gothic ProN","M PLUS Rounded 1c","Yu Gothic UI","Meiryo",sans-serif}
+html[data-font="mincho"]{--font:"Heisei Mincho W3","HeiseiMin-W3","平成明朝 W3","Hiragino Mincho ProN","Yu Mincho","YuMincho","Noto Serif JP","MS PMincho",serif}
+html[data-font="gothic7"]{--font:"Heisei Kaku Gothic W7","HeiseiKakuGo-W7","平成角ゴシック W7","Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP","Yu Gothic","Meiryo",sans-serif}
+html[data-layout]{--fsans:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","BIZ UDPGothic","Yu Gothic UI","Yu Gothic","Meiryo",system-ui,sans-serif}
+html:not([data-font="dot"]) *{font-family:var(--font)!important;letter-spacing:.01em}
+html[data-font="gothic7"] *{font-weight:400!important}
+html[data-latin="century"][data-font="dot"] *{font-family:"JGLatin","Sorts Mill Goudy","DotGothic16",monospace!important}
+html[data-latin="century"]:not([data-font="dot"]) *{font-family:"JGLatin","Sorts Mill Goudy",var(--font)!important}
+html[data-zoom="1"]{zoom:1.12}
+html[data-zoom="2"]{zoom:1.25}
+/* ===== 操作性：タップしやすく ===== */
+#command-panel .rpg-cmd{min-height:40px!important}
+.rpg-cmd.w-8.h-8{width:42px!important;height:42px!important}
+/* ===== 常時表示の操作バー ===== */
+#jg-bar{position:fixed;left:0;right:0;bottom:0;z-index:35;display:flex;justify-content:center;padding:14px 10px calc(8px + env(safe-area-inset-bottom,0px));background:linear-gradient(rgba(0,0,0,0),var(--bg,#08080c) 42%);pointer-events:none}
+#jg-bar>div{pointer-events:auto;display:flex;gap:8px;width:100%;max-width:540px}
+#jg-bar .rpg-cmd{min-height:48px;background-color:var(--bg,#08080c)!important}
+#jg-next{flex:1;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+html.jg-bar-on body{padding-bottom:calc(86px + env(safe-area-inset-bottom,0px))}
+/* ===== レイアウト：模試 成績個人票風（ゲーム画面のみ） ===== */
+html[data-layout="report"][data-scr="game"]{--bg:#fff;--panel:#fff;--panel2:#e0f2fe;--text:#111;--sub:#111;--line:#38bdf8;--line2:#38bdf8;--acc:#38bdf8;--lime:#84cc16}
+html[data-layout="report"][data-scr="game"],
+html[data-layout="report"][data-scr="game"] body{background-color:var(--bg)!important;color:var(--text)}
+html[data-layout="report"][data-scr="game"] body::before{background:var(--bg)!important}
+html[data-layout="report"][data-scr="game"] .rpg-shell{background-color:var(--bg)!important;border-color:var(--line)!important}
+html[data-layout="report"][data-scr="game"] #hud-head-box{display:none!important}
+html[data-layout="report"][data-scr="game"] .rpg-window{background-color:#fff!important;border:1px solid var(--line2)!important;border-top:3px solid var(--acc)!important;border-radius:2px!important;box-shadow:none!important}
+html[data-layout="report"][data-scr="game"] .rpg-window-gold, html[data-layout="report"][data-scr="game"] .rpg-window-warn{background-color:#fff!important;border:1px solid #84cc16!important;border-top:3px solid #84cc16!important;border-radius:2px!important;box-shadow:none!important}
+html[data-layout="report"][data-scr="game"] .rpg-window-danger{background-color:#fff!important;border:1px solid #38bdf8!important;border-top:3px solid #38bdf8!important;border-radius:2px!important;box-shadow:none!important}
+html[data-layout="report"][data-scr="game"] .rpg-cmd{background-color:#fff!important;color:#111!important;border:1px solid var(--line2);border-radius:3px!important;box-shadow:0 1px 0 rgba(0,0,0,.08);transition:background-color .12s,border-color .12s}
+html[data-layout="report"][data-scr="game"] .rpg-cmd:hover:not(:disabled), html[data-layout="report"][data-scr="game"] .rpg-cmd:focus-visible:not(:disabled){background-color:#e0f2fe!important;border-color:var(--acc)}
+html[data-layout="report"][data-scr="game"] .rpg-cmd:active:not(:disabled){transform:translateY(1px);background-color:#84cc16!important;border-color:var(--acc)}
+html[data-layout="report"][data-scr="game"] .cursor-arrow, html[data-layout="report"][data-scr="game"] .always-blink{color:var(--acc)}
+html[data-layout="report"][data-scr="game"] .border-double{border-style:solid!important;border-width:1px!important}
+html[data-layout="report"][data-scr="game"] header{background-color:#fff!important;border-color:#38bdf8!important;color:#111!important}
+html[data-layout="report"][data-scr="game"] header [class][class], html[data-layout="report"][data-scr="game"] header [class][class] *{color:#111!important}
+html[data-layout="report"][data-scr="game"] header .rpg-cmd[class][class]{background-color:#fff!important;border-color:#38bdf8!important}
+html[data-layout="report"][data-scr="game"] ::-webkit-scrollbar-track{background:var(--bg)}
+html[data-layout="report"][data-scr="game"] .text-\[9px\]{font-size:10px!important;line-height:1.4}
+html[data-layout="report"][data-scr="game"] .text-\[10px\]{font-size:11px!important;line-height:1.4}
+html[data-layout="report"][data-scr="game"] .text-\[11px\]{font-size:12px!important;line-height:1.4}
+html[data-layout="report"][data-scr="game"] .text-xs{font-size:12px!important;line-height:1.4}
+html[data-layout="report"][data-scr="game"] .text-sm{font-size:13px!important;line-height:1.4}
+html[data-layout="report"][data-scr="game"] header .rpg-cmd{font-size:12px!important}
+html[data-layout="report"][data-scr="game"] [class*="text-white"]{color:var(--text)!important}
+html[data-layout="report"][data-scr="game"] [class*="text-neutral-200"]{color:var(--text)!important}
+html[data-layout="report"][data-scr="game"] [class*="text-neutral-300"]{color:var(--sub)!important}
+html[data-layout="report"][data-scr="game"] [class*="text-neutral-400"]{color:var(--sub)!important}
+html[data-layout="report"][data-scr="game"] [class*="text-yellow-300"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [class*="text-yellow-200"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [class*="text-amber-300"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [class*="text-amber-200"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [class*="text-sky-300"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [class*="text-emerald-300"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [class*="text-emerald-200"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [class*="text-red-400"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [class*="text-red-300"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [class*="text-purple-300"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [class*="text-pink-300"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [class*="text-orange-400"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [class*="text-orange-300"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [class*="border-white"]{border-color:var(--line2)!important}
+html[data-layout="report"][data-scr="game"] [class*="border-neutral-800"]{border-color:var(--line)!important}
+html[data-layout="report"][data-scr="game"] [class*="border-neutral-700"]{border-color:var(--line)!important}
+html[data-layout="report"][data-scr="game"] [class*="border-neutral-600"]{border-color:var(--line2)!important}
+html[data-layout="report"][data-scr="game"] [class*="border-neutral-500"]{border-color:var(--line2)!important}
+html[data-layout="report"][data-scr="game"] [class*="border-yellow-300"]{border-color:#c99a00!important}
+html[data-layout="report"][data-scr="game"] [class*="border-amber-300"]{border-color:#d97706!important}
+html[data-layout="report"][data-scr="game"] [class*="border-sky-300"]{border-color:#2b7bc4!important}
+html[data-layout="report"][data-scr="game"] [class*="border-sky-400"]{border-color:#2b7bc4!important}
+html[data-layout="report"][data-scr="game"] [class*="border-emerald-300"]{border-color:#1f9b6b!important}
+html[data-layout="report"][data-scr="game"] [class*="border-emerald-900"]{border-color:#9ad9bd!important}
+html[data-layout="report"][data-scr="game"] [class*="border-red-400"]{border-color:#dc2626!important}
+html[data-layout="report"][data-scr="game"] [class*="border-orange-400"]{border-color:#ea580c!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#08080c\]{background-color:#fff!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#0c0c14\]{background-color:#fff!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#050508\]{background-color:#fff!important}
+html[data-layout="report"][data-scr="game"] .bg-neutral-900{background-color:#fff!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#141a33\]{background-color:#e0f2fe!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#111936\]{background-color:#e0f2fe!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#0b162c\]{background-color:#e0f2fe!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#0a1026\]{background-color:#e0f2fe!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#08121c\]{background-color:#e0f2fe!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#120e02\]{background-color:#84cc16!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#171202\]{background-color:#84cc16!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#100c02\]{background-color:#84cc16!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#1a1303\]{background-color:#84cc16!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#141103\]{background-color:#84cc16!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#141002\]{background-color:#84cc16!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#071a12\]{background-color:#84cc16!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#07140e\]{background-color:#84cc16!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#160608\]{background-color:#e0f2fe!important}
+html[data-layout="report"][data-scr="game"] .bg-\[\#160406\]{background-color:#e0f2fe!important}
+html[data-layout="report"][data-scr="game"] [class*="bg-black/9"]{background-color:rgba(0,0,0,.08)!important}
+html[data-layout="report"][data-scr="game"] [style*="color:#facc15"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [style*="color:#c084fc"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [style*="color:#38bdf8"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [style*="color:#a3a3a3"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] [style*="color:#f43f5e"]{color:#111!important}
+html[data-layout="report"][data-scr="game"] .rpg-slider{background:#fff!important;border-color:var(--line2)!important}
+html[data-layout="report"][data-scr="game"][data-font="dot"] *{font-family:var(--fsans)!important;letter-spacing:.01em}
+html[data-layout="report"][data-scr="game"][data-font="dot"][data-latin="century"] *{font-family:"JGLatin","Sorts Mill Goudy",var(--fsans)!important}
+
+#jg-report{background:#fff;border:1px solid #7f97c0;margin-bottom:2px;color:#16233b;font-size:12px;line-height:1.45}
+#jg-report .kw-head{background:linear-gradient(#2c62b8,#1c4590);color:#fff;padding:7px 10px;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+#jg-report .kw-title{font-weight:700;font-size:16px;letter-spacing:.14em}
+#jg-report .kw-meta{font-size:11px;opacity:.92;text-align:right}
+#jg-report table.kw-table{width:100%;border-collapse:collapse;font-size:12px}
+#jg-report .kw-table th,#jg-report .kw-table td{border:1px solid #9db0d3;padding:4px 6px;text-align:center;color:#16233b}
+#jg-report .kw-table th{background:#dfe9f8;color:#1c3f7c;font-weight:700;white-space:nowrap}
+#jg-report .kw-table td.l{text-align:left}
+#jg-report .kw-table td.b{font-weight:700;font-size:14px;color:#1c3f7c}
+#jg-report .kw-table td.up{color:#1b8a4b;font-weight:700}
+#jg-report .kw-table td.dn{color:#c62828;font-weight:700}
+#jg-report small{font-size:10px;color:#5b6a8a}
+#jg-report .kw-sum{display:grid;grid-template-columns:repeat(3,1fr)}
+#jg-report .kw-cell{border:1px solid #9db0d3;border-top:0;padding:4px 6px;text-align:center}
+#jg-report .kw-cap{font-size:10px;color:#45557a;background:#eef3fb;margin:-4px -6px 3px;padding:2px 0;border-bottom:1px solid #c9d6ec}
+#jg-report .kw-big{font-size:20px;font-weight:700;color:#1c3f7c;line-height:1.2}
+#jg-report .kw-sub{font-size:10px;color:#5b6a8a}
+#jg-report .kw-mock{padding:4px 8px;background:#f6f9fe;border:1px solid #9db0d3;border-top:0;font-size:11px;color:#45557a}
+#jg-report .kw-judge{display:grid;grid-template-columns:auto repeat(5,1fr);border:1px solid #9db0d3;border-top:0}
+#jg-report .kw-judge>div{padding:3px 2px;text-align:center;border-left:1px solid #c9d6ec;color:#6b7a99}
+#jg-report .kw-judge>div:first-child{border-left:0;background:#dfe9f8;color:#1c3f7c;font-weight:700;padding:3px 8px;display:flex;align-items:center}
+#jg-report .kw-judge b{display:block;font-size:15px;line-height:1.2}
+#jg-report .kw-judge span{font-size:9px}
+#jg-report .kw-judge .on{color:#fff}
+#jg-report .kw-comment{padding:5px 8px;font-size:11px;color:#16233b;border:1px solid #9db0d3;border-top:0;background:#fffdf3}
+#jg-report .kw-tg{display:block;width:100%;padding:8px;border:1px solid #9db0d3;border-top:0;background:#eef3fb;color:#1c3f7c;font-weight:700;font-size:12px;text-align:center;cursor:pointer}
+#jg-report .kw-sec{background:#dfe9f8;color:#1c3f7c;font-weight:700;padding:3px 8px;border:1px solid #9db0d3;border-top:0;font-size:11px}
+#jg-report .kw-bars{padding:6px 8px;border:1px solid #9db0d3;border-top:0}
+#jg-report .kw-bar{display:grid;grid-template-columns:3.2em 1fr 3em;gap:6px;align-items:center;margin:3px 0}
+#jg-report .kw-bar span{font-size:11px;color:#16233b}
+#jg-report .kw-bar em{font-style:normal;font-weight:700;text-align:right;color:#1c3f7c}
+#jg-report .kw-track{position:relative;height:10px;background:#e7edf7;border:1px solid #b9c7de}
+#jg-report .kw-track i{position:absolute;left:0;top:0;bottom:0;background:#3b78cf}
+#jg-report .kw-track b{position:absolute;top:-2px;bottom:-2px;width:0;border-left:1px dashed #c62828}
+#jg-report svg{display:block;width:100%;height:auto;border:1px solid #9db0d3;border-top:0;background:#fff}
+#jg-report .kw-note{padding:4px 8px;font-size:10px;color:#5b6a8a;border:1px solid #9db0d3;border-top:0}
+/* 白基調：黒・白・水色・黄緑色だけで統一 */
+html[data-layout="report"][data-scr="game"] [class*="bg-sky-"]{background-color:#38bdf8!important}
+html[data-layout="report"][data-scr="game"] [class*="bg-emerald-"],html[data-layout="report"][data-scr="game"] [class*="bg-lime-"],html[data-layout="report"][data-scr="game"] [class*="bg-yellow-"],html[data-layout="report"][data-scr="game"] [class*="bg-amber-"]{background-color:#84cc16!important}
+html[data-layout="report"][data-scr="game"] [class*="bg-purple-"],html[data-layout="report"][data-scr="game"] [class*="bg-red-"],html[data-layout="report"][data-scr="game"] [class*="bg-orange-"],html[data-layout="report"][data-scr="game"] [class*="bg-pink-"]{background-color:#e0f2fe!important}
+html[data-layout="report"][data-scr="game"] [class*="border-sky-"],html[data-layout="report"][data-scr="game"] [class*="border-blue-"]{border-color:#38bdf8!important}
+html[data-layout="report"][data-scr="game"] [class*="border-emerald-"],html[data-layout="report"][data-scr="game"] [class*="border-lime-"],html[data-layout="report"][data-scr="game"] [class*="border-yellow-"],html[data-layout="report"][data-scr="game"] [class*="border-amber-"]{border-color:#84cc16!important}
+html[data-layout="report"][data-scr="game"] [class*="border-red-"],html[data-layout="report"][data-scr="game"] [class*="border-purple-"],html[data-layout="report"][data-scr="game"] [class*="border-pink-"],html[data-layout="report"][data-scr="game"] [class*="border-orange-"]{border-color:#38bdf8!important}
+html[data-layout="report"][data-scr="game"] [class*="bg-black/9"]{background-color:rgba(0,0,0,.08)!important}
+#jg-report{border-color:#38bdf8;color:#111;background:#fff}
+#jg-report{font-size:11px;line-height:1.35}
+#jg-report .kw-title{font-size:14px}
+#jg-report .kw-table{font-size:11px}
+#jg-report .kw-table td.b{font-size:13px}
+#jg-report .kw-big{font-size:18px}
+#jg-report .kw-judge b{font-size:14px}
+#jg-report .kw-tg{font-size:11px;padding:7px}
+#jg-report .kw-head{background:#38bdf8;color:#111}
+#jg-report .kw-head *{color:#111}
+#jg-report .kw-meta,#jg-report small{color:#111}
+#jg-report .kw-table th,#jg-report .kw-table td{border-color:#38bdf8;color:#111}
+#jg-report .kw-table th{background:#e0f2fe;color:#111}
+#jg-report .kw-table td.b,#jg-report .kw-table td.up,#jg-report .kw-table td.dn{color:#111}
+#jg-report .kw-cap,#jg-report .kw-sec{background:#84cc16;color:#111;border-color:#84cc16}
+#jg-report .kw-big,#jg-report .kw-sub{color:#111}
+#jg-report .kw-mock,#jg-report .kw-comment,#jg-report .kw-note{background:#fff;color:#111;border-color:#38bdf8}
+#jg-report .kw-judge{border-color:#38bdf8}
+#jg-report .kw-judge>div{border-color:#38bdf8;color:#111}
+#jg-report .kw-judge>div:first-child{background:#e0f2fe;color:#111}
+#jg-report .kw-judge .on{color:#111!important}
+#jg-report .kw-bars{background:#fff;border-color:#38bdf8}
+#jg-report .kw-bar span,#jg-report .kw-bar em{color:#111}
+#jg-report .kw-track{background:#fff;border-color:#38bdf8}
+#jg-report .kw-track i{background:#84cc16}
+#jg-report .kw-track b{border-left-color:#111}
+#jg-report svg{background:#fff;border-color:#38bdf8}
+#jg-report .kw-tg{background:#e0f2fe;color:#111;border-color:#38bdf8}
+
+#command-panel button[onclick="nx()"]{display:none}
+#modal-say{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center;padding:12px 12px calc(12px + env(safe-area-inset-bottom,0px));background:rgba(0,0,0,.35)}
+#modal-say.hidden{display:none}
+#say-box{width:100%;max-width:540px;min-height:140px;padding:12px 16px;background:var(--bg,#08080c);color:var(--text,#fff);border:4px double var(--acc,#facc15);position:relative}
+#say-title{font-size:11px;opacity:.7;margin-bottom:6px}
+#say-text{font-size:14px;line-height:1.7;white-space:pre-wrap;min-height:76px}
+#say-next{position:absolute;right:12px;bottom:6px;visibility:hidden;animation:cursorBlink .65s infinite;color:var(--acc,#facc15)}
 </style>
 </head>
 <body>
@@ -246,11 +434,16 @@
         <span class="text-yellow-300 text-base">⚔️</span>
         <div>
           <h1 class="text-sm sm:text-base font-bold text-white leading-none">受験ガチャ</h1>
-          <p id="header-subtitle" class="text-[10px] text-neutral-300 mt-1">― 小4から高校受験まで ―</p>
+          <p id="header-subtitle" class="text-[10px] text-neutral-300 mt-1">― 小4から高校入学まで―</p>
         </div>
       </button>
 
       <div class="flex items-center gap-1 justify-end min-w-0">
+        <button onclick="jgOpenTheme()"
+          class="rpg-cmd text-[11px] sm:text-xs px-2 py-1.5 min-h-[38px] text-white shrink-0"
+          aria-label="表示・操作設定" title="レイアウト・フォント・文字サイズ・難易度">
+          🎨
+        </button>
         <!-- サウンドクイック切替＆音量設定 -->
         <button id="btn-sound-toggle" onclick="RetroAudio.toggleMute()"
           class="rpg-cmd text-[11px] sm:text-xs px-2 py-1.5 min-h-[38px] text-emerald-300 border-emerald-300 shrink-0"
@@ -283,7 +476,7 @@
           </button>
           <button onclick="openModal('modal-target')"
             class="rpg-cmd text-[11px] sm:text-xs px-2 py-1.5 min-h-[38px] text-sky-300 border-sky-300">
-            志望
+            進路
           </button>
           <button onclick="openModal('modal-guide')"
             class="rpg-cmd text-[11px] sm:text-xs px-2 py-1.5 min-h-[38px] text-neutral-200" aria-label="ルール説明">
@@ -306,7 +499,7 @@
           <h2 class="text-2xl sm:text-3xl font-bold text-yellow-300 tracking-wider leading-snug">
             受験ガチャ
           </h2>
-          <p class="text-xs sm:text-sm text-white mt-1">― 小4から高校受験まで ―</p>
+          <p class="text-xs sm:text-sm text-white mt-1">― 小4から高校入学まで―</p>
         </div>
 
         <p class="text-xs text-neutral-200 leading-relaxed border-t border-b border-neutral-700 py-2.5">
@@ -410,7 +603,7 @@
       <!-- 3. 志望校（学部・学科）＆受ける模試の設定ウィンドウ -->
       <div id="setup-uni-selector-box" class="rpg-window p-3 space-y-2.5">
         <div class="flex items-center justify-between">
-          <span class="text-xs text-yellow-300">▶ 第一志望（学部・学科）＆模試設定</span>
+          <span class="text-xs text-yellow-300">▶ 第一志望校＆模試設定</span>
           <span id="setup-uni-count-badge" class="text-[11px] text-neutral-300"></span>
         </div>
 
@@ -421,7 +614,7 @@
         <div id="setup-search-wrap" class="hidden space-y-1.5">
           <input id="setup-search-input" type="text" oninput="renderSetupMockAndList()"
             class="w-full bg-[#08080c] border border-white focus:border-yellow-300 px-3 py-2 text-xs text-white outline-none min-h-[40px]"
-            placeholder="🔍 学校名で検索（例：開成、灘、日比谷...）">
+            placeholder="🔍 志望校を検索（例：開成、灘、日比谷...）">
           <div id="setup-filter-bar" class="flex flex-wrap gap-1"></div>
         </div>
 
@@ -445,7 +638,7 @@
          ================================================================= -->
     <section id="screen-game" class="hidden flex-1 px-3 pt-2.5 pb-6 space-y-2.5">
       <!-- コンパクトヘッダーバー（年月・文理バッジ・残りターン・平均偏差値＆直近模試偏差値・判定） -->
-      <div class="rpg-window px-2.5 py-2 space-y-1.5">
+      <div id="hud-head-box" class="rpg-window px-2.5 py-2 space-y-1.5">
         <div class="flex items-center justify-between gap-1.5">
           <div class="flex items-center gap-1.5 min-w-0">
             <span id="game-chapter-title" class="text-[10px] text-yellow-300 shrink-0">中学受験編</span>
@@ -462,14 +655,14 @@
         <!-- 平均偏差値 ＆ 直近模試偏差値 デュアル表示バー -->
         <div class="grid grid-cols-2 gap-1.5 border-t border-neutral-700 pt-1.5">
           <div class="bg-[#0c0c14] border border-neutral-700 px-2 py-1">
-            <div class="text-[10px] text-neutral-300">平均偏差値（累積）</div>
+            <div class="text-[10px] text-neutral-300">模試間補正・学力指数</div>
             <div class="flex items-baseline gap-1">
               <span id="hud-dev" class="text-base font-bold text-yellow-300">未受験</span>
               <span id="hud-dev-diff" class="text-[10px] text-neutral-400 truncate"></span>
             </div>
           </div>
           <div class="bg-[#0c0c14] border border-neutral-700 px-2 py-1">
-            <div class="text-[10px] text-neutral-300">直近模試偏差値</div>
+            <div class="text-[10px] text-neutral-300">直近の模試偏差値</div>
             <div class="flex items-baseline gap-1">
               <span id="hud-last-dev" class="text-base font-bold text-sky-300">未受験</span>
               <span id="hud-last-diff" class="text-[10px] text-neutral-400 truncate"></span>
@@ -531,23 +724,11 @@
 
           <!-- 第一志望＆現在の模試設定バー -->
           <div class="text-[11px] space-y-1.5 bg-[#0c0c14] border border-neutral-700 p-2">
-            <div class="flex items-center justify-between gap-2">
-              <span id="hud-target-uni" class="text-yellow-300 font-bold truncate">第一志望：---</span>
-              <div class="flex items-center gap-1 shrink-0">
-                <button id="btn-hud-target" onclick="openModal('modal-target')" class="rpg-cmd text-[11px] px-2 py-1 min-h-[32px] text-sky-300 border-sky-300 shrink-0">
-                  志望校変更
-                </button>
-                <button id="btn-hs-exam-toggle" onclick="toggleHighSchoolExam(S&&S.ex===false)" class="hidden rpg-cmd text-[11px] px-2 py-1 min-h-[32px] text-red-400 border-red-400 shrink-0">
-                  やっぱり辞める
-                </button>
-              </div>
-            </div>
-            <div class="flex items-center justify-between gap-2">
-              <span id="hud-mock-info" class="text-amber-200 truncate">模試：---</span>
-              <button onclick="openModal('modal-target')" class="rpg-cmd text-[11px] px-2 py-1 min-h-[32px] text-amber-300 border-amber-300 shrink-0">
-                模試/飛び級
-              </button>
-            </div>
+            <div id="hud-target-uni" class="text-yellow-300 font-bold truncate">第一志望：---</div>
+            <div id="hud-mock-info" class="text-amber-200 truncate">次回模試：---</div>
+            <button id="btn-hud-target" onclick="openModal('modal-target')" class="rpg-cmd w-full text-xs px-2.5 py-2 min-h-[42px] text-sky-300 border-sky-300">
+              ▶ 進路・模試設定を開く
+            </button>
           </div>
         </div>
       </div>
@@ -574,7 +755,7 @@
     </section>
 
     <!-- =================================================================
-         画面4: 共通テスト・出願・二次試験・合格発表画面 (EXAM SCREEN)
+         画面4: 中学・高校の出願・合格発表画面 (EXAM SCREEN)
          ================================================================= -->
     <section id="screen-exam" class="hidden flex-1 px-3 pt-3 pb-24 space-y-3">
       <div class="rpg-window-danger p-3 text-center space-y-1">
@@ -582,10 +763,10 @@
         <h2 id="exam-boss-header" class="text-base sm:text-lg font-bold text-white">出願・合格発表</h2>
       </div>
 
-      <!-- 共通テスト自己採点 / 出願選択ボックス -->
+      <!-- 出願選択ボックス -->
       <div id="kyotsu-battle-box" class="rpg-window p-3 text-xs space-y-2.5"></div>
 
-      <!-- 2月共テ利用速報 ＆ 二次試験（個別試験）バトルアリーナ -->
+      <!-- 入学試験の結果表示エリア -->
       <div id="boss-battle-arena" class="hidden space-y-3 animate-retro-pop"></div>
 
       <!-- 最終合格発表掲示板 -->
@@ -658,6 +839,7 @@
     <!-- =================================================================
          通知メッセージウィンドウ
          ================================================================= -->
+    <div id="modal-say" class="hidden" onclick="jgSayTap()"><div id="say-box"><div id="say-title"></div><div id="say-text"></div><span id="say-next">▼</span></div></div>
     <div id="toast-notification" class="fixed top-14 left-1/2 -translate-x-1/2 z-50 hidden rpg-window-gold px-4 py-2.5 text-xs font-bold text-yellow-300 whitespace-nowrap shadow-lg">
       ＊ コピーしました！
     </div>
@@ -704,7 +886,7 @@
     <div id="modal-target" class="fixed inset-0 z-50 hidden bg-black/90 flex items-center justify-center p-3">
       <div class="rpg-window w-full max-w-md max-h-[86vh] flex flex-col overflow-hidden">
         <div class="p-3 border-b-4 border-double border-white flex items-center justify-between bg-[#08080c]">
-          <h3 class="text-sm font-bold text-sky-300">▼ 模試（飛び級可）＆志望校設定</h3>
+          <h3 class="text-sm font-bold text-sky-300">▼ 進路・模試設定</h3>
           <button onclick="closeModal('modal-target')" class="rpg-cmd text-xs px-3 py-1.5 min-h-[38px] text-white shrink-0">
             ▶ 閉じる
           </button>
@@ -746,6 +928,18 @@
     <!-- =================================================================
          モーダル6: サウンド設定（ゆるめBGM・8ビット効果音）
          ================================================================= -->
+    <div id="modal-theme" class="fixed inset-0 z-50 hidden bg-black/90 flex items-center justify-center p-3">
+      <div class="rpg-window w-full max-w-md max-h-[86vh] flex flex-col overflow-hidden">
+        <div class="p-3 border-b-4 border-double border-white flex items-center justify-between bg-[#08080c]">
+          <h3 class="text-sm font-bold text-yellow-300">▼ 表示・操作設定</h3>
+          <button onclick="closeModal('modal-theme')" class="rpg-cmd text-xs px-3 py-1.5 min-h-[38px] text-white shrink-0">
+            ▶ 閉じる
+          </button>
+        </div>
+        <div id="theme-list" class="p-3 overflow-y-auto space-y-2 text-xs text-white"></div>
+      </div>
+    </div>
+
     <div id="modal-sound" class="fixed inset-0 z-50 hidden bg-black/90 flex items-center justify-center p-3">
       <div class="rpg-window w-full max-w-md max-h-[86vh] flex flex-col overflow-hidden">
         <div class="p-3 border-b-4 border-double border-white flex items-center justify-between bg-[#08080c]">
@@ -1416,12 +1610,12 @@ const rankName=(key,r)=>key==='k'&&r===4?'神脳（理系）':key==='k'&&r===5?'
    ================================================================= */
 const FAM=[['教育一家の超裕福な家',4],['裕福で教育熱心な家',2.5],['ごく普通の家庭',0],['経済的にきびしい家',-2],['両親が東大卒の家',6]];
 const TWN=[['教育環境トップの都心',3],['塾も学校も充実した街',1.5],['ふつうの地方都市',0],['塾が遠い田舎',-2],['日本屈指の環境都市',4.5]];
-const TAL=[['神童レベルの地頭',1.75,13.5],['覚えが早い',1.35,6.5],['ふつうの吸収力',1.0,0],['ゆっくり型',0.8,-3.5],['算数オリンピック金レベル（理系科目が伸びる）',2,26,'sci'],['言語学オリンピック金レベル（文系科目が伸びる）',2,26,'lang']];
+const TAL=[['神童レベルの地頭',1.75,13.5],['覚えが早い',1.35,6.5],['ふつうの吸収力',1.0,0],['ゆっくり型',0.8,-3.5],['数理センスが突出（理系科目が伸びる）',2,26,'sci'],['言語センスが突出（文系科目が伸びる）',2,26,'lang']];
 const AFF={sci:['math','sci','info'],lang:['eng','jpn','soc']};
-const AMAX=S=>S.b&&S.b.k>=4?100:82;
+const AMAX=S=>100;
 const affMul=(S,k)=>{const a=TAL[S.b.k][3],q=S.sk?(S.sk.s===k?1.3:S.sk.w===k?.8:1):1;return q*(a?(AFF[a].includes(k)?1.35:.95):1)};
 const roll=(r,k)=>r<.001?(k==='k'?(r<.0005?4:5):4):r<.01?0:r<.15?1:r<.5?2:3;
-const bd=b=>50+FAM[b.f][1]+TWN[b.t][1]+TAL[b.k][2],st0=(b,si)=>({a:bd(b)-(si==2?5:2),p:bd(b)});
+const bd=b=>50+FAM[b.f][1]+TWN[b.t][1]+TAL[b.k][2],st0=b=>({a:bd(b)-2,p:bd(b)});
 
 /* =================================================================
    2. 全61大学・552学部・学科データベース（偏差値目安・国公立/私立・文理区分）
@@ -1444,47 +1638,19 @@ function applySex(sx){sx=sx==='f'?'f':'m';if(SXA===sx)return;SXA=sx;PSX=sx;SCH.f
 applySex('m');
 const PZ0=3.4; /* 目安偏差値＝合格可能性80%ライン → 合格率の中心を目安-3.4に */
 
-function getUniMeta(item){
-  const dev=item[1];
-  const meta=item[2]||{isNat:false,bunri:'共'};
-  if(meta.isNat){
-    const ktBorderPct=Math.min(92,Math.max(58,Math.round(64+(dev-48)*1.12)));
-    const secRatio=dev>=65?80:dev>=60?65:dev>=56?50:40;
-    return{isNat:true,ktBorderPct,ashikiriPct:ktBorderPct-9,secRatio,hasKoki:dev<=63,bunri:meta.bunri};
-  }else{
-    const kyoteBorderPct=Math.min(94,Math.max(60,Math.round(68+(dev-48)*1.28)));
-    return{isNat:false,kyoteBorderPct,bunri:meta.bunri};
-  }
-}
 
 const ED={full:['小4から通し人生','中学受験→高校受験',[0,1]],c:['中学受験編','小4〜小6',[0]],h:['高校受験編','中1〜中3',[1]]};
-const JUKU=[[['SAPIX',10],['四谷大塚',8],['日能研',7],['早稲田アカデミー',8],['浜学園・希学園',8],['個別指導・自宅学習',0]],[['早稲田アカデミー',8],['市進学院',6],['栄光ゼミナール',6],['臨海セミナー',5],['ena',5],['馬渕教室',7],['佐鳴予備校',6],['秀英予備校',6],['独学・通信',0]],[['河合塾',8],['駿台予備学校',9],['東進ハイスクール',7],['代々木ゼミナール',6],['Z会',7],['鉄緑会',10],['武田塾・個別指導',5],['宅浪・独学',0]]];
+const JUKU=[[['SAPIX',10],['四谷大塚',8],['日能研',7],['早稲田アカデミー',8],['浜学園・希学園',8],['個別指導・自宅学習',0]],[['早稲田アカデミー',8],['市進学院',6],['栄光ゼミナール',6],['臨海セミナー',5],['ena',5],['馬渕教室',7],['佐鳴予備校',6],['秀英予備校',6],['独学・通信',0]]];
 
 /* =================================================================
    3. 教科カリキュラム＆週間勉強時間（1時間単位）システム
    ================================================================= */
-/* 科目選択：[名前,学習時間の重み,伸びやすさ,説明]（共通テスト新課程の選択科目に基づく） */
-const ELEC={
- bun:{
-  soc:[['日本史',1.25,1,'暗記量が多く時間が必要。私大文系で人気。'],['世界史',1.3,1,'範囲が最も広く時間がかかる。得点源にすれば強い。'],['地理',1,1.05,'理系的な思考も使い、共通テストで取り組みやすい。'],['政治・経済',.8,1.1,'範囲がせまく短期間で仕上げやすい。']],
-  sci:[['物理基礎・化学基礎',1,1,'計算が多め。基礎2科目で受験する。'],['化学基礎・生物基礎',.9,1.05,'暗記中心で仕上げやすい定番の組み合わせ。'],['生物基礎・地学基礎',.8,1.1,'範囲が小さく短時間で得点しやすい。']]
- },
- ri:{
-  sci:[['物理・化学',1.1,1.05,'旧帝大・工学部・医学部で最も一般的。伸びれば強い。'],['化学・生物',1.15,1,'医歯薬・農・生命系に多い。暗記量が多い。'],['物理・生物',1.1,1,'組み合わせは大学によって不可の場合あり。'],['生物・地学',.95,1.1,'負担は軽いが受験できる大学が限られる。']],
-  soc:[['地理',.9,1.05,'理系でも選びやすい。'],['日本史',1,1,'暗記量が多め。'],['世界史',1.05,1,'範囲が広い。'],['公共・政治経済',.7,1.1,'最小の負担で済ませたい人向け。']]
- }
-};
-const elecNext=S=>{if(!S.bunri)return null;const o=S.bunri==='bun'?['soc','sci']:['sci','soc'],e=S.elec||{};return e[o[0]]==null?o[0]:e[o[1]]==null?o[1]:null};
-const elecMul=(S,k)=>{const i=S.elec&&S.elec[k];return i==null||!S.bunri?1:ELEC[S.bunri][k][i][2]};
-function elecWrap(S,r){if(!S.elec||!S.bunri)return r;const o=r.map(c=>{const i=S.elec[c.key],e=i!=null&&ELEC[S.bunri][c.key]&&ELEC[S.bunri][c.key][i];return e?{...c,name:c.name.replace(/（.*/,'')+'（'+e[0]+'）',w:c.w*e[1]}:c});const sw=o.reduce((a,c)=>a+c.w,0);return o.map(c=>({...c,w:c.w/sw}))}
-const BASE_WEEK_HRS=[18,20,24];
+const BASE_WEEK_HRS=[18,20];
 const PACE_WEEK_PRESETS=[
-  [10,18,28,38], // 中学受験: ゆるめ10h, ふつう18h, しっかり28h, 限界まで38h
-  [12,20,30,42], // 高校受験: ゆるめ12h, ふつう20h, しっかり30h, 限界まで42h
-  [14,24,36,48]  // 大学受験: ゆるめ14h, ふつう24h, しっかり36h, 限界まで48h
+  [10,18,28,38], // 中学受験
+  [12,20,30,42]  // 高校受験
 ];
-
-function getCurriculum(S){return elecWrap(S,getCur0(S))}
+function getCurriculum(S){return getCur0(S)}
 function getCur0(S){
   if(S.si===0){
     return[
@@ -1494,44 +1660,12 @@ function getCur0(S){
       {key:'soc',name:'社会',short:'社',w:0.17,maxPts:100}
     ];
   }
-  if(S.si===1){
-    return[
-      {key:'eng',name:'英語',short:'英',w:0.25,maxPts:100},
-      {key:'math',name:'数学',short:'数',w:0.25,maxPts:100},
-      {key:'jpn',name:'国語',short:'国',w:0.20,maxPts:100},
-      {key:'sci',name:'理科',short:'理',w:0.15,maxPts:100},
-      {key:'soc',name:'社会',short:'社',w:0.15,maxPts:100}
-    ];
-  }
-  // 大学受験 (si === 2)
-  if(S.bunri==='bun'){
-    return[
-      {key:'eng',name:'英語',short:'英',w:0.29,maxPts:200},
-      {key:'jpn',name:'国語',short:'国',w:0.23,maxPts:200},
-      {key:'soc',name:'地歴公民',short:'地歴',w:0.22,maxPts:100},
-      {key:'math',name:'数学',short:'数',w:0.14,maxPts:200},
-      {key:'sci',name:'理科基礎',short:'理基',w:0.06,maxPts:100},
-      {key:'info',name:'情報',short:'情報',w:0.06,maxPts:100}
-    ];
-  }
-  if(S.bunri==='ri'){
-    return[
-      {key:'eng',name:'英語',short:'英',w:0.27,maxPts:200},
-      {key:'math',name:'数学',short:'数',w:0.30,maxPts:200},
-      {key:'sci',name:'理科',short:'理',w:0.24,maxPts:200},
-      {key:'jpn',name:'国語',short:'国',w:0.09,maxPts:200},
-      {key:'soc',name:'地歴基礎',short:'地基',w:0.05,maxPts:100},
-      {key:'info',name:'情報',short:'情報',w:0.05,maxPts:100}
-    ];
-  }
-  // 高1 4月〜10月（文理選択前）
   return[
-    {key:'eng',name:'英語',short:'英',w:0.27,maxPts:200},
-    {key:'math',name:'数学',short:'数',w:0.26,maxPts:200},
-    {key:'jpn',name:'国語',short:'国',w:0.18,maxPts:200},
-    {key:'sci',name:'理科',short:'理',w:0.12,maxPts:200},
-    {key:'soc',name:'地歴公民',short:'地歴',w:0.11,maxPts:100},
-    {key:'info',name:'情報',short:'情報',w:0.06,maxPts:100}
+    {key:'eng',name:'英語',short:'英',w:0.25,maxPts:100},
+    {key:'math',name:'数学',short:'数',w:0.25,maxPts:100},
+    {key:'jpn',name:'国語',short:'国',w:0.20,maxPts:100},
+    {key:'sci',name:'理科',short:'理',w:0.15,maxPts:100},
+    {key:'soc',name:'社会',short:'社',w:0.15,maxPts:100}
   ];
 }
 
@@ -1599,76 +1733,55 @@ function optimizeSubHoursForTarget(){
   const cur=getCurriculum(S);
   const total=getTotalWeekHrs(S)||BASE_WEEK_HRS[S.si];
   const f=SCH[S.si][S.fi||0];
-  const bType=f[2]?.bunri||'共';
-  let weights=cur.map(c=>c.w);
-  if(S.si===2){
-    if(bType==='理'||bType==='医'){
-      weights=cur.map(c=>c.key==='math'?0.34:c.key==='sci'?0.28:c.key==='eng'?0.26:0.04);
-    }else if(bType==='文'){
-      weights=cur.map(c=>c.key==='eng'?0.33:c.key==='jpn'?0.25:c.key==='soc'?0.24:0.06);
-    }
-  }
+  const weights=cur.map(c=>c.w);
   S.subHrs=distributeIntHours(total,weights);
   save();
   Play();
 }
 
 /* =================================================================
-   4. 学年別・飛び級対応の模試データベース（4月・6月・9月・11月・1月実施）
+   4. 学年別・飛び級対応の模試データベース
+   月はゲーム内年度（4月=0 ... 3月=11）。実施月は2026年度の公開日程を参考にしたモデル。
    ================================================================= */
-const MOCK_MONTH_INDICES=[0,2,5,7,9]; // 4月, 6月, 9月, 11月, 1月
-const STAGE_GRADE_NAMES=[['小4','小5','小6'],['中1','中2','中3'],['高1','高2','高3・卒']];
-
+const STAGE_GRADE_NAMES=[['小4','小5','小6'],['中1','中2','中3']];
+const MOCK_MONTHS_LABEL=months=>months.map(m=>`${((m+3)%12)+1}月`).join('・');
 const MOCK_LIST=[
   [
-    {grade:0,name:'小4 サピックス組み分け診断',diff:3.5,min:65,pop:6800,tag:'小4・難関向け',desc:'小4上位層向けの実力診断テスト。'},
-    {grade:0,name:'小4 四谷大塚 公開組み分け',diff:1.0,min:56,pop:11000,tag:'小4・やや難',desc:'小4標準〜上位層の公開テスト。'},
-    {grade:0,name:'小4 日能研 全国公開模試',diff:-1.0,min:0,pop:13500,tag:'小4・標準',desc:'全国の小4受験生が受ける標準模試。'},
-    {grade:1,name:'小5 サピックスオープン',diff:4.5,min:65,pop:7200,tag:'小5・難関向け',desc:'小5難関中志望者中心の記述模試。'},
-    {grade:1,name:'小5 四谷大塚 志望校判定',diff:1.5,min:56,pop:12500,tag:'小5・やや難',desc:'小5の志望校判定公開テスト。'},
-    {grade:1,name:'小5 日能研 全国公開模試',diff:0.0,min:0,pop:14500,tag:'小5・標準',desc:'小5の全国標準公開模試。'},
-    {grade:2,name:'小6 SAPIX合格力判定オープン',diff:5.0,min:66,pop:7500,isKanmuri:true,tag:'小6・超難関冠',desc:'最難関中志望者限定集団。最もシビアに偏差値が出る。'},
-    {grade:2,name:'小6 四谷大塚 合不合判定テスト',diff:2.0,min:58,pop:15000,tag:'小6・やや難',desc:'首都圏中心の総合判定テスト。'},
-    {grade:2,name:'小6 日能研 全国公開模試',diff:0.0,min:52,pop:16500,tag:'小6・標準',desc:'全国規模の標準公開模試。'},
-    {grade:2,name:'小6 ONETES 合格ONEテスト',diff:-4.0,min:0,pop:22000,tag:'小6・広域出やすい',desc:'幅広い学力層が受験するため偏差値が出やすい。'}
+    {grade:0,name:'小4 SAPIX組分け・実力診断',diff:3.5,min:65,pop:6800,months:[0,2,5,8],autoPriority:50,tag:'小4・難関向け',desc:'SAPIXの組分け・実力診断をイメージした上位層向けテスト。'},
+    {grade:0,name:'小4 四谷大塚 公開組分けテスト',diff:1.0,min:56,pop:11000,months:[1,4,7,9],autoPriority:40,tag:'小4・標準〜上位',desc:'学力別クラス・学習到達度を確認する公開テスト。'},
+    {grade:0,name:'小4 日能研 全国公開模試',diff:-1.0,min:0,pop:13500,months:[2,5,8,10],autoPriority:30,tag:'小4・標準',desc:'幅広い中学受験層を想定した公開模試。'},
+    {grade:1,name:'小5 SAPIX組分け・実力診断',diff:4.5,min:65,pop:7200,months:[0,2,5,8],autoPriority:50,tag:'小5・難関向け',desc:'小5上位層向け。応用・思考力問題の比重が高い。'},
+    {grade:1,name:'小5 四谷大塚 志望校判定テスト',diff:1.5,min:56,pop:12500,months:[1,4,7,9],autoPriority:40,tag:'小5・志望校判定',desc:'志望校との距離と学習到達度を確認する公開テスト。'},
+    {grade:1,name:'小5 日能研 全国公開模試',diff:0.0,min:0,pop:14500,months:[2,5,8,10],autoPriority:30,tag:'小5・標準',desc:'小5の全国規模の学力診断を想定。'},
+    {grade:2,name:'小6 SAPIX合格力判定サピックスオープン',diff:5.0,min:66,pop:7500,isKanmuri:true,months:[1,3,5,7,8,9],autoPriority:60,tag:'小6・難関校志望',desc:'志望校別の合格可能性を意識した難関校向け模試。'},
+    {grade:2,name:'小6 四谷大塚 合不合判定テスト',diff:2.0,min:58,pop:15000,months:[2,4,6,7,8,9],autoPriority:50,tag:'小6・志望校判定',desc:'首都圏を中心に広く利用される合格可能性判定テスト。'},
+    {grade:2,name:'小6 日能研 全国公開模試',diff:0.0,min:52,pop:16500,months:[1,3,5,7,8,9],autoPriority:40,tag:'小6・標準',desc:'全国規模の公開模試。志望校判定と弱点把握に使う。'},
+    {grade:2,name:'小6 ONETES 合格ONEテスト',diff:-4.0,min:0,pop:22000,months:[2,4,6,8],autoPriority:30,tag:'小6・広域標準',desc:'幅広い学力層を想定した合格可能性診断。'}
   ],
   [
-    {grade:0,name:'中1 駿台学力テスト',diff:4.5,min:70,pop:8500,tag:'中1・難関向け',desc:'難関国私立高を目指す中1向けハイレベル模試。'},
-    {grade:0,name:'中1 SAPIX中学部 公開模試',diff:2.0,min:64,pop:6200,tag:'中1・やや難',desc:'中1上位層向けの応用重視模試。'},
-    {grade:0,name:'中1 進研・全県学力テスト',diff:-2.5,min:0,pop:48000,tag:'中1・広域標準',desc:'幅広い中1生が受ける標準学力テスト。'},
-    {grade:1,name:'中2 駿台学力テスト',diff:5.0,min:70,pop:9200,tag:'中2・難関向け',desc:'中2難関志望者向けのハイレベル模試。'},
-    {grade:1,name:'中2 SAPIX中学部 公開模試',diff:2.2,min:64,pop:6800,tag:'中2・やや難',desc:'中2難関校志望者中心の公開模試。'},
-    {grade:1,name:'中2 Vもぎ・全県公開模試',diff:-2.0,min:0,pop:52000,tag:'中2・広域標準',desc:'中2の公立・私立志望者向け広域模試。'},
-    {grade:2,name:'中3 駿台高校受験公開テスト',diff:5.5,min:72,pop:11500,isKanmuri:true,tag:'中3・最難関冠',desc:'開成・筑駒・慶應女子など最難関志望層中心。'},
-    {grade:2,name:'中3 SAPIX中学部 公開模試',diff:2.5,min:68,pop:7400,tag:'中3・やや難',desc:'首都圏難関校志望層向けの記述・応用模試。'},
-    {grade:2,name:'中学生・駿台全国模試（飛び級挑戦）',diff:7.0,min:75,pop:30000,qualifiesSundaiTop10:true,tag:'大学受験級・超難',desc:'中学生が大学受験生の母集団に挑むゲーム内特別枠。全国10傑に入ると、大学受験模試の飛び級受験が解放される。'},
-    {grade:2,name:'中3 Vもぎ・Wもぎ（そっくり）',diff:0.0,min:60,pop:38000,tag:'中3・標準',desc:'都県立・私立対策の標準そっくり模試。'},
-    {grade:2,name:'中3 北辰・全県模試・五ツ木',diff:-3.5,min:0,pop:65000,tag:'中3・広域出やすい',desc:'地域の幅広い受験生が参加し偏差値が出やすい。'}
+    {grade:0,name:'中1 駿台学力テスト',diff:4.5,min:70,pop:8500,months:[2,4,7,9],autoPriority:80,tag:'中1・難関高校志望',desc:'中1向けのハイレベル学力テスト。2026年度モデル：6・8・11・1月。'},
+    {grade:0,name:'中1 SAPIX中学部 実力診断・志望校診断',diff:2.0,min:64,pop:6200,months:[0,3,5,7,9],autoPriority:60,tag:'中1・難関校志望',desc:'SAPIX中学部の公開模試を想定。回ごとに実力診断・志望校診断の性格が異なる。'},
+    {grade:0,name:'中1 広域学力診断テスト（地域・塾主催）',diff:-2.5,min:0,pop:48000,months:[1,6,10],autoPriority:20,tag:'中1・標準',desc:'地域や塾が実施する標準的な到達度確認。全国統一の単一模試ではない。'},
+    {grade:1,name:'中2 駿台学力テスト',diff:5.0,min:70,pop:9200,months:[2,4,7,9],autoPriority:80,tag:'中2・難関高校志望',desc:'中2向けのハイレベル学力テスト。2026年度モデル：6・8・11・1月。'},
+    {grade:1,name:'中2 SAPIX中学部 実力診断・志望校診断',diff:2.2,min:64,pop:6800,months:[0,3,5,6,7,9],autoPriority:60,tag:'中2・難関校志望',desc:'SAPIX中学部の公開模試を想定。中2の学習進度に合わせた実力診断。'},
+    {grade:1,name:'中2 広域学力診断テスト（地域・塾主催）',diff:-2.0,min:0,pop:30000,months:[1,4,8,10],autoPriority:20,tag:'中2・標準',desc:'地域や塾が実施する到達度確認。Vもぎは中3向けのため含めていない。'},
+    {grade:2,name:'中3 駿台高校受験公開プレテスト（4月）',diff:5.0,min:72,pop:11500,months:[0],autoPriority:80,mockSubjects:['eng','math','jpn'],tag:'中3・難関高校受験',desc:'4月のプレテスト。2026年度は4月19日実施、3教科で志望校判定を行う。'},
+    {grade:2,name:'中3 駿台高校受験公開テスト',diff:5.5,min:72,pop:11500,months:[2,4,5,6,7],autoPriority:80,tag:'中3・難関高校受験',desc:'難関国私立高校志望者向け。2026年度モデル：6月7日・8月23日・9月23日・10月25日・11月23日。志望校の入試教科型に合わせ、私立は主に3教科、公立は主に5教科で評価するゲーム内モデル。'},
+    {grade:2,name:'中3 SAPIX中学部 志望校診断・学校別模試',diff:2.5,min:68,pop:7400,months:[1,2,3,4,5,7,8,9],autoPriority:60,tag:'中3・難関校志望',desc:'難関高校向けの実力診断・志望校診断・学校別模試を想定。'},
+    {grade:2,name:'中3駿台全国模試',diff:10.0,min:78,pop:9000,qualifiesSundaiTop10:true,isUniversityPrep:true,mockSubjects:['eng','math','jpn'],pointsBySubject:{eng:200,math:200,jpn:200},months:[6],autoPriority:100,tag:'中3・大学先取り最難関',desc:'中高一貫校の中3生向けのハイレベル記述模試。英語・数学・国語の3教科。2026年度モデルは10月実施。全国トップ層が競う、極めて難度の高い模試。'},
+    {grade:2,name:'中3 Vもぎ（千葉県立・私立）',diff:0.0,min:60,pop:38000,months:[2,3,4,5,6,7,8,9],autoPriority:40,tag:'中3・千葉県の高校受験',region:'千葉',desc:'千葉県立・私立高校の合格可能性を測る地域模試。2026年度モデルは6月〜翌1月に複数回。'},
+    {grade:2,name:'中3 北辰テスト（埼玉県）',diff:-3.5,min:0,pop:65000,months:[0,2,3,5,6,7,8,9],autoPriority:30,tag:'中3・埼玉県の高校受験',region:'埼玉',desc:'埼玉県の中3生を中心とする高校受験模試。北辰偏差値は埼玉県内の受験者層を基準に読む。'},
+    {grade:2,name:'中3 神奈川全県模試',diff:-1.0,min:0,pop:43000,months:[1,3,4,5,6,7,8,9],autoPriority:30,tag:'中3・神奈川県の高校受験',region:'神奈川',desc:'神奈川県の公立高校受験を中心とする地域模試。県内の志望校データ・特色検査対策を重視。'}
   ],
-  [
-    {grade:0,name:'駿台・Z会 高1アドバンスト模試',diff:3.5,min:64,pop:32000,tag:'高1・難関記述',desc:'中高一貫・進学校の高1上位層向けハイレベル記述模試。'},
-    {grade:0,name:'河合塾 全統高1模試',diff:0.0,min:55,pop:145000,tag:'高1・標準',desc:'高1の全国標準レベル模試。'},
-    {grade:0,name:'東進 高1全国統一高校生テスト',diff:-1.5,min:50,pop:95000,tag:'高1・マーク型',desc:'高1向けの共通テスト型マーク模試。'},
-    {grade:0,name:'ベネッセ 進研模試（高1総合）',diff:-4.5,min:0,pop:410000,tag:'高1・広域基礎',desc:'高校単位で幅広い層が受験するため偏差値が出やすい。'},
-    {grade:1,name:'駿台・Z会 高2アドバンスト模試',diff:4.0,min:64,pop:36000,tag:'高2・難関記述',desc:'難関大志望の高2生が集まるハイレベル記述模試。'},
-    {grade:1,name:'河合塾 全統高2模試',diff:0.0,min:55,pop:165000,tag:'高2・標準',desc:'高2の全国標準模試。志望校判定の基準になる。'},
-    {grade:1,name:'東進 共通テスト同日・高2模試',diff:-1.5,min:50,pop:110000,tag:'高2・共テ型',desc:'共通テスト形式に早くから挑む高2マーク模試。'},
-    {grade:1,name:'ベネッセ 進研模試（高2総合）',diff:-4.5,min:0,pop:420000,tag:'高2・広域基礎',desc:'全国の高校生が幅広く受験し偏差値が出やすい。'},
-    {grade:2,name:'大学別冠模試（オープン/実戦/プレ）',diff:6.0,min:65,pop:14800,isKanmuri:true,tag:'高3・超難関冠',desc:'東大・京大・一橋・科学大・早慶などの志望者限定。飛び級受験は偏差値-25〜-30の超激戦！'},
-    {grade:2,name:'駿台全国模試（ハイレベル記述）',diff:4.0,min:59,pop:48000,tag:'高3・難関記述',desc:'難関国公立・医学部・早慶志望者中心の難問記述模試。'},
-    {grade:2,name:'河合塾 全統模試（共通・記述）',diff:0.0,min:53,pop:215000,tag:'高3・標準',desc:'全国最大の母集団を誇る標準的な大学受験模試。'},
-    {grade:2,name:'東進 共通テスト本番レベル模試',diff:-2.0,min:49,pop:125000,tag:'高3・共テ本番型',desc:'共通テスト本番形式のマーク模試。基礎の仕上がりが数値に出る。'},
-    {grade:2,name:'ベネッセ 進研模試（高3総合）',diff:-4.5,min:0,pop:430000,tag:'高3・広域基礎',desc:'幅広い受験層が参加するため偏差値が最も高く出やすい。'}
-  ]
+  []
 ];
-
 
 /* =================================================================
    模試別の目安偏差値（合格可能性80%ライン）と判定
    中学：四谷大塚合不合・SAPIX・日能研R4・ONETES の2027年入試向け公表値（上位校は実測、他は各模試の換算曲線で補間）
    高校：駿台高校受験公開テスト2026/27 確実ライン（実測）／SAPIX中学部・Vもぎ/Wもぎ・北辰/全県/五ツ木は換算曲線
    ================================================================= */
-const FD={SX:5,YT:2,NN:0,ON:-4,SU:5.5,SXH:2.5,VM:0,HK:-3.5};
+const FD={SX:5,YT:2,NN:0,ON:-4,SU:5.5,SXH:2.5,VM:0,HK:-3.5,KN:-1,WK:-2.25,SN:10};
 const CV={
  YT:[[40,36],[46,42],[52,48],[56,52],[60,57],[64,62],[66,65],[69,66],[71,70],[72,72],[78,78]],
  SX:[[40,30],[46,38],[52,44],[56,50],[60,54],[64,58],[66,59],[69,62],[71,66],[72,69],[78,74]],
@@ -1677,7 +1790,10 @@ const CV={
  SU:[[40,29],[50,38],[57.75,45],[60,48],[66,56],[72,64],[78,72],[90,81]],
  SXH:[[40,34],[50,43],[58,52],[66,60],[72,67],[78,74],[90,85]],
  VM:[[40,40],[45,47],[50,53],[54,58],[58,62],[62,65],[65,67],[68,69],[70,70],[72,71],[76,75],[78,77],[90,88]],
- HK:[[40,44],[50,54],[56,60],[62,66],[66,70],[70,73],[72,75],[76,77],[78,78],[90,89]]};
+ HK:[[40,44],[50,54],[56,60],[62,66],[66,70],[70,73],[72,75],[76,77],[78,78],[90,89]],
+ SN:[[40,26],[50,36],[60,47],[70,59],[80,70],[90,80],[100,90]],
+ KN:[[40,42],[50,52],[56,58],[62,64],[66,68],[70,71.5],[72,73.5],[76,77],[78,78.5],[90,88]],
+ WK:[[40,42],[50,52.5],[60,62],[70,71],[80,80],[90,88.5]]};
 const EXPS={
  YT:'筑波大附属駒場中:74,開成中:72,聖光学院中:71,桜蔭中:70,渋谷教育学園渋谷中:67,女子学院中:67,駒場東邦中:66,武蔵中:66,早稲田中:66,栄光学園中:66,洗足学園中:66,雙葉中:66,麻布中:65,海城中:65,慶應義塾普通部:65,広尾学園中:65,早稲田実業中等部:65,早稲田大学高等学院中学部:65,慶應義塾中等部:65,慶應湘南藤沢中等部:65,豊島岡女子学園中:68,筑波大附属中:66,都立小石川中等教育学校:66',
  SX:'筑波大附属駒場中:70,開成中:68,聖光学院中:66,渋谷教育学園幕張中:65,渋谷教育学園渋谷中:64,海城中:60,早稲田中:60,麻布中:59,駒場東邦中:59,栄光学園中:59,筑波大附属中:59,広尾学園中:58,慶應義塾普通部:58,早稲田実業中等部:58,慶應湘南藤沢中等部:58,慶應義塾中等部:58,市川中:58,武蔵中:57,本郷中:57,浅野中:57,早稲田大学高等学院中学部:56,芝中:56,県立千葉中:56,昭和学院秀英中:56,攻玉社中:55,明大明治中:55,高輪中:55,東京都市大付属中:55,東京農大第一中:55,三田国際科学学園中:55,栄東中:55,巣鴨中:54,東邦大東邦中:54,鎌倉学園中:54,桐朋中:53,暁星中:53,ラ・サール中:52,世田谷学園中:52,都立桜修館中等教育学校:52,都立両国高附属中:52,県立東葛飾中:52,愛光中:52,サレジオ学院中:52,青山学院中等部:51,神奈川大附属中:51,逗子開成中:50,明大中野中:50,中大横浜中:50,都立小石川中等教育学校:60,西大和学園中:60',
@@ -1686,62 +1802,107 @@ const EXPS={
 const EXP={};Object.keys(EXPS).forEach(k=>{EXP[k]={};EXPS[k].split(',').forEach(x=>{const p=x.split(':');EXP[k][p[0]]=+p[1]})});
 const ip=(P,x)=>{const n=P.length;if(x<=P[0][0])return P[0][1]+(x-P[0][0]);if(x>=P[n-1][0])return P[n-1][1]+(x-P[n-1][0]);for(let i=1;i<n;i++)if(x<=P[i][0]){const a=P[i-1],b=P[i];return a[1]+(b[1]-a[1])*(x-a[0])/(b[0]-a[0])}};
 const ipI=(P,y)=>{const n=P.length;if(y<=P[0][1])return P[0][0]+(y-P[0][1]);if(y>=P[n-1][1])return P[n-1][0]+(y-P[n-1][1]);for(let i=1;i<n;i++)if(y<=P[i][1]){const a=P[i-1],b=P[i];return b[1]===a[1]?b[0]:a[0]+(b[0]-a[0])*(y-a[1])/(b[1]-a[1])}};
-function mFam(spec,si){const n=spec.name||'';if(si===0)return/サピックス|SAPIX/.test(n)?'SX':/四谷/.test(n)?'YT':/日能研/.test(n)?'NN':/ONETES/.test(n)?'ON':null;if(si===1)return/駿台/.test(n)?'SU':/SAPIX/.test(n)?'SXH':/Vもぎ|Wもぎ/.test(n)?'VM':/北辰|全県|五ツ木/.test(n)?'HK':null;return null}
-const mSi=spec=>MOCK_LIST[0].includes(spec)?0:MOCK_LIST[1].includes(spec)?1:2;
+function mFam(spec,si){const n=spec.name||'';if(spec.isUniversityCrown)return null;if(spec.isUniversityPrep)return'SN';if(si===0)return/サピックス|SAPIX/.test(n)?'SX':/四谷/.test(n)?'YT':/日能研/.test(n)?'NN':/ONETES/.test(n)?'ON':null;if(si===1)return/駿台/.test(n)?'SU':/SAPIX/.test(n)?'SXH':/Vもぎ|Wもぎ/.test(n)?'VM':/北辰|五ツ木/.test(n)?'HK':/神奈川全県/.test(n)?'KN':/広域学力診断/.test(n)?'WK':null;return null}
+const mSi=spec=>{const n=spec&&spec.name;return MOCK_LIST[0].some(m=>m.name===n)?0:MOCK_LIST[1].some(m=>m.name===n)?1:2};
 const mOff=(spec,f)=>spec.diff-FD[f];
 function exScale(spec,a){const f=mFam(spec,mSi(spec));return f?ip(CV[f],a)-mOff(spec,f):a-spec.diff}
 function exInv(spec,v){const f=mFam(spec,mSi(spec));return f?ipI(CV[f],v+mOff(spec,f)):v+spec.diff}
 /* その模試での学校の目安偏差値（合格可能性80%） */
 function examT(spec,s){const f=mFam(spec,mSi(spec));if(!f)return Math.round((s[1]-spec.diff)*10)/10;let v;if(f==='SU'&&s[2]&&s[2].sun!=null)v=s[2].sun;else if(EXP[f]&&EXP[f][s[0]]!=null)v=EXP[f][s[0]];else v=ip(CV[f],s[1]);return Math.round((v-mOff(spec,f))*10)/10}
 const judgeDf=df=>df>=0?'A':df>=-2.5?'B':df>=-5?'C':df>=-8?'D':'E';
+const mockIndexValue=r=>Number.isFinite(r&&r.aEst)?r.aEst:(Number(r&&r.score)||0)+(Number(r&&r.diff)||0)+(Number(r&&r.jumpPen)||0);
+function mockIndexAverage(records){if(!records||!records.length)return null;const w=records.map((r,i)=>Math.pow(.62,records.length-1-i));const v=records.map(mockIndexValue);return Math.round(v.reduce((a,x,i)=>a+x*w[i],0)/w.reduce((a,b)=>a+b,0)*10)/10;}
 
 const curGrade=S=>Math.min(2,Math.floor((S.t||0)/12));
 
-function autoMockIdx(si,fi,g=2){
+function mockIsScheduled(spec,t){return !!spec&&Array.isArray(spec.months)&&spec.months.includes(t%12)}
+function autoMockIdx(si,fi,g=2,t=0){
   const target=(SCH[si][fi]||SCH[si][0])[1];
-  const list=MOCK_LIST[si];
-  const candidates=list.map((m,i)=>({m,i})).filter(x=>x.m.grade===g);
+  const list=MOCK_LIST[si]||[];
+  let candidates=list.map((m,i)=>({m,i})).filter(x=>x.m.grade===g&&mockIsScheduled(x.m,t));
+  if(!candidates.length)candidates=list.map((m,i)=>({m,i})).filter(x=>x.m.grade===g);
+  candidates.sort((a,b)=>(b.m.autoPriority||0)-(a.m.autoPriority||0));
   const found=candidates.find(x=>target>=x.m.min);
-  return found?found.i:candidates[candidates.length-1].i;
+  return (found||candidates[candidates.length-1]||{i:0}).i;
 }
 
-function getMockList(S){
-  const base=MOCK_LIST[S.si];
-  if(S.si===1&&ensureCareerMeta(S).sundai10){
-    const uni=MOCK_LIST[2].map(m=>({...m,uniFlyin:true,name:'【大学受験・特別枠】'+m.name,tag:'中学生特別解放',desc:m.desc+'（駿台全国模試の全国10傑達成により解放）'}));
-    return base.concat(uni);
+const UNIVERSITY_CROWN_MOCKS=[
+  {grade:3,name:'東大入試オープン形式（大学別特例模試）',diff:10.8,min:88,pop:6000,isKanmuri:true,isUniversityCrown:true,months:[7,9],autoPriority:40,tag:'東大・最難関',desc:'東京大学の出題形式を参考にしたゲーム内の中学生向け特例課題。現実の一般公開模試を中学生が受けるものではない。全国1位は極めて難しい。'},
+  {grade:3,name:'東大入試実戦形式（大学別特例模試）',diff:11.1,min:89,pop:6000,isKanmuri:true,isUniversityCrown:true,months:[8,10],autoPriority:40,tag:'東大・記述最難',desc:'東京大学の二次試験形式を参考にしたゲーム内特例課題。実際の駿台・Z会の公開模試とは別枠。'},
+  {grade:3,name:'京大入試実戦形式（大学別特例模試）',diff:11.0,min:87,pop:5000,isKanmuri:true,isUniversityCrown:true,months:[7,9],autoPriority:40,tag:'京大・最難関',desc:'京都大学の出題形式を参考にしたゲーム内特例課題。現実の一般公開模試ではない。'},
+  {grade:3,name:'東北大入試オープン形式（大学別特例模試）',diff:10.8,min:85,pop:4500,isKanmuri:true,isUniversityCrown:true,months:[8,10],autoPriority:30,tag:'東北大・難関',desc:'東北大学の出題形式を参考にしたゲーム内特例課題。現実の一般公開模試ではない。'},
+  {grade:3,name:'一橋大入試実戦形式（大学別特例模試）',diff:11.8,min:87,pop:3500,isKanmuri:true,isUniversityCrown:true,months:[8,11],autoPriority:30,tag:'一橋大・最難関',desc:'一橋大学の出題形式を参考にしたゲーム内特例課題。現実の一般公開模試ではない。'},
+  {grade:3,name:'東京科学大入試実戦形式（大学別特例模試）',diff:11.3,min:87,pop:4000,isKanmuri:true,isUniversityCrown:true,months:[9,11],autoPriority:30,tag:'東京科学大・最難関',desc:'東京科学大学の出題形式を参考にしたゲーム内特例課題。現実の一般公開模試ではない。'}
+];
+
+function ensureMockConfig(S){
+  const version=Number(S.mockConfigVersion)||0;
+  if(version<2&&S.si===1&&S.mockMode==='manual'&&S.mockIdx!=null){
+    const oldToNew={0:0,1:1,2:2,3:3,4:4,5:5,6:7,7:8,8:9,9:10,10:11,11:13,12:14,13:15,14:16,15:17,16:18};
+    if(oldToNew[S.mockIdx]!=null)S.mockIdx=oldToNew[S.mockIdx];
+    else{S.mockMode='auto';S.mockIdx=null;}
   }
+  if(version<3){
+    S.mocks=S.mocks||[];
+    if(S.mocks.length){
+      S.avgMock=mockIndexAverage(S.mocks);
+      S.lastMock=S.mocks[S.mocks.length-1].score;
+    }
+  }
+  S.mockConfigVersion=3;
+}
+function getMockList(S){
+  ensureMockConfig(S);
+  const base=MOCK_LIST[S.si]||[];
+  // 中学生が駿台全国模試10傑に入った場合だけ、大学別冠模試を受験可能にする。
+  if(S.si===1&&ensureCareerMeta(S).sundai10)return base.concat(UNIVERSITY_CROWN_MOCKS);
   return base;
 }
-function getMockSpec(S){
-  const g=curGrade(S);
+function mockVariantForTarget(S,spec){
+  if(!spec||spec.name!=='中3 駿台高校受験公開テスト')return spec;
+  const targetName=(SCH[1][S.fi||0]||SCH[1][0])[0]||'';
+  const isPublic=/県立|都立|府立|道立|市立/.test(targetName);
+  return{...spec,mockSubjects:isPublic?['eng','math','jpn','sci','soc']:['eng','math','jpn']};
+}
+function getMockSpec(S,t=S.t){
+  const g=curGrade({...S,t});
   const list=getMockList(S);
-  if(S.mockMode==='manual'&&S.mockIdx!=null&&list[S.mockIdx]&&list[S.mockIdx].grade>=g){
-    return list[S.mockIdx];
+  if(S.mockMode==='manual'){
+    const chosen=(S.mockName&&list.find(m=>m.name===S.mockName))||(S.mockIdx!=null?list[S.mockIdx]:null);
+    return chosen&&chosen.grade>=g&&mockIsScheduled(chosen,t)?mockVariantForTarget(S,chosen):null;
   }
-  return list[autoMockIdx(S.si,S.fi||0,g)];
+  const candidates=list.filter(m=>m.grade===g&&!m.isUniversityPrep&&!m.isUniversityCrown&&mockIsScheduled(m,t));
+  if(!candidates.length)return null;
+  candidates.sort((a,b)=>(b.autoPriority||0)-(a.autoPriority||0));
+  const target=(SCH[S.si][S.fi||0]||SCH[S.si][0])[1];
+  // 中3駿台全国模試・大学別模試は自動設定の対象外（模試選択から自分で選んで受験する）。
+  return mockVariantForTarget(S,candidates.find(m=>target>=m.min)||candidates[candidates.length-1]);
+}
+function getNextMockInfo(S){
+  const remaining=Number.isFinite(S.len)?Math.max(0,S.len-S.t):24;
+  for(let dt=0;dt<Math.min(24,remaining);dt++){
+    const t=S.t+dt,spec=getMockSpec(S,t);
+    if(spec)return{spec,t,dt,month:((t+3)%12)+1};
+  }
+  return null;
 }
 
 function calcJumpPenalty(S,spec){
-  if(spec.uniFlyin)return spec.grade===0?25:spec.grade===1?28:30;
+  if(!spec)return 0;
   const gap=spec.grade-curGrade(S);
   if(gap<=0)return 0;
-  if(spec.isKanmuri)return gap===1?25:30;
+  // 駿台全国模試10傑で資格を得た中学生向けの大学別冠模試は、
+  // 特例受験のため通常の飛び級より軽いが、難度自体は高く設定。
+  if(spec.isUniversityCrown)return gap===1?5:8;
+  if(spec.isKanmuri)return gap===1?18:24;
   return gap===1?13:20;
 }
 
-const isMockMonth=S=>MOCK_MONTH_INDICES.includes(S.t%12);
-
+const isMockMonth=S=>!!getMockSpec(S,S.t);
 function nextMockLabel(S){
-  for(let dt=0;dt<12;dt++){
-    const nt=S.t+dt;
-    if(nt>=S.len)return'今期の模試は終了';
-    if(MOCK_MONTH_INDICES.includes(nt%12)){
-      const m=((nt+3)%12)+1;
-      return dt===0?`今月(${m}月)実施！`:`次回 ${m}月`;
-    }
-  }
-  return'―';
+  const next=getNextMockInfo(S);
+  if(!next)return'今期の模試予定は終了';
+  return next.dt===0?`今月${next.month}月に実施`:`次回 ${next.month}月`;
 }
 
 /* =================================================================
@@ -1756,7 +1917,7 @@ function normTopPct(z){
   return Math.max(0.0001,Math.min(99.9,upper*100));
 }
 
-const ST=['中学受験編','高校受験編','大学受験編'],LB='小4 小5 小6 中1 中2 中3 高1 高2 高3'.split(' ');
+const ST=['中学受験編','高校受験編'],LB='小4 小5 小6 中1 中2 中3'.split(' ');
 
 /* =================================================================
    6. 38種類のライフ＆受験イベント
@@ -1833,24 +1994,45 @@ const EV=[
 const TT=[['はじめの一歩','N',()=>true],['青春を謳歌','N',(p,S)=>S.y>=80],['健康第一','N',(p,S)=>S.h>=80],['全入の洗礼','N',(p,S)=>S.bn===SCH[S.si].length-1],['悪運の持ち主','N',p=>p[1]>=97],['勉強の虫','R',(p,S)=>S.hrs>=6000],['鉄のメンタル','R',(p,S)=>S.m>=85],['自信満々','R',(p,S)=>S.c>=90],['模試マニア','R',(p,S)=>(S.mocks||[]).length>=10],['塾選びの達人','R',(p,S)=>(S.jb||0)>=.06&&S.bn!==SCH[S.si].length-1],['努力の鬼','R',p=>p[3]<=5],['判断の天才','R',p=>p[2]<=5],['全教科バランス','SR',(p,S)=>!!S.subA&&Math.max(...S.subA)-Math.min(...S.subA)<=6],['一点突破','SR',(p,S)=>!!S.subA&&Math.max(...S.subA)-Math.min(...S.subA)>=22],['苦手を克服','SR',(p,S)=>{if(!S.sk)return false;const c=getCurriculum(S).findIndex(x=>x.key===S.sk.w);return c>=0&&S.subA[c]>=S.a}],['才能を努力で超えた','SR',(p,S)=>S.b.k===3&&S.rv>=62],['最貧からの勝利','SR',(p,S)=>S.b.f===3&&S.b.t===3&&p[4]<=15],['生まれながらの勝者','SR',p=>p[0]<=5&&p[4]<=10],['強運の持ち主','SR',p=>p[1]<=3],['難関突破','SR',(p,S)=>S.rv>=66],['奇跡の下剋上','SSR',p=>p[0]>=60&&p[4]<=5],['全SSRの生まれ','SSR',(p,S)=>!S.b.f&&!S.b.t&&!S.b.k],['頂点に立つ者','SSR',(p,S)=>S.rv>=70],['通し人生・全勝','SSR',(p,S)=>S.stages.length===2&&(S.rvh||[]).length>=2&&S.rvh.slice(-2).every(v=>v>=62)],['自己分析の達人','R',(p,S)=>!!S.isDiag],['リアル下剋上','SSR',(p,S)=>!!S.isDiag&&p[0]>=45&&p[4]<=10]];
 const ld=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 let S=null;
-const makeCareerMeta=()=>({sundai10:false,olyGoldCount:0,crownTop1Streak:0,earlyInvite:false,earlyInviteSources:[]});
+const makeCareerMeta=()=>({qualificationVersion:2,sundai10:false,olyGoldCount:0,middleOlyGoldCount:0,middleOlyMedalCount:0,universityCrownTop1Count:0,crownTop1Streak:0,earlyInvite:false,earlyInviteSources:[]});
 function ensureCareerMeta(x){
   if(!x.meta||typeof x.meta!=='object')x.meta=makeCareerMeta();
+  const m=x.meta;
+  // 旧条件（駿台10傑だけ／冠模試の連続1位／金賞2回）で先に招待されないよう、
+  // 既存セーブを新しい条件へ一度だけ移行する。駿台10傑と過去の金賞実績は引き継ぐ。
+  if((m.qualificationVersion||0)<2){
+    m.middleOlyMedalCount=Math.max(Number(m.middleOlyMedalCount)||0,Number(m.middleOlyGoldCount)||0);
+    m.universityCrownTop1Count=0;
+    m.crownTop1Streak=0;
+    m.earlyInvite=false;
+    m.earlyInviteSources=[];
+    x.earlySelectionUsed=false;
+    x.earlySelectionDeclined=false;
+    x.earlySelectionFailed=false;
+    x.earlySelectionResult=null;
+    x.earlyTargetIndex=null;
+    x.earlyUniPassed=false;
+    x.earlyUniName=null;
+    m.qualificationVersion=2;
+  }
   const d=makeCareerMeta();
-  Object.keys(d).forEach(k=>{if(x.meta[k]==null)x.meta[k]=d[k]});
-  if(!Array.isArray(x.meta.earlyInviteSources))x.meta.earlyInviteSources=[];
-  return x.meta;
+  Object.keys(d).forEach(k=>{if(m[k]==null)m[k]=d[k]});
+  if(!Array.isArray(m.earlyInviteSources))m.earlyInviteSources=[];
+  return m;
 }
+
 function grantEarlyUniversityInvite(x,reason){
+  if(!x||x.si!==1)return; // 招待の対象は中学生だけ
   const m=ensureCareerMeta(x);
+  if(!m.sundai10||(m.universityCrownTop1Count||0)<2||(m.middleOlyMedalCount||0)<1)return;
   const isNewReason=!m.earlyInviteSources.includes(reason);
   if(isNewReason)m.earlyInviteSources.push(reason);
   if(!m.earlyInvite){
     m.earlyInvite=true;
     if(x===S)showAchievementSparkle('invite');
     x.log=x.log||[];
-    x.log.push(`【大学飛び級・特別招待状】${reason}を達成。千葉大学・東北大学・京都大学・東京科学大学などから、早期進学特別選抜への招待状が届いた！`);
-    if(x===S)showToast('＊ 大学から早期進学・飛び級の招待状が届いた！');
+    x.log.push(`【大学特例選抜・招待状】${reason}を達成。千葉大学などから、中学生向け特別選抜の受験資格通知が届いた！`);
+    if(x===S)showToast('＊ 大学から特別選抜の招待状が届いた！');
   }else if(x===S&&isNewReason){
     x.log=x.log||[];
     x.log.push(`【招待状の追加認定】${reason}も達成！`);
@@ -1858,10 +2040,19 @@ function grantEarlyUniversityInvite(x,reason){
   }
   save();
 }
+function checkEarlyUniversityQualification(x){
+  if(!x||x.si!==1)return;
+  const m=ensureCareerMeta(x);
+  if(m.sundai10&&(m.universityCrownTop1Count||0)>=2&&(m.middleOlyMedalCount||0)>=1){
+    grantEarlyUniversityInvite(x,'中3駿台全国模試10傑で大学別特例模試を解放後、冠模試で全国1位を累計2回獲得し、オリンピック系で金賞または銀賞を獲得');
+  }
+}
 function renderCareerNotices(x){
   const m=ensureCareerMeta(x),out=[];
-  if(m.sundai10)out.push(`<div class="rpg-window border-sky-400 bg-[#071522] p-2.5 text-xs space-y-1"><div class="font-bold text-sky-300">★ 大学受験模試 解放済み</div><div class="text-neutral-200">駿台全国模試で全国10傑を達成。中学生でも大学受験模試に飛び級挑戦できる。</div></div>`);
-  if(m.earlyInvite)out.push(`<div class="rpg-window-gold p-3 text-xs space-y-1.5"><div class="font-bold text-yellow-300">✉ 大学飛び級・早期進学 特別招待状</div><div class="text-white">千葉大学・東北大学・京都大学・東京科学大学などから、在学中に挑戦できる特別選抜への招待が届いている。</div><div class="text-[10px] text-amber-200">獲得条件：${m.earlyInviteSources.join(' ／ ')}</div><div class="text-[10px] text-neutral-300">大学受験の出願画面で「招待制・早期進学選抜」を選択可能。</div></div>`);
+  if(x.si===1&&m.earlyInvite){
+    const state=x.earlyUniPassed?'特別選抜に合格し、大学進学が決定':x.earlySelectionUsed?'特別選抜は受験済み。不合格のため高校受験へ':x.earlySelectionDeclined?'特別選抜は辞退済み': '中学生離れした実績が認められ、大学から特別選抜の受験資格が届いた。';
+    out.push(`<div class="rpg-window-gold p-3 text-xs space-y-1.5"><div class="font-bold text-yellow-300">✉ 大学特例選抜の招待状</div><div class="text-white">${state}</div><div class="text-[10px] text-amber-200">招待理由：${m.earlyInviteSources.join(' ／ ')}</div>${!x.earlySelectionUsed&&!x.earlySelectionDeclined?`<button onclick="startEarlySelection()" class="rpg-cmd w-full py-2.5 px-3 min-h-[42px] text-xs font-bold text-yellow-300 border-yellow-300 bg-[#171202]">▶ 特例選抜の案内を開く</button>`:''}<div class="text-[10px] text-neutral-300">受験は一度限り。合格すれば大学へ進学、不合格なら高校受験に戻る。</div></div>`);
+  }
   return out.join('');
 }
 const save=()=>S&&sv('jg_s',S);
@@ -1870,12 +2061,6 @@ const mock=S=>Math.round((S.a+G(S.seed,S.t+1000*S.si,5)*1.6)*10)/10;
 
 function rollEv(S){
   S.ev=null;
-  // ★ 高1の11月（si===2 && t===7）は必ず「文理選択イベント」を発生させる！
-  if(S.si===2&&S.t===7&&!S.bunri){
-    S.ev='bunri';
-    return;
-  }
-  if(S.si===2&&S.bunri&&S.t>=8&&S.t<=11&&elecNext(S)){S.ev='elec';return;}
   if(S.t<S.len){const rs=RR(S.seed,S.t+1000*S.si,2),sd=S.m<30&&rs<.55?'やる気が出ない':S.h<35&&rs<.55?'体調がかなり悪い':S.c>85&&rs<.3?'最近すごく調子':null;if(sd){S.ev=EV.findIndex(e=>e[0].startsWith(sd));S.lastEv=S.ev;return}}
   if(S.t<S.len&&RR(S.seed,S.t+1000*S.si,0)<.72){
     const C=EVC(S);let idx=C[Math.floor(RR(S.seed,S.t+1000*S.si,1)*C.length)];if(idx===S.lastEv||(idx===2&&(!S.mocks||S.mocks.length===0)))idx=C[(C.indexOf(idx)+3)%C.length];
@@ -1888,7 +2073,7 @@ function ns(b,si,seed,a,p){
   const S={
     b,si,seed,a,p,sx:PSX,t:0,len:34,pace:1,paces:[],ch:[],hrs:0,h:70,m:65,c:50,y:50,
     ev:null,lastEv:-1,msg:'',mocks:[],avgMock:null,lastMock:null,mockMode:'auto',mockIdx:null,
-    ui:{hideStat:false,hideLog:false},kt:null,nijiStrat:1,bunri:null
+    ui:{hideStat:false,hideLog:false}
   };
   const cur=getCurriculum(S);
   S.subA=cur.map((c,i)=>Math.round((a+(RR(seed,i,77)-0.5)*1.2+(TAL[b.k][3]?(AFF[TAL[b.k][3]].includes(c.key)?3:-1.5):0))*10)/10);
@@ -1900,32 +2085,6 @@ function ns(b,si,seed,a,p){
 }
 
 function pk(S,i){
-  if(S.ev==='elec'){const k=elecNext(S);S.elec=S.elec||{};if(k)S.elec[k]=Math.min(i,2);S.ev=null;return;}
-  // 高1 11月 文理選択イベントの処理
-  if(S.ev==='bunri'){
-    const oldCur=getCurriculum(S);
-    const oldMap={};
-    oldCur.forEach((c,k)=>{oldMap[c.key]=S.subA[k];});
-    const oldTotal=getTotalWeekHrs(S)||BASE_WEEK_HRS[2];
-
-    S.bunri=i===0?'bun':'ri';
-    const newCur=getCurriculum(S);
-    S.subA=newCur.map(c=>{
-      const base=oldMap[c.key]??S.a;
-      const bonus=S.bunri==='bun'
-        ?((c.key==='jpn'||c.key==='soc')?1.4:(c.key==='sci'?-1.0:0))
-        :((c.key==='math'||c.key==='sci')?1.4:(c.key==='soc'?-1.0:0));
-      return Math.max(25,Math.min(AMAX(S),Math.round((base+bonus)*10)/10));
-    });
-    S.subHrs=distributeIntHours(oldTotal,newCur.map(c=>c.w));
-    syncOverallFromSubs(S);
-    S.m=cl(S.m+5);
-    S.c=cl(S.c+5);
-    S.ch.push(i);
-    S.ev=null;
-    return;
-  }
-
   const ch=EV[S.ev][i+1];let e=ch[1];S.evRes='';if(ch[2]){const win=RR(S.seed,S.t+1000*S.si,70+i)<ch[2][0];if(!win)e=ch[2][1];S.evRes=win?'【成功！】':'【失敗…】'}
   S.h=cl(S.h+e[0]);
   S.m=cl(S.m+e[1]);
@@ -1994,7 +2153,7 @@ function step(S){
       // 割り当て時間が多いほど伸びやすく、ポテンシャル天井で減衰
       const ratio=Math.pow(alloc/req,0.88);
       const potFactor=Math.max(0,(S.p+(S.b.k>=4?14:10)-curVal)/12);
-      delta=0.2*ratio*commonFactor*potFactor*affMul(S,c.key)*elecMul(S,c.key);
+      delta=0.2*ratio*commonFactor*potFactor*affMul(S,c.key);
     }
     S.subA[k]=Math.max(25,Math.min(AMAX(S),curVal+delta));
   });
@@ -2004,30 +2163,31 @@ function step(S){
   const mk=Math.round((S.a+noise*1.6)*10)/10;
   S.lastMockRec=null;
 
-  if(S.ex!==false&&isMockMonth(S)){
+  if(isMockMonth(S)){
     const spec=getMockSpec(S);
     const jumpPen=calcJumpPenalty(S,spec);
     const prevRec=S.mocks&&S.mocks.length?S.mocks[S.mocks.length-1]:null;
-    const pop=spec.pop||50000;
+    const pop=spec.pop||50000; // ゲーム内部シミュレーション用。実際の参加者数ではない。
+    const mockCur=spec.mockSubjects?cur.filter(c=>spec.mockSubjects.includes(c.key)):cur;
 
     // 各教科ごとの模試偏差値・得点・前回比・科目順位を算出
     let wDevSum=0,wSum=0,totScore=0,totMax=0,wU=0;
     const capDev=spec.isKanmuri?100:/駿台/.test(spec.name)?90:85;
-    const subResults=cur.map((c,k)=>{
-      if(S.si===2&&S.t<12&&!['eng','math','jpn'].includes(c.key))return null;
+    const subResults=mockCur.map((c,k)=>{
       const sNoise=G(S.seed,S.t+1000*S.si,30+k*7);
       const sU=Math.max(25.0,exScale(spec,S.subA[k])-jumpPen+sNoise*1.6);const sDev=Math.round(Math.min(capDev,sU)*10)/10;wU+=sU*c.w;
-      const pct=Math.max(0.14,Math.min(0.99,0.50+(sDev-50)*0.0155));
-      const score=Math.round(c.maxPts*pct);
-      const prevSub=prevRec&&prevRec.subs?prevRec.subs.find(x=>x.key===c.key):null;
+      const pct=Math.max(0.14,Math.min(1,0.50+(sDev-50)*0.0155));
+      const maxPts=(spec.pointsBySubject&&spec.pointsBySubject[c.key])||c.maxPts;
+      const score=Math.round(maxPts*pct);
+      const prevSub=prevRec&&prevRec.name===spec.name&&prevRec.subs?prevRec.subs.find(x=>x.key===c.key):null;
       const delta=prevSub?Math.round((sDev-prevSub.dev)*10)/10:null;
       const sTopPct=normTopPct((sU-50)/10);
       const sRank=Math.max(1,Math.round(pop*(sTopPct/100)));
       wDevSum+=sDev*c.w;
       wSum+=c.w;
       totScore+=score;
-      totMax+=c.maxPts;
-      return{key:c.key,name:c.name,short:c.short,dev:sDev,score,maxPts:c.maxPts,delta,rank:sRank,topPct:sTopPct};
+      totMax+=maxPts;
+      return{key:c.key,name:c.name,short:c.short,dev:sDev,score,maxPts,delta,rank:sRank,topPct:sTopPct};
     }).filter(Boolean);
 
     const rawScore=Math.round(Math.max(25.0,Math.min(capDev,wDevSum/(wSum||1)))*10)/10;
@@ -2035,40 +2195,44 @@ function step(S){
     const natTopPct=normTopPct((rawU-50)/10);
     const natRank=Math.max(1,Math.round(pop*(natTopPct/100)));
 
-    // 第一志望校内の順位・志望者数・判定
+    // 高校受験模試だけ第一志望校判定を出す。大学先取り・大学別特例模試は高校判定を出さない。
+    const hasSchoolJudgement=!spec.isUniversityPrep&&!spec.isUniversityCrown;
     const f=SCH[S.si][S.fi||0];
-    const targetDev=examT(spec,f);
-    const targetPop=Math.max(120,Math.round(pop*(targetDev>=68?0.045:targetDev>=60?0.07:0.095)));
-    const targetTopPct=normTopPct((rawU-(targetDev-2.5))/7.5);
-    const targetRank=Math.max(1,Math.min(targetPop,natRank,Math.round(targetPop*(targetTopPct/100))));
-    const df=rawScore-targetDev;
-    const judgment=judgeDf(df);
+    let targetDev=null,targetPop=null,targetRank=null,judgment=null;
+    if(hasSchoolJudgement){
+      targetDev=examT(spec,f);
+      targetPop=Math.max(120,Math.round(pop*(targetDev>=68?0.045:targetDev>=60?0.07:0.095)));
+      const targetTopPct=normTopPct((rawU-(targetDev-2.5))/7.5);
+      targetRank=Math.max(1,Math.min(targetPop,natRank,Math.round(targetPop*(targetTopPct/100))));
+      judgment=judgeDf(rawScore-targetDev);
+    }
 
     S.mocks=S.mocks||[];
-    const prevAvg=S.avgMock!=null?S.avgMock:rawScore;
-    const prevSingle=S.lastMock!=null?S.lastMock:rawScore;
+    const aEst=Math.round(exInv(spec,rawScore+jumpPen)*10)/10;
+    const prevAvg=S.avgMock!=null?S.avgMock:aEst;
+    const prevSingle=prevRec?mockIndexValue(prevRec):aEst;
     const recObj={
-      lab:lab(S),name:spec.name,diff:spec.diff,jumpPen,isKanmuri:!!spec.isKanmuri,qualifiesSundaiTop10:!!spec.qualifiesSundaiTop10,aEst:Math.round(exInv(spec,rawScore+jumpPen)*10)/10,tag:spec.tag,
+      lab:lab(S),name:spec.name,diff:spec.diff,jumpPen,isKanmuri:!!spec.isKanmuri,isUniversityCrown:!!spec.isUniversityCrown,isUniversityPrep:!!spec.isUniversityPrep,qualifiesSundaiTop10:!!spec.qualifiesSundaiTop10,aEst,tag:spec.tag,
       score:rawScore,totScore,totMax,pop,natRank,natTopPct,
-      targetName:f[0],targetDev,targetPop,targetRank,judgment,
+      targetName:hasSchoolJudgement?f[0]:(spec.isUniversityPrep?'大学先取り評価':'大学別特例評価'),targetDev,targetPop,targetRank,judgment,
       subs:subResults
     };
     S.mocks.push(recObj);
-    {const w=S.mocks.map((x,i)=>Math.pow(.62,S.mocks.length-1-i)),nm=S.mocks.map(x=>x.aEst!=null?x.aEst:x.score+(x.diff||0)+(x.jumpPen||0));S.avgMock=Math.round((exScale(spec,nm.reduce((a,v,i)=>a+v*w[i],0)/w.reduce((a,b)=>a+b,0))-jumpPen)*10)/10}
+    S.avgMock=mockIndexAverage(S.mocks);
     S.lastMock=rawScore;
     S.lastMockRec={
       ...recObj,
       avg:S.avgMock,
-      deltaLast:Math.round((rawScore-prevSingle)*10)/10,
+      deltaLast:Math.round((aEst-prevSingle)*10)/10,
       deltaAvg:Math.round((S.avgMock-prevAvg)*10)/10
     };
 
     if(jumpPen>0){
       S.subA=S.subA.map(v=>Math.min(AMAX(S),v+0.15*(spec.grade-curGrade(S))));
       syncOverallFromSubs(S);
-      S.c=cl(S.c+Math.max(-2,Math.min(5,(rawScore-prevAvg)*0.8)));
+      S.c=cl(S.c+Math.max(-2,Math.min(5,(aEst-prevAvg)*0.8)));
     }else{
-      S.c=cl(S.c+Math.max(-6,Math.min(6,(rawScore-prevAvg)*2)));
+      S.c=cl(S.c+Math.max(-6,Math.min(6,(aEst-prevAvg)*2)));
     }
   }else{
     S.c=cl(S.c+Math.max(-3,Math.min(3,(mk-S.lm))));
@@ -2084,149 +2248,6 @@ function step(S){
   }
   S.t++;
   rollEv(S);
-}
-
-/* =================================================================
-   7. 大学入学共通テスト（1000点満点）＆ 二次試験・共テ利用 判定エンジン
-   ================================================================= */
-function runKyotsu(S){
-  const T=S.t+1000*S.si;
-  const cur=getCurriculum(S);
-  const subDevMap={};
-  cur.forEach((c,i)=>{subDevMap[c.key]=S.subA[i]??S.a;});
-
-  const subDefs=[
-    {key:'eng',name:'英語（R+L）',max:200,w:1.02},
-    {key:'math',name:'数学（IA+IIBC）',max:200,w:0.99},
-    {key:'jpn',name:'国語（現古漢）',max:200,w:1.00},
-    {key:'sci',name:'理科（基礎/専門）',max:200,w:0.99},
-    {key:'soc',name:'地歴公民',max:100,w:1.01},
-    {key:'info',name:'情報I',max:100,w:1.02}
-  ];
-
-  const subs=subDefs.map((sub,i)=>{
-    const sDev=subDevMap[sub.key]??S.a;
-    const basePct=Math.max(28,Math.min(98,62+(sDev-50)*1.36+(S.h-60)/18+(S.c-50)/28));
-    const noise=G(S.seed,T,200+i*3)*4.8;
-    const pct=Math.max(25,Math.min(99,basePct*sub.w+noise));
-    const score=Math.min(sub.max,Math.max(Math.round(sub.max*0.25),Math.round(sub.max*(pct/100))));
-    return{name:sub.name,score,max:sub.max};
-  });
-
-  const total=subs.reduce((a,b)=>a+b.score,0);
-  const pct=Math.round(total)/10;
-  const ktDev=Math.round((50+(pct-62)/1.36)*10)/10;
-  S.kt={subs,total,pct,ktDev};
-}
-
-function autoUniApp(S){
-  const L=SCH[2].slice(0,-1);
-  const pct=S.kt?S.kt.pct:(62+(S.a-50)*1.36);
-  const apps=[];
-  const fi=S.fi||0;
-  const fMeta=getUniMeta(L[fi]);
-  apps.push({idx:fi,mode:fMeta.isNat?'nat_zenki':'priv_ippan'});
-
-  const privIndices=L.map((s,i)=>({s,i,m:getUniMeta(s)})).filter(x=>!x.m.isNat&&isBunriMatch(S.bunri,x.m.bunri));
-  const safeKyote=privIndices.find(x=>x.m.kyoteBorderPct<=pct-2);
-  if(safeKyote)apps.push({idx:safeKyote.i,mode:'priv_kyote'});
-  const challengeKyote=privIndices.find(x=>x.m.kyoteBorderPct<=pct+2&&x.i!==safeKyote?.i);
-  if(challengeKyote&&apps.length<5)apps.push({idx:challengeKyote.i,mode:'priv_kyote'});
-
-  const targetIppan=privIndices.find(x=>x.s[1]<=S.a-1&&!apps.some(a=>a.idx===x.i&&a.mode==='priv_ippan'));
-  if(targetIppan&&apps.length<5)apps.push({idx:targetIppan.i,mode:'priv_ippan'});
-  const safeIppan=privIndices.find(x=>x.s[1]<=S.a-6&&!apps.some(a=>a.idx===x.i&&a.mode==='priv_ippan'));
-  if(safeIppan&&apps.length<5)apps.push({idx:safeIppan.i,mode:'priv_ippan'});
-
-  return apps.slice(0,5);
-}
-
-function isBunriMatch(playerBunri, deptBunri){
-  if(!playerBunri||deptBunri==='共')return true;
-  if(playerBunri==='bun'&&(deptBunri==='理'||deptBunri==='医'))return false;
-  if(playerBunri==='ri'&&deptBunri==='文')return false;
-  return true;
-}
-
-function evalKyoteEarly(S){
-  const L=SCH[2];
-  const ktPct=S.kt.pct;
-  const T=S.t+1000*S.si;
-  S.kyoteResults=[];
-  (S.ap||[]).forEach((item,i)=>{
-    if(item.mode!=='priv_kyote')return;
-    const u=L[item.idx];
-    const meta=getUniMeta(u);
-    const borderScore=meta.kyoteBorderPct*10;
-    const diffPct=ktPct-meta.kyoteBorderPct;
-    const pz=1/(1+Math.exp(-diffPct/1.35));
-    const ok=RR(S.seed,T,400+i)<pz;
-    S.kyoteResults.push({idx:item.idx,name:u[0],dev:u[1],borderScore,myScore:S.kt.total,ok,pz});
-  });
-  S.kyoteChecked=true;
-  if(S.kyoteResults.some(x=>x.ok)){
-    S.m=cl(S.m+8);
-    S.c=cl(S.c+10);
-  }
-}
-
-function secDevOf(S,m){const cur=getCurriculum(S),W=m.bunri==='医'?{eng:.25,math:.3,sci:.35,jpn:.1}:m.bunri==='理'?{eng:.25,math:.4,sci:.35}:m.bunri==='文'?{eng:.35,jpn:.35,soc:.3}:{eng:.4,jpn:.2,math:.2,soc:.1,sci:.1};let s=0,w=0;cur.forEach((c,k)=>{const x=W[c.key];if(x){s+=S.subA[k]*x;w+=x}});return w?s/w:S.a}
-function examUniFull(S){
-  const L=SCH[2];
-  const T=S.t+1000*S.si;
-  const strat=S.nijiStrat??1;
-  const stratShift=strat===0?-0.6:strat===2?1.2:0;
-  const stratNoise=strat===0?1.1:strat===2?2.8:1.8;
-  S.xs=S.a+(S.h-60)/12+(S.c-50)/35+stratShift+G(S.seed,T,50)*stratNoise;
-
-  let best=L[L.length-1][1],bn=L.length-1,bestSurplus=-Infinity;
-  const res=[];
-  (S.ap||[]).forEach((item,i)=>{
-    const u=L[item.idx];
-    const d=u[1];
-    const meta=getUniMeta(u);
-    const bunriPen=isBunriMatch(S.bunri,meta.bunri)?0:5.5;
-
-    if(item.mode==='early'){
-      const eff=S.xs+6.5-bunriPen+(secDevOf(S,meta)-S.a);
-      const pz=1/(1+Math.exp(-(eff-d)/2.25));
-      const ok=RR(S.seed,T,100+i)<pz;
-      const surplus=eff-d;
-      res.push({idx:item.idx,mode:item.mode,pz,ok,surplus,detail:`招待制・早期進学特別選抜（指数 ${eff.toFixed(1)} / 目安 ${d}）`});
-      if(ok&&d>best){best=d;bn=item.idx;bestSurplus=surplus;}
-    }else if(item.mode==='priv_kyote'){
-      const kr=(S.kyoteResults||[]).find(x=>x.idx===item.idx);
-      const ok=kr?kr.ok:false;
-      const pz=kr?kr.pz:0;
-      const surplus=kr?(S.kt.pct-meta.kyoteBorderPct)/1.6:-99;
-      res.push({idx:item.idx,mode:item.mode,pz,ok,surplus,detail:`共テ ${S.kt.total}点 / ボーダー ${meta.kyoteBorderPct*10}点`});
-      if(ok&&d>best){best=d;bn=item.idx;bestSurplus=surplus;}
-    }else if(meta.isNat){
-      const ktPct=S.kt.pct;
-      const ashikiri=ktPct<meta.ashikiriPct;
-      const ktEquivDev=50+(ktPct-62)/1.36;
-      const wSec=meta.secRatio/100;
-      const effDev=ktEquivDev*(1-wSec)+(S.xs-bunriPen+(secDevOf(S,meta)-S.a))*wSec+(item.mode==='nat_koki'?-1.5:0);
-      const pz=ashikiri?0.01:1/(1+Math.exp(-(effDev-d)/2.3));
-      const ok=!ashikiri&&RR(S.seed,T,100+i)<pz;
-      const tag=item.mode==='nat_koki'?'後期':'前期';
-      const detail=ashikiri
-        ?`共テ ${ktPct.toFixed(1)}%（足切り ${meta.ashikiriPct}%未満）`
-        :`共テ${100-meta.secRatio}%＋二次${meta.secRatio}%${bunriPen>0?' [文理不一致減点]':''}`;
-      const surplus=ashikiri?-99:effDev-d;
-      res.push({idx:item.idx,mode:item.mode,tag,pz,ok,surplus,detail});
-      if(ok&&d>best){best=d;bn=item.idx;bestSurplus=surplus;}
-    }else{
-      const ktBonus=(S.kt.pct-meta.kyoteBorderPct)*0.08;
-      const eff=S.xs+ktBonus-bunriPen+(secDevOf(S,meta)-S.a);
-      const pz=1/(1+Math.exp(-(eff-d)/2.4));
-      const ok=RR(S.seed,T,100+i)<pz;
-      const surplus=eff-d;
-      res.push({idx:item.idx,mode:item.mode,pz,ok,surplus,detail:`個別学力試験（指数 ${eff.toFixed(1)} / 目安 ${d}${bunriPen>0?' 文理不一致':''}）`});
-      if(ok&&d>best){best=d;bn=item.idx;bestSurplus=surplus;}
-    }
-  });
-  return{rv:best,bn,res,bestSurplus};
 }
 
 function exam(S,ap){const L=SCH[S.si],T=S.t+1000*S.si;S.xs=S.a+(S.h-60)/12+G(S.seed,T,50)*1.8;
@@ -2245,12 +2266,11 @@ function sim(o){const S=ns(o.b,o.si,o.seed,o.a,o.p);S.len=o.len;rollEv(S);
    S.act=o.af?o.af(S.t):0;S.sk=o.sk;
    step(S);
  }
- if(o.si===2){runKyotsu(S);S.fi=Math.max(0,SCH[2].slice(0,-1).findIndex(s=>s[1]<=S.a+6));S.nijiStrat=o.strat??1;S.ap=(o.ap&&o.ap[0]&&typeof o.ap[0]==='object')?o.ap:autoUniApp(S);evalKyoteEarly(S);const y=examUniFull(S);return{rv:y.rv,bn:y.bn,h:S.hrs}}
  const x=exam(S,o.ap||auto(S));return{rv:x.rv,bn:x.bn,h:S.hrs}}
 
 function analyze(S){
- const apIdx=S.si===2&&Array.isArray(S.ap)?[...new Set(S.ap.map(x=>typeof x==='object'?x.idx:x))]:S.ap;
- const pf=t=>S.paces[t]??BASE_WEEK_HRS[S.si],cf=n=>S.ch[n]??0,bs={b:S.b,si:S.si,len:S.len,a:S.a0,p:S.p0,ap:S.si===2?S.ap:apIdx,strat:S.nijiStrat,af:t=>(S.acts&&S.acts[t])||0,sk:S.sk};
+ const apIdx=S.ap;
+ const pf=t=>S.paces[t]??BASE_WEEK_HRS[S.si],cf=n=>S.ch[n]??0,bs={b:S.b,si:S.si,len:S.len,a:S.a0,p:S.p0,ap:apIdx,af:t=>(S.acts&&S.acts[t])||0,sk:S.sk};
  const rp=d=>t=>[0,1,1,2,2,3][RR(d,t,300)*6|0],rc=d=>n=>RR(d,n,301)<.5?0:1,ra=d=>t=>(RR(d,t,310)*ACT.length)|0;
  const rk=(X,v)=>Math.max(1,Math.round(100*(X.filter(x=>x>v).length+X.filter(x=>x==v).length/2)/X.length));
  const L=[],C=[],E=[],P=[],B=[];
@@ -2258,7 +2278,7 @@ function analyze(S){
   L.push(sim({...bs,seed:d,pf,cf}));
   C.push(sim({...bs,seed:S.seed,pf:rp(d),cf:rc(d),af:ra(d)}).rv);
   E.push(sim({...bs,seed:d,pf:rp(d),cf:rc(d),af:ra(d)}).h);
-  const rb={f:roll(RR(d,0,400),'f'),t:roll(RR(d,0,401),'t'),k:roll(RR(d,0,402),'k')},s0=st0(rb,S.si);B.push(s0.p);
+  const rb={f:roll(RR(d,0,400),'f'),t:roll(RR(d,0,401),'t'),k:roll(RR(d,0,402),'k')},s0=st0(rb);B.push(s0.p);
   P.push(sim({b:rb,si:S.si,len:34,a:s0.a,p:s0.p,seed:d,pf:rp(d),cf:rc(d),af:ra(d)}).rv)}
  const Lr=L.map(x=>x.rv),med=[...Lr].sort((x,y)=>x-y)[60];
  return{p:[rk(B,S.p0),rk(Lr,S.rv),rk(C,S.rv),rk(E,S.hrs),rk(P,S.rv)],sc:Math.round(10000*Math.exp((S.rv-med)/10)),sv:L.slice(0,4).map(x=>x.bn)}}
@@ -2323,7 +2343,7 @@ function closeModal(i){
   }
 }
 function go(v){S.v=v;save();R()}
-function R(){if(S)applySex(S.sx||'m');({diag:Diag,setup:Setup,play:Play,kt:Kt,app:App,niji:Niji,ann:Ann,res:Res})[S.v]()}
+function R(){if(S)applySex(S.sx||'m');({diag:Diag,setup:Setup,play:Play,app:App,early:EarlySelection,ann:Ann,res:Res})[S.v]()}
 function goHome(){Home()}
 
 function showAchievementSparkle(kind='normal'){
@@ -2417,7 +2437,7 @@ function buildDiagResult(){
   S.sx=sx;
   PSX=sx;
   applySex(sx);
-  const base=st0(b,S.si);
+  const base=st0(b);
   S.a=base.a;
   S.p=base.p;
   init();
@@ -2651,7 +2671,7 @@ function Diag(){
 }
 
 function Home(){S=null;show('top');const r=ld('jg_r')||{pl:[],tt:{}},s=ld('jg_s');
- H('stat-my-play-count').textContent=(r.n||r.pl.length)+' 回';H('stat-conquered-unis').textContent=Object.keys(r.sch||{}).length;H('stat-total-unis').textContent=SCH.reduce((x,l)=>x+l.length,0);
+ H('stat-my-play-count').textContent=(r.n||r.pl.length)+' 回';H('stat-conquered-unis').textContent=Object.keys(r.sch||{}).filter(n=>SCH[0].some(x=>x[0]===n)||SCH[1].some(x=>x[0]===n)).length;H('stat-total-unis').textContent=SCH[0].length+SCH[1].length;
  H('stat-unlocked-titles').textContent=Object.keys(r.tt).length;H('stat-max-titles').textContent=TT.length;
  const cb=(f,t,sub,c,bl)=>`<button onclick="${f}" class="rpg-cmd w-full py-3.5 px-3 min-h-[54px] text-left text-sm font-bold ${c}"><span class="cursor-arrow${bl?' always-blink':''}">▶</span> ${t}<span class="block text-[11px] font-normal text-neutral-300 mt-0.5 pl-4">${sub}</span></button>`;
  H('edition-buttons').innerHTML=(s&&!s.over&&s.v?cb('cont()','つづきから再開する',lab(s)+'｜'+ST[s.si],'text-emerald-300 border-emerald-300 bg-[#071a12]',1):'')+cb('startDiag()','★ あなたの診断から始める','性別・成り立ち・得意科目からガチャ性能を診断！','text-amber-300 border-amber-300 bg-[#1a1303]',!(s&&!s.over&&s.v))+Object.keys(ED).map((k,i)=>cb(`newG('${k}')`,ED[k][0],ED[k][1],i?'text-sky-300 border-sky-300':'text-yellow-300 border-yellow-300 bg-[#111936]',false)).join('')+'<div class="grid grid-cols-2 gap-2"><button onclick="bkExport()" class="rpg-cmd py-2 min-h-[44px] text-xs">バックアップ</button><button onclick="bkImport()" class="rpg-cmd py-2 min-h-[44px] text-xs">復元</button></div>';
@@ -2661,6 +2681,7 @@ function Home(){S=null;show('top');const r=ld('jg_r')||{pl:[],tt:{}},s=ld('jg_s'
 function cont(){
   S=ld('jg_s');
   if(S){
+    if(S.si===2){try{localStorage.removeItem('jg_s')}catch(e){}return Home()}
     ensureCareerMeta(S);
     S.mocks=S.mocks||[];
     S.mockMode=S.mockMode||'auto';
@@ -2672,12 +2693,20 @@ function cont(){
   }
   R();
 }
-function newG(k){S={ed:k,stages:ED[k][2],k:0,si:ED[k][2][0],t:0,seed:Math.random()*1e9|0,b:{},ex:true,rr:0,name:'ロト',log:[],meta:makeCareerMeta(),mocks:[],avgMock:null,lastMock:null,mockMode:'auto',mockIdx:null,ui:{hideStat:false,hideLog:false}};S.rr=2;go('setup')}
+function newG(k){S={ed:k,stages:ED[k][2],k:0,si:ED[k][2][0],t:0,seed:Math.random()*1e9|0,b:{},ex:true,rr:0,name:'ロト',log:[],meta:makeCareerMeta(),mocks:[],avgMock:null,lastMock:null,mockMode:'auto',mockIdx:null,mockName:null,mockConfigVersion:3,ui:{hideStat:false,hideLog:false}};S.rr=2;go('setup')}
 function rerollG(){if(!S||S.k!==0||S.rr<=0)return;S.rr--;rollG()}
 
 function setMockSetting(mode,idx,inModal){
   S.mockMode=mode;
-  if(mode==='manual')S.mockIdx=idx;
+  if(mode==='manual'){
+    S.mockIdx=idx;
+    const selected=(getMockList(S)||[])[idx];
+    S.mockName=selected?selected.name:null;
+  }else{
+    S.mockIdx=null;
+    S.mockName=null;
+  }
+  S.mockConfigVersion=2;
   save();
   if(inModal)renderTargetModal();
   if(S.v==='setup')renderSetupMockAndList();
@@ -2705,11 +2734,12 @@ function openMockReportModal(mockIdx){
   if(!m)return;
   if(m.judgment==='A'&&!m._aSparkleShown){m._aSparkleShown=true;showAchievementSparkle('a');save()}
 
-  const avgUpTo=(S.mocks.slice(0,idx+1).reduce((a,b)=>a+b.score,0)/(idx+1)).toFixed(1);
+  const avgUpTo=(mockIndexAverage(S.mocks.slice(0,idx+1))??m.aEst??m.score).toFixed(1);
   if(typeof RetroAudio!=='undefined'){
-    const jSe=(m.judgment==='A'||m.judgment==='B')?'mock_good':(m.judgment==='C'?'mock_mid':'mock_low');
+    const jSe=!m.judgment?'mock_mid':(m.judgment==='A'||m.judgment==='B')?'mock_good':(m.judgment==='C'?'mock_mid':'mock_low');
     RetroAudio.playSE(jSe);
   }
+  const isUniversityStyle=!!m.isUniversityPrep||!!m.isUniversityCrown;
   const jColor=({A:'text-emerald-300 border-emerald-300',B:'text-sky-300 border-sky-300',C:'text-yellow-300 border-yellow-300',D:'text-orange-400 border-orange-400',E:'text-red-400 border-red-400'})[m.judgment]||'text-white border-white';
   const passComment=({
     A:'【安全圏】合格可能性80%以上！この調子で盤石に固めよう。',
@@ -2726,40 +2756,30 @@ function openMockReportModal(mockIdx){
         <span class="text-neutral-300">${m.jumpPen>0?`【飛び級-${m.jumpPen}】`:''}${m.tag}</span>
       </div>
       <div class="text-sm font-bold text-white">${m.name}</div>
-      <div class="text-[11px] text-neutral-300">受験者：${S.name||'ロト'}（${ST[S.si]}${S.bunri==='bun'?'・文系':S.bunri==='ri'?'・理系':''}）</div>
+      <div class="text-[11px] text-neutral-300">受験者：${S.name||'ロト'}（${ST[S.si]}）</div>
     </div>
 
     <!-- 総合偏差値・得点・志望校判定 -->
-    <div class="grid grid-cols-3 gap-1.5 text-center">
+    <div class="grid ${isUniversityStyle?'grid-cols-2':'grid-cols-3'} gap-1.5 text-center">
       <div class="border-2 border-yellow-300 bg-[#141103] p-2">
         <div class="text-[10px] text-neutral-300">総合偏差値</div>
         <div class="text-lg font-bold text-yellow-300">${m.score.toFixed(1)}</div>
-        <div class="text-[10px] text-emerald-300">平均 ${avgUpTo}</div>
+        <div class="text-[10px] text-neutral-300">模試間補正・累積指数 ${avgUpTo}</div>
       </div>
       <div class="border border-neutral-600 bg-[#0c0c14] p-2">
         <div class="text-[10px] text-neutral-300">合計得点</div>
         <div class="text-sm font-bold text-white mt-0.5">${m.totScore}<span class="text-[10px] text-neutral-400">/${m.totMax}</span></div>
         <div class="text-[10px] text-sky-300">上位 ${m.natTopPct.toFixed(1)}%</div>
       </div>
-      <div class="border-2 ${jColor} bg-[#0c0c14] p-2">
-        <div class="text-[10px] text-neutral-300">志望校判定</div>
-        <div class="text-lg font-bold ${jColor.split(' ')[0]}">${m.judgment}判定</div>
-        <div class="text-[10px] text-neutral-300">目安 ${m.targetDev}</div>
-      </div>
+      ${isUniversityStyle?`<div class="col-span-2 border border-sky-400 bg-[#08121c] p-2"><div class="text-[10px] text-neutral-300">大学先取り・特例模試</div><div class="font-bold text-sky-300">高校受験のA〜E判定は対象外</div><div class="text-[10px] text-neutral-300">${m.isUniversityPrep?'英語・数学・国語の3教科':'大学別形式の総合課題'}として評価</div></div>`:`<div class="border-2 ${jColor} bg-[#0c0c14] p-2"><div class="text-[10px] text-neutral-300">志望校判定</div><div class="text-lg font-bold ${jColor.split(' ')[0]}">${m.judgment}判定</div><div class="text-[10px] text-neutral-300">目安 ${m.targetDev}</div></div>`}
     </div>
 
     <!-- 全国順位 ＆ 第一志望者内順位 -->
     <div class="border border-neutral-600 bg-[#0c0c14] p-2.5 space-y-1.5">
-      <div class="text-yellow-300 font-bold text-[11px]">▼ 順位・母集団データ</div>
-      <div class="flex justify-between text-xs border-b border-neutral-800 pb-1">
-        <span class="text-neutral-300">全国総合順位</span>
-        <span><b class="text-yellow-300">${m.natRank.toLocaleString()} 位</b> / ${m.pop.toLocaleString()}人中</span>
-      </div>
-      <div class="flex justify-between text-xs">
-        <span class="text-neutral-300 truncate pr-2">第一志望内（${m.targetName}）</span>
-        <span class="shrink-0"><b class="text-sky-300">${m.targetRank.toLocaleString()} 位</b> / ${m.targetPop.toLocaleString()}人</span>
-      </div>
-      <div class="text-[10px] text-neutral-300 pt-0.5">${passComment}</div>
+      <div class="text-yellow-300 font-bold text-[11px]">▼ 順位・判定</div>
+      <div class="flex justify-between text-xs border-b border-neutral-800 pb-1"><span class="text-neutral-300">全国総合順位（ゲーム内推定）</span><span><b class="text-yellow-300">${m.natRank.toLocaleString()} 位</b></span></div>
+      ${isUniversityStyle?`<div class="text-[10px] text-neutral-300">大学先取り課題のゲーム内順位。高校受験の志望校順位・合格判定は算出しません。</div>`:`<div class="flex justify-between text-xs"><span class="text-neutral-300 truncate pr-2">第一志望内（${m.targetName}）</span><span class="shrink-0"><b class="text-sky-300">${m.targetRank.toLocaleString()} 位</b></span></div><div class="text-[10px] text-neutral-300 pt-0.5">${passComment}</div>`}
+      <div class="text-[10px] text-neutral-400 border-t border-neutral-800 pt-1">※順位・母集団はゲーム内の能力値から算出したシミュレーションです。実際の模試の参加者数・順位ではありません。</div>
     </div>
 
     <!-- 各教科別 偏差値・得点・前回比・順位テーブル -->
@@ -2767,7 +2787,7 @@ function openMockReportModal(mockIdx){
       <div class="text-amber-300 font-bold text-[11px]">▼ 教科別 成績詳細（偏差値・得点・科目順位）</div>
       ${(m.subs||[]).map(sub=>{
         const barW=Math.max(8,Math.min(100,(sub.dev-25)*1.65));
-        const dTxt=sub.delta==null?'(初)':sub.delta>=0?`(+${sub.delta.toFixed(1)})`:`(${sub.delta.toFixed(1)})`;
+        const dTxt=sub.delta==null?'(同一模試の比較なし)':sub.delta>=0?`(+${sub.delta.toFixed(1)})`:`(${sub.delta.toFixed(1)})`;
         const dCol=sub.delta==null?'text-neutral-400':sub.delta>=0?'text-emerald-300':'text-red-400';
         const devCol=sub.dev>=65?'text-yellow-300':sub.dev>=55?'text-sky-300':sub.dev>=45?'text-white':'text-red-400';
         return`<div class="border border-neutral-700 bg-[#0c0c14] p-2 space-y-1">
@@ -2777,7 +2797,7 @@ function openMockReportModal(mockIdx){
           </div>
           <div class="flex justify-between text-[10px] text-neutral-300">
             <span>得点：${sub.score} / ${sub.maxPts}点</span>
-            <span>科目順位：${sub.rank.toLocaleString()}位（上位${sub.topPct.toFixed(1)}%）</span>
+            <span>ゲーム内推定順位：${sub.rank.toLocaleString()}位（上位${sub.topPct.toFixed(1)}%）</span>
           </div>
           <div class="w-full h-1.5 bg-neutral-900"><div class="h-full bg-amber-300" style="width:${barW}%"></div></div>
         </div>`;
@@ -2796,13 +2816,14 @@ function processMockMilestones(x,r){
   else if(r.natRank<=10&&!r._top10SparkleShown){r._top10SparkleShown=true;if(x===S)showAchievementSparkle('top10')}
   if(x.si===1&&r.qualifiesSundaiTop10&&r.natRank<=10&&!m.sundai10){
     m.sundai10=true;
-    x.log.push('【特別解放】駿台全国模試で全国10傑を達成！中学生向けに大学受験模試の飛び級枠が解放された。');
-    if(x===S)showToast('＊ 駿台模試10傑！大学受験模試が解放！');
   }
-  if(r.isKanmuri){
-    m.crownTop1Streak=r.natRank===1?(m.crownTop1Streak||0)+1:0;
-    if(m.crownTop1Streak===2)grantEarlyUniversityInvite(x,'冠模試で全国1位を連続達成');
+  if(x.si===1&&r.isUniversityCrown&&r.natRank===1){
+    m.universityCrownTop1Count=(m.universityCrownTop1Count||0)+1;
+    x.log=x.log||[];
+    x.log.push(`【模試】${r.name}で全国1位！`);
+    if(x===S){showToast('＊ 全国1位！');showAchievementSparkle('first')}
   }
+  checkEarlyUniversityQualification(x);
   save();
 }
 function st1(){
@@ -2811,10 +2832,11 @@ function st1(){
   if(S.lastMockRec){
     const r=S.lastMockRec;
     const jumpStr=r.jumpPen>0?`【飛び級-${r.jumpPen}】`:'';
-    S.log.push(`【模試】${o}：${jumpStr}${r.name} → 総合 ${r.score.toFixed(1)}（${r.judgment}判定／全国${r.natRank.toLocaleString()}位）${S.msg?' ＊'+S.msg:''}`);
+    const mockJudge=r.judgment?`${r.judgment}判定`:(r.isUniversityCrown?'大学別評価':r.isUniversityPrep?'大学先取り評価':'判定なし');
+    S.log.push(`【模試】${o}：${jumpStr}${r.name} → 総合 ${r.score.toFixed(1)}（${mockJudge}／ゲーム内推定${r.natRank.toLocaleString()}位）${S.msg?' ＊'+S.msg:''}`);
     processMockMilestones(S,r);
   }else{
-    const avgTxt=S.avgMock!=null?`平均 ${S.avgMock.toFixed(1)} 維持`:'模試なし';
+    const avgTxt=S.avgMock!=null?`学力指数 ${S.avgMock.toFixed(1)} 維持`:'模試なし';
     S.log.push(`${o}：週${wTotal}h学習（${avgTxt}）${S.msg?' ＊'+S.msg:''}`);
   }
   S.log=S.log.slice(-40);
@@ -2822,16 +2844,15 @@ function st1(){
 
 function Play(){
   if(S.t>=S.len){
+    const meta=ensureCareerMeta(S);
+    if(S.si===1&&meta.earlyInvite&&!S.earlySelectionUsed&&!S.earlySelectionDeclined)return go('early');
     if(S.ex===false)return nx2();
-    if(S.si===2){
-      if(!S.kt)runKyotsu(S);
-      return go('kt');
-    }
     return go('app');
   }
   S.mocks=S.mocks||[];
   S.mockMode=S.mockMode||'auto';
   S.ui=S.ui||{hideStat:false,hideLog:false};
+  if(!S.ui.init){S.ui.init=1;S.ui.hideStat=S.ui.hideLog=S.ui.hideStudy=true}
   const cur=getCurriculum(S);
   if(!S.subA||S.subA.length!==cur.length)S.subA=cur.map(()=>S.a);
   if(!S.subHrs||S.subHrs.length!==cur.length)S.subHrs=distributeIntHours(BASE_WEEK_HRS[S.si],cur.map(c=>c.w));
@@ -2840,13 +2861,11 @@ function Play(){
   show('game');
   H('meta-notice-panel').innerHTML=renderCareerNotices(S);
 
-  const L=SCH[S.si],f=L[S.fi],ne=S.ex===false,spec=getMockSpec(S);
+  const L=SCH[S.si],f=L[S.fi],ne=S.ex===false,nextMock=getNextMockInfo(S),spec=nextMock?nextMock.spec:null;
   const jumpPen=calcJumpPenalty(S,spec);
   const hasMock=S.mocks.length>0&&S.avgMock!=null;
   const dispDev=hasMock?S.avgMock:null;
   const lastDev=hasMock?(S.lastMock!=null?S.lastMock:S.mocks[S.mocks.length-1].score):null;
-  const df=hasMock?(dispDev-examT(spec,f)):-99;
-  const j=judgeDf(df);
   const m=Math.min(S.h,S.m);
   const T=(i,v)=>H(i).textContent=v;
 
@@ -2855,48 +2874,34 @@ function Play(){
   T('game-turns-left','あと '+(S.len-S.t));
 
   // 文理選択バッジ表示
-  const bBadge=H('hud-bunri-badge');
-  if(S.si===2&&S.bunri){
-    bBadge.classList.remove('hidden');
-    if(S.bunri==='bun'){
-      bBadge.textContent='文系';
-      bBadge.className='text-[10px] px-1.5 py-0.5 font-bold shrink-0 border border-amber-300 text-amber-300 bg-[#1a1302]';
-    }else{
-      bBadge.textContent='理系';
-      bBadge.className='text-[10px] px-1.5 py-0.5 font-bold shrink-0 border border-sky-300 text-sky-300 bg-[#051629]';
-    }
-  }else{
-    bBadge.classList.add('hidden');
-  }
+  H('hud-bunri-badge').classList.add('hidden');
 
   T('hud-hero-name',S.name||'ロト');
   T('hud-trait-tag',TAL[S.b.k][0]+(S.juku!=null?'・'+JUKU[S.si][S.juku][0]:''));
 
-  if(ne){
-    T('hud-judgment','内部進学');
-    H('hud-judgment').className='text-xs font-bold text-emerald-300';
-  }else if(!hasMock){
-    T('hud-judgment','未判定');
+  const latestMock=S.mocks&&S.mocks.length?S.mocks[S.mocks.length-1]:null;
+  if(!hasMock||!latestMock||!latestMock.judgment){
+    T('hud-judgment',latestMock?(latestMock.isUniversityCrown?'大学別評価':'大学先取り評価'):'未判定');
     H('hud-judgment').className='text-xs font-bold text-neutral-400';
   }else{
-    T('hud-judgment',j+'判定');
-    H('hud-judgment').className='text-sm font-bold '+({A:'text-emerald-300',B:'text-sky-300',C:'text-yellow-300',D:'text-orange-400',E:'text-red-400'})[j];
+    T('hud-judgment',latestMock.judgment+'判定');
+    H('hud-judgment').className='text-sm font-bold '+({A:'text-emerald-300',B:'text-sky-300',C:'text-yellow-300',D:'text-orange-400',E:'text-red-400'})[latestMock.judgment];
   }
 
   // 平均偏差値 & 直近模試偏差値 デュアル表示
   if(hasMock){
     T('hud-dev',dispDev.toFixed(1));
-    T('hud-dev-diff',`(${S.mocks.length}回)`);
+    T('hud-dev-diff',`全${S.mocks.length}回を模試間補正`);
     H('hud-dev-diff').className='text-[10px] text-emerald-300';
 
     T('hud-last-dev',lastDev.toFixed(1));
-    if(S.mocks.length>=2){
+    if(S.mocks.length>=2&&S.mocks[S.mocks.length-2].name===latestMock.name){
       const prev=S.mocks[S.mocks.length-2].score;
       const d=Math.round((lastDev-prev)*10)/10;
-      T('hud-last-diff',d>=0?`(+${d.toFixed(1)})`:`(${d.toFixed(1)})`);
+      T('hud-last-diff',d>=0?`同一模試 (+${d.toFixed(1)})`:`同一模試 (${d.toFixed(1)})`);
       H('hud-last-diff').className='text-[10px] '+(d>=0?'text-emerald-300':'text-red-400');
     }else{
-      T('hud-last-diff','(初回)');
+      T('hud-last-diff',S.mocks.length>=2?'別模試のため比較なし':'初回');
       H('hud-last-diff').className='text-[10px] text-neutral-400';
     }
   }else{
@@ -2915,18 +2920,11 @@ function Play(){
   T('hud-knowledge',Math.round(S.y));H('hud-youth-bar').style.width=S.y+'%';
 
   const bTag=f[2]?.bunri&&f[2].bunri!=='共'?`[${f[2].bunri}]`:'';
-  T('hud-target-uni',ne?`${S.jhSchool?S.jhSchool+'から内部進学':'高校受験しない'}（受験なし）`:`第一志望：${f[0]}${bTag} (目安 ${f[1]})`);
-  const btnTgt=H('btn-hud-target'),btnHs=H('btn-hs-exam-toggle');
-  if(btnTgt)btnTgt.classList.toggle('hidden',ne);
-  if(btnHs){
-    btnHs.classList.toggle('hidden',S.si!==1);
-    if(S.si===1){
-      btnHs.textContent=ne?'やっぱりやる':'やっぱり辞める';
-      btnHs.className='rpg-cmd text-[11px] px-2 py-1 min-h-[32px] shrink-0 '+(ne?'text-yellow-300 border-yellow-300':'text-red-400 border-red-400');
-    }
-  }
+  T('hud-target-uni',ne?`模試判定校：${f[0]}（高校受験なし）`:`第一志望：${f[0]}${bTag} (目安 ${f[1]})`);
+  const btnTgt=H('btn-hud-target');
+  if(btnTgt)btnTgt.classList.toggle('hidden',false);
   const jumpBadge=jumpPen>0?`【飛び級-${jumpPen}】`:'';
-  T('hud-mock-info',ne?'模試対象外':`模試：${jumpBadge}${spec.name}（${nextMockLabel(S)}）`);
+  T('hud-mock-info',`次の模試：${spec?`${jumpBadge}${spec.name}`:'予定なし'}（${nextMockLabel(S)}）`);
   H('status-window-box').className=(m<=25?'rpg-window-danger':m<=50?'rpg-window-warn':'rpg-window')+' p-2.5 space-y-2';
 
   // ステータス「引っ込める」制御
@@ -2950,33 +2948,12 @@ function Play(){
   // コマンド／イベント／週間1時間単位勉強配分パネル描画
   const cmd=(f,t,d,on)=>`<button onclick="${f}" class="rpg-cmd p-2.5 min-h-[48px] text-left ${on?'border-yellow-300 text-yellow-300 bg-[#141a33]':''}"><div class="text-xs sm:text-sm font-bold"><span class="cursor-arrow">▶</span> ${t}</div>${d?`<div class="text-[10px] text-neutral-300 pl-3.5 mt-0.5 leading-snug">${d}</div>`:''}</button>`;
 
-  if(S.ev==='bunri'){
-    H('command-panel').className='rpg-window-gold p-3 space-y-2.5 animate-retro-pop';
-    H('command-panel').innerHTML=`
-      <div class="flex items-center justify-between">
-        <span class="text-xs font-bold text-yellow-300">★ 重要イベント：高1 11月 文理選択 ★</span>
-        <span class="text-[10px] text-amber-300">必須選択</span>
-      </div>
-      <div class="text-sm font-bold text-white border-b border-yellow-300/40 pb-2 leading-snug">
-        進路調査の最終提出！文系・理系どちらのコースに進む？
-      </div>
-      <p class="text-[11px] text-neutral-300 leading-relaxed">
-        選択すると週間勉強配分の科目と模試の集計科目が切り替わります。（現在の第一志望：${f[0]} ${bTag}）
-      </p>
-      <div class="grid grid-cols-1 gap-2">
-        ${cmd('pick(0)','文系コースに進む（英語・国語・地歴公民重視）','',false)}
-        ${cmd('pick(1)','理系コースに進む（英語・数学・理科重視）','',false)}
-      </div>`;
-  }else if(S.ev==='elec'){
-    const k=elecNext(S),opts=ELEC[S.bunri][k];
-    H('command-panel').className='rpg-window-gold p-3 space-y-2.5 animate-retro-pop';
-    H('command-panel').innerHTML=`<div class="flex items-center justify-between"><span class="text-xs font-bold text-yellow-300">★ 科目選択</span><span class="text-[10px] text-amber-300">必須選択</span></div><div class="text-sm font-bold text-white leading-snug">受験で使う${k==='soc'?'地歴公民':'理科'}を選ぼう</div><div class="grid grid-cols-1 gap-2">${opts.map((o,i)=>cmd(`pick(${i})`,o[0],'',false)).join('')}</div>`;
-  }else if(S.ev!=null){
+  if(S.ev!=null){
     H('command-panel').className='rpg-window-gold p-3 space-y-2.5 animate-retro-pop';
     H('command-panel').innerHTML=`<div class="flex items-center justify-between"><span class="text-xs font-bold text-yellow-300">★ 出来事発生！</span><span class="text-[10px] text-neutral-300">選択してください</span></div><div class="text-sm font-bold text-white border-b border-yellow-300/40 pb-2 leading-snug">${EV[S.ev][0]}</div><div class="grid grid-cols-1 gap-2">${[0,1].map(i=>cmd(`pick(${i})`,EV[S.ev][i+1][0],'')).join('')}</div>`;
   }else{
     H('command-panel').className='rpg-window p-3 space-y-2.5';
-    const nextIsMock=!ne&&isMockMonth(S);
+    const nextIsMock=isMockMonth(S);
     const goLabel=nextIsMock?(jumpPen>0?`1か月すごす（★飛び級模試 -${jumpPen}！）`:'1か月すごす（★今月は模試＋成績返却！）'):'1か月すごす';
     const weekTotal=getTotalWeekHrs(S);
     const baseW=BASE_WEEK_HRS[S.si];
@@ -2986,7 +2963,7 @@ function Play(){
 
     H('command-panel').innerHTML=`
       <div class="flex items-center justify-between gap-2">
-        <span class="text-xs text-yellow-300 font-bold">▼ 週間勉強時間配分</span>
+        <span class="text-xs text-yellow-300 font-bold">▼ 勉強配分・行動</span>
         <span class="text-[11px] font-bold ${loadCol} text-right">週 ${weekTotal}h（${loadLabel}）<span class="block text-[10px] text-neutral-400 font-normal">今の体力・やる気の上限：約${Math.floor(baseW*capRatio(S))}h</span></span>
         <button onclick="togglePanel('hideStudy')" class="rpg-cmd px-2 py-1 min-h-[30px] text-[11px] shrink-0">${S.ui.hideStudy?'▼ 開く':'▲ たたむ'}</button>
       </div>
@@ -3026,26 +3003,20 @@ function Play(){
           </div>`;
         }).join('')}
       </div>
-      </div>
 
       <div class="text-xs text-yellow-300 font-bold">▼ 今月の行動（1つ選ぶ）</div><div class="grid grid-cols-2 gap-1.5">${ACT.map((a,i)=>cmd(`S.act=${i};Play()`,a[0],a[1],(S.act||0)===i)).join('')}</div>
+      </div>
       ${olyHtml(S)}
-      ${S.si===1?`<div class="border border-neutral-600 bg-[#0c0c14] px-2.5 py-2 flex items-center justify-between gap-2 text-xs">
-        <span class="truncate ${ne?'text-emerald-300':'text-sky-300'} font-bold">${ne?(S.jhSchool?S.jhSchool+'・内部進学中':'高校受験：しない'):'高校受験：する'}</span>
-        <button onclick="toggleHighSchoolExam(${ne?'true':'false'})" class="rpg-cmd px-2.5 py-1 min-h-[34px] text-[11px] font-bold shrink-0 ${ne?'text-yellow-300 border-yellow-300':'text-red-400 border-red-400'}">
-          <span class="cursor-arrow">▶</span> ${ne?'やっぱりやる':'やっぱり辞める'}
-        </button>
-      </div>`:''}
       <!-- 進行ボタン群 -->
       <div class="grid grid-cols-1 gap-2 pt-0.5">
         ${btn('nx()',goLabel,'text-yellow-300 border-yellow-300 bg-[#111936]')}
         <div class="grid grid-cols-2 gap-1.5">
-          <button onclick="auMock()" ${ne?'disabled':''} class="rpg-cmd py-2.5 px-2 min-h-[44px] text-xs font-bold text-amber-300 border-amber-300"><span class="cursor-arrow">▶</span> 次の模試まで</button>
+          <button onclick="auMock()" class="rpg-cmd py-2.5 px-2 min-h-[48px] text-xs font-bold text-amber-300 border-amber-300"><span class="cursor-arrow">▶</span> 次の模試まで</button>
           <button onclick="au()" class="rpg-cmd py-2.5 px-2 min-h-[44px] text-xs font-bold text-sky-300 border-sky-300"><span class="cursor-arrow">▶</span> 出来事まで進める</button>
         </div>
       </div>`;
   }
-  if(S.ev==null&&S.choiceResult){
+  if(false&&S.ev==null&&S.choiceResult){
     const r=S.choiceResult;
     H('command-panel').innerHTML=`
       <div class="border-2 border-emerald-300 bg-[#07140e] p-2.5 space-y-1.5">
@@ -3075,26 +3046,18 @@ function setChoiceResult(title,choice,summary,before=null){
 
 function choiceStatsSnapshot(){return{h:S.h,m:S.m,c:S.c,y:S.y,a:S.a}}
 
+var JG_SAY_T=null,JG_SAY_FULL='';
+function jgSay(){
+  var r=S&&S.choiceResult;if(!r)return;S.choiceResult=null;
+  JG_SAY_FULL=(S.name||'ロト')+'は「'+r.choice+'」を選んだ。\n'+r.summary+(r.changes.length?'\n'+r.changes.join('　'):'');
+  H('say-title').textContent=r.title;
+  var el=H('say-text'),i=0;el.textContent='';H('say-next').style.visibility='hidden';
+  H('modal-say').classList.remove('hidden');clearInterval(JG_SAY_T);
+  JG_SAY_T=setInterval(function(){i++;el.textContent=JG_SAY_FULL.slice(0,i);if(i>=JG_SAY_FULL.length)jgSayDone()},22);
+}
+function jgSayDone(){clearInterval(JG_SAY_T);JG_SAY_T=null;H('say-text').textContent=JG_SAY_FULL;H('say-next').style.visibility='visible'}
+function jgSayTap(){if(JG_SAY_T)jgSayDone();else H('modal-say').classList.add('hidden')}
 function pick(i){
-  if(S.ev==='elec'){
-    const k=elecNext(S),o=ELEC[S.bunri][k][i];
-    S.elec=S.elec||{};S.elec[k]=i;S.ev=null;
-    S.subHrs=distributeIntHours(getTotalWeekHrs(S)||BASE_WEEK_HRS[2],getCurriculum(S).map(c=>c.w));
-    S.log.push(`【重要】科目選択 →「${o[0]}」を選択！`);
-    setChoiceResult('科目選択',o[0],`${k==='soc'?'地歴公民':'理科'}の選択を週間勉強配分に反映しました。`);
-    if(typeof RetroAudio!=='undefined')RetroAudio.playSE('good');
-    Play();return;
-  }
-  if(S.ev==='bunri'){
-    const label=i===0?'文系コース':'理系コース';
-    const before=choiceStatsSnapshot();
-    S.log.push(`【重要】高1 11月 文理選択 →「${label}」を選択！`);
-    pk(S,i);
-    setChoiceResult('高1 11月・文理選択',label,`週間勉強配分と模試の集計科目を${i===0?'文系':'理系'}向けに切り替えました。`,before);
-    if(typeof RetroAudio!=='undefined')RetroAudio.playSE('good');
-    Play();
-    return;
-  }
   const e=EV[S.ev];
   const choice=e[i+1][0];
   const before=choiceStatsSnapshot();
@@ -3106,6 +3069,7 @@ function pick(i){
   S.log.push(`出来事「${e[0]}」→「${choice}」${S.evRes||''}`);
   if(typeof RetroAudio!=='undefined')RetroAudio.playSE(isPositive?'good':'bad');
   Play();
+  jgSay();
 }
 
 function nx(){
@@ -3150,259 +3114,155 @@ function auMock(){
 }
 
 /* =================================================================
-   Phase A (大学受験): 1月中旬 大学入学共通テスト（1000点満点）＆ 自己採点速報
+   中学生限定：大学特例選抜（招待状を得た場合のみ・一度限り）
+   基準値はゲーム内の難易度で、実際の大学偏差値ではない。
    ================================================================= */
-function Kt(){
-  show('exam');
-  if(!S.kt)runKyotsu(S);
-  const kt=S.kt;
-  const f=SCH[2][S.fi||0];
-  const fMeta=getUniMeta(f);
-  const borderPct=fMeta.isNat?fMeta.ktBorderPct:fMeta.kyoteBorderPct;
-  const diffPct=Math.round((kt.pct-borderPct)*10)/10;
-  const j=diffPct>=3?'A判定':diffPct>=0?'B判定':diffPct>=-3?'C判定':diffPct>=-6?'D判定':'E判定';
-  const jColor=diffPct>=3?'text-emerald-300':diffPct>=0?'text-sky-300':diffPct>=-3?'text-yellow-300':diffPct>=-6?'text-orange-400':'text-red-400';
-
-  H('exam-phase-sub').textContent='★ 1月中旬 大学入学共通テスト 自己採点速報 ★';
-  H('exam-boss-header').textContent='大学入学共通テスト（1000点満点）';
-  H('boss-battle-arena').classList.add('hidden');
-  H('exam-announcement-area').classList.add('hidden');
-  H('kyotsu-battle-box').classList.remove('hidden');
-
-  H('kyotsu-battle-box').innerHTML=`
-    <div class="rpg-window-gold p-3 text-center space-y-1.5">
-      <div class="text-[11px] text-amber-300">▼ 1000点満点 自己採点総合結果 ▼</div>
-      <div class="text-2xl sm:text-3xl font-bold text-yellow-300">${kt.total} <span class="text-sm text-white">/ 1000点</span></div>
-      <div class="text-xs text-neutral-200">得点率：<b class="text-sky-300">${kt.pct.toFixed(1)}%</b>　｜　共テ換算偏差値：<b class="text-emerald-300">${kt.ktDev.toFixed(1)}</b></div>
-    </div>
-
-    <div class="space-y-1.5">
-      <div class="text-yellow-300 font-bold">▼ 教科別 自己採点内訳（各科目の実力偏差値が反映）</div>
-      ${kt.subs.map(sub=>{
-        const w=Math.round((sub.score/sub.max)*100);
-        return`<div class="border border-neutral-700 p-2 bg-[#0c0c14]">
-          <div class="flex justify-between text-xs">
-            <span>${sub.name}</span>
-            <span><b class="text-yellow-300">${sub.score}</b> / ${sub.max}点 (${w}%)</span>
-          </div>
-          <div class="w-full h-1.5 bg-neutral-900 mt-1"><div class="h-full bg-sky-400" style="width:${w}%"></div></div>
-        </div>`;
-      }).join('')}
-    </div>
-
-    <div class="border-2 border-neutral-600 p-2.5 bg-[#0c0c14] space-y-1">
-      <div class="text-[11px] text-neutral-300">第一志望（${f[0]}）リサーチ判定</div>
-      <div class="flex justify-between items-center text-xs">
-        <span>${fMeta.isNat?'国公立共テボーダー':'共テ利用ボーダー'}：<b>${borderPct}%</b></span>
-        <span class="font-bold ${jColor}">${j}（${diffPct>=0?'+':''}${diffPct.toFixed(1)}%）</span>
-      </div>
-      ${fMeta.isNat&&kt.pct<fMeta.ashikiriPct?`<div class="text-[11px] text-red-400 font-bold">⚠ 警告：第一段階選抜（足切りライン ${fMeta.ashikiriPct}%）を下回っています！</div>`:''}
-    </div>
-
-    <div class="fixed bottom-0 left-0 right-0 z-20 px-3 pb-3 pt-2 bg-gradient-to-t from-[#08080c] via-[#08080c] to-transparent pointer-events-none">
-      <div class="max-w-[540px] mx-auto pointer-events-auto">
-        ${btn("S.ap=null;go('app')",'自己採点をもとに志望校へ出願する（最大5枠）','text-yellow-300 border-yellow-300 bg-[#111936] shadow-lg')}
-      </div>
-    </div>`;
-  save();
+const EARLY_UNIVERSITIES=[
+  {name:'千葉大学',dev:83,group:'国立'},
+  {name:'横浜国立大学',dev:84,group:'国立'},
+  {name:'筑波大学',dev:85,group:'国立'},
+  {name:'北海道大学',dev:86,group:'旧帝大'},
+  {name:'九州大学',dev:87,group:'旧帝大'},
+  {name:'名古屋大学',dev:88,group:'旧帝大'},
+  {name:'東北大学',dev:88,group:'旧帝大'},
+  {name:'神戸大学',dev:89,group:'国立'},
+  {name:'大阪大学',dev:91,group:'旧帝大'},
+  {name:'東京科学大学',dev:92,group:'国立'},
+  {name:'一橋大学',dev:92,group:'国立'},
+  {name:'京都大学',dev:94,group:'旧帝大'},
+  {name:'東京大学',dev:96,group:'旧帝大'},
+  {name:'早稲田大学',dev:92,group:'私立'},
+  {name:'慶應義塾大学',dev:93,group:'私立'},
+  {name:'上智大学',dev:89,group:'私立'}
+];
+function startEarlySelection(){
+  if(!S)return;
+  const meta=ensureCareerMeta(S);
+  if(S.si!==1||!meta.earlyInvite||S.earlySelectionUsed||S.earlySelectionDeclined)return;
+  S.earlyTargetIndex=null;
+  go('early');
 }
-
-/* =================================================================
-   Phase B: 出願画面（si===2は全61大学・552学部学科から5枠出願戦略）
-   ================================================================= */
-function App(){
-  show('exam');
-  if(S.si===2)return AppUni();
-
-  const L=SCH[S.si];
-  if(!S.ap)S.ap=auto(S);
-  H('exam-phase-sub').textContent='★ 入学試験 本番 ★';
-  H('exam-boss-header').textContent=ST[S.si]+'　出願';
-  H('boss-battle-arena').classList.add('hidden');
-  H('exam-announcement-area').classList.add('hidden');
-  H('kyotsu-battle-box').classList.remove('hidden');
-
-  H('kyotsu-battle-box').innerHTML=`
-    <div class="flex items-center justify-between gap-2">
-      <span id="app-count-label" class="text-yellow-300 font-bold">▼ 出願校を選ぶ（${S.ap.length}/4校）</span>
-      <button onclick="S.ap=auto(S);renderAppList()" class="rpg-cmd text-[11px] px-2.5 py-1 min-h-[34px] text-sky-300 border-sky-300 shrink-0">▶ おすすめ自動選択</button>
-    </div>
-    <p class="text-neutral-300">平均偏差値：<b class="text-yellow-300">${S.avgMock!=null?S.avgMock.toFixed(1):'未受験'}</b> ／ 直近：<b class="text-sky-300">${S.lastMock!=null?S.lastMock.toFixed(1):'未受験'}</b></p>
-    <div id="app-selected-chips" class="flex flex-wrap gap-1.5 border border-neutral-700 p-2 bg-[#050508]"></div>
-    <input id="app-search-input" type="text" oninput="renderAppList()" placeholder="🔍 出願校を検索..." class="w-full bg-[#08080c] border border-white focus:border-yellow-300 px-3 py-2 text-xs text-white outline-none min-h-[40px]">
-    <div id="app-school-list" class="space-y-1.5 max-h-72 overflow-y-auto pr-1"></div>
-    <div class="fixed bottom-0 left-0 right-0 z-20 px-3 pb-3 pt-2 bg-gradient-to-t from-[#08080c] via-[#08080c] to-transparent pointer-events-none">
-      <div class="max-w-[540px] mx-auto pointer-events-auto">
-        ${btn('fin()','この出願校で本番にのぞむ！','text-red-400 border-red-400 bg-[#1a0508] shadow-lg')}
-      </div>
-    </div>`;
-  renderAppList();
-  save();
-}
-
-function renderAppList(){
-  const L=SCH[S.si];
-  const q=(H('app-search-input')?.value||'').trim();
-  H('app-count-label').textContent=`▼ 出願校を選ぶ（${S.ap.length}/4校）`;
-  H('app-selected-chips').innerHTML=S.ap.map(i=>`<button onclick="tg(${i})" class="inline-flex items-center gap-1 border border-yellow-300 bg-[#161202] text-yellow-300 px-2 py-1 text-[11px]">${L[i][0]} <span class="text-red-400">×</span></button>`).join('')||'<span class="text-neutral-400 text-[11px]">未選択（全入校のみ）</span>';
-  const filtered=L.slice(0,-1).map((s,i)=>({s,i})).filter(x=>okSx(S,x.s)&&(!q||x.s[0].includes(q)||sxName(x.s).includes(q)));
-  H('app-school-list').innerHTML=filtered.map(({s,i})=>{
-    const on=S.ap.includes(i);
-    const pz=Math.round(100/(1+Math.exp(-(S.a-s[1]+PZ0)/2.5)));
-    const badge=pz>=75?'text-emerald-300':pz>=45?'text-yellow-300':'text-red-400';
-    return`<button onclick="tg(${i})" class="rpg-cmd w-full p-2.5 min-h-[44px] text-left flex items-center justify-between ${on?'border-yellow-300 text-yellow-300 bg-[#141a33]':''}"><span><span class="cursor-arrow">${on?'☑':'▶'}</span> ${s[0]} ${sxTag(s)}</span><span class="text-[11px] shrink-0 ml-2">目安${s[1]} <b class="${badge}">(${pz}%)</b></span></button>`;
-  }).join('')||'<p class="text-xs text-neutral-400 py-2 text-center">該当する学校が見つかりません</p>';
-}
-
-function tg(i){const k=S.ap.indexOf(i);if(k>=0)S.ap.splice(k,1);else if(S.ap.length<4)S.ap.push(i);renderAppList();save()}
-
-let appUniFilter='all';
-function setAppUniFilter(f){appUniFilter=f;renderAppUniList();}
-
-function AppUni(){
-  if(!S.kt)runKyotsu(S);
-  ensureCareerMeta(S);
-  if(!S.ap||!Array.isArray(S.ap)||(S.ap.length&&typeof S.ap[0]!=='object'))S.ap=autoUniApp(S);
-  H('exam-phase-sub').textContent='★ 1月下旬 出願戦略（全61大学・国公立/私立一般/共テ利用） ★';
-  H('exam-boss-header').textContent='大学受験　出願（最大5枠）';
-  H('boss-battle-arena').classList.add('hidden');
-  H('exam-announcement-area').classList.add('hidden');
-  H('kyotsu-battle-box').classList.remove('hidden');
-
-  H('kyotsu-battle-box').innerHTML=`
-    <div class="flex items-center justify-between gap-2 bg-[#120e02] border border-amber-300 p-2">
-      <div class="text-[11px]">
-        <span class="text-amber-300 font-bold">共テ：${S.kt.total}/1000点 (${S.kt.pct.toFixed(1)}%)</span>
-        <span class="ml-1 text-neutral-300">${S.bunri==='bun'?'[文系]':S.bunri==='ri'?'[理系]':''}</span><br>
-        <span class="text-neutral-300">平均 ${S.avgMock!=null?S.avgMock.toFixed(1):'―'} ／ 直近 ${S.lastMock!=null?S.lastMock.toFixed(1):'―'}</span>
-      </div>
-      <button onclick="S.ap=autoUniApp(S);renderAppUniList()" class="rpg-cmd text-[11px] px-2.5 py-1.5 min-h-[36px] text-sky-300 border-sky-300 shrink-0">▶ おすすめ出願</button>
-    </div>
-    ${S.meta.earlyInvite?`<div class="rpg-window-gold p-2.5 text-xs space-y-1"><div class="font-bold text-yellow-300">✉ 招待制・大学早期進学選抜が解放されています</div><div class="text-neutral-200">招待状の条件：${S.meta.earlyInviteSources.join(' ／ ')}。各大学の「招待制・早期進学選抜」から出願できます。</div><div class="text-[10px] text-neutral-400">ゲーム内の架空の特別選抜です。招待は合格を保証するものではありません。</div></div>`:''}
-
-    <div class="flex items-center justify-between">
-      <span id="app-uni-count-label" class="text-yellow-300 font-bold">▼ 出願リスト（${S.ap.length}/5枠）</span>
-      <span class="text-[10px] text-neutral-400">国公立前期は1校まで</span>
-    </div>
-    <div id="app-uni-chips" class="flex flex-wrap gap-1.5 border border-neutral-700 p-2 bg-[#050508]"></div>
-
-    <input id="app-uni-search" type="text" oninput="renderAppUniList()" placeholder="🔍 大学名・学部名で検索（例：東大、理3、早稲田、法...）" class="w-full bg-[#08080c] border border-white focus:border-yellow-300 px-3 py-2 text-xs text-white outline-none min-h-[40px]">
-    <div id="app-uni-filters" class="flex flex-wrap gap-1"></div>
-    <div id="app-uni-list" class="space-y-2 max-h-72 overflow-y-auto pr-1"></div>
-
-    <div class="fixed bottom-0 left-0 right-0 z-20 px-3 pb-3 pt-2 bg-gradient-to-t from-[#08080c] via-[#08080c] to-transparent pointer-events-none">
-      <div class="max-w-[540px] mx-auto pointer-events-auto">
-        ${btn('startNijiPhase()','出願を確定して2月決戦へ！','text-red-400 border-red-400 bg-[#1a0508] shadow-lg')}
-      </div>
-    </div>`;
-  renderAppUniList();
-  save();
-}
-
-function toggleUniApp(idx,mode){
-  if(mode==='early'&&!ensureCareerMeta(S).earlyInvite){showToast('＊ 大学からの招待状が必要です！');return;}
-  const pos=S.ap.findIndex(x=>x.idx===idx&&x.mode===mode);
-  if(pos>=0){
-    S.ap.splice(pos,1);
-  }else{
-    if(S.ap.length>=5){showToast('＊ 出願は最大5枠までです！');return;}
-    if(mode==='nat_zenki'&&S.ap.some(x=>x.mode==='nat_zenki')){
-      showToast('＊ 国公立の前期日程は1校のみ出願できます！');
-      return;
-    }
-    if(mode==='nat_koki'&&S.ap.some(x=>x.mode==='nat_koki')){
-      showToast('＊ 国公立の後期日程は1校のみ出願できます！');
-      return;
-    }
-    S.ap.push({idx,mode});
+function EarlySelection(){
+  if(!S||S.si!==1||!ensureCareerMeta(S).earlyInvite||S.earlySelectionUsed||S.earlySelectionDeclined){
+    if(S)go('play');
+    return;
   }
-  renderAppUniList();
+  show('exam');
+  H('exam-phase-sub').textContent='★ 中学生限定・大学特例選抜 ★';
+  H('exam-boss-header').textContent='大学から届いた特別選抜の招待状';
+  H('boss-battle-arena').classList.add('hidden');
+  H('exam-announcement-area').classList.add('hidden');
+  H('kyotsu-battle-box').classList.remove('hidden');
+  H('kyotsu-battle-box').innerHTML=`
+    <div class="rpg-window-gold p-3 space-y-2">
+      <div class="text-yellow-300 font-bold">✉ 特別選抜・受験資格通知</div>
+      <p class="text-white text-xs leading-relaxed">中学生として極めて優秀な実績を収めたため、大学の特別選抜に挑戦する資格が認められました。これは通常の大学受験ではなく、例外的な早期進学選抜です。</p>
+      <div class="text-[10px] text-amber-200">招待理由：${ensureCareerMeta(S).earlyInviteSources.join(' ／ ')}</div>
+      <div class="text-[10px] text-neutral-300">合格すれば選んだ大学へ進学。不合格なら通常の高校受験に戻ります。受験できるのは一度だけです。大学ごとの基準値はゲーム内設定です。</div>
+    </div>
+    <div class="space-y-1.5">
+      <label class="block text-yellow-300 font-bold text-xs">▼ 特別選抜を受ける大学を選択</label>
+      <input id="early-uni-search" type="text" oninput="renderEarlyUniList()" placeholder="大学名で検索（例：千葉、京都、東京）" class="w-full bg-[#08080c] border border-white px-3 py-2 text-xs text-white outline-none min-h-[40px]">
+      <div id="early-uni-selected" class="border border-amber-300 bg-[#120e02] p-2 text-xs text-amber-200">まだ選択されていません</div>
+      <div id="early-uni-list" class="space-y-1 max-h-64 overflow-y-auto pr-1"></div>
+    </div>
+    <div class="space-y-2 pt-1">
+      <button id="early-uni-confirm" onclick="attemptEarlySelection()" class="rpg-cmd w-full py-3 px-3 min-h-[48px] text-sm font-bold text-yellow-300 border-yellow-300 bg-[#171202]" disabled>▶ この大学の特別選抜を受験する</button>
+      <button onclick="declineEarlySelection()" class="rpg-cmd w-full py-2.5 px-3 min-h-[42px] text-xs text-neutral-200">今回は辞退して通常の進路へ進む</button>
+    </div>`;
+  H('choice-buttons-container').innerHTML='';
+  renderEarlyUniList();
+}
+function renderEarlyUniList(){
+  const list=EARLY_UNIVERSITIES;
+  const q=(H('early-uni-search')?.value||'').trim();
+  const selected=S.earlyTargetIndex;
+  const filtered=list.map((u,i)=>({u,i})).filter(({u})=>!q||u.name.includes(q)||u.group.includes(q));
+  H('early-uni-selected').textContent=selected==null?'まだ選択されていません':`選択中：${list[selected].name}（ゲーム内基準 ${list[selected].dev}）`;
+  H('early-uni-list').innerHTML=filtered.map(({u,i})=>`<button onclick="chooseEarlyUni(${i})" class="rpg-cmd w-full p-2.5 min-h-[42px] text-left flex justify-between items-center ${selected===i?'border-yellow-300 text-yellow-300 bg-[#141a33]':''}"><span class="truncate pr-2"><span class="cursor-arrow">${selected===i?'☑':'▶'}</span> ${u.name} <span class="text-[10px] text-neutral-400">${u.group}</span></span><span class="text-[10px] text-neutral-300 shrink-0">基準 ${u.dev}</span></button>`).join('')||'<p class="text-xs text-neutral-400 text-center py-2">該当する大学がありません</p>';
+  const confirm=H('early-uni-confirm');
+  if(confirm)confirm.disabled=selected==null;
+}
+function chooseEarlyUni(i){
+  if(!Number.isInteger(i)||!EARLY_UNIVERSITIES[i])return;
+  S.earlyTargetIndex=i;
   save();
+  renderEarlyUniList();
 }
-
-function modeLabel(mode){
-  return({nat_zenki:'国公立・前期',nat_koki:'国公立・後期',priv_ippan:'私立・一般',priv_kyote:'私立・共テ利用',early:'招待制・早期進学選抜'})[mode]||mode;
+function declineEarlySelection(){
+  if(!S||S.si!==1)return;
+  S.earlySelectionDeclined=true;
+  S.log.push('【大学特例選抜】招待状を辞退し、通常の進路を選択した。');
+  save();
+  if(S.t>=S.len){
+    if(S.ex===false)return nx2();
+    return go('app');
+  }
+  go('play');
 }
-
-function renderAppUniList(){
-  const L=SCH[2];
-  const ktPct=S.kt.pct;
-  const q=(H('app-uni-search')?.value||'').trim();
-  H('app-uni-count-label').textContent=`▼ 出願リスト（${S.ap.length}/5枠）`;
-  H('app-uni-chips').innerHTML=S.ap.map(x=>`<button onclick="toggleUniApp(${x.idx},'${x.mode}')" class="inline-flex items-center gap-1 border ${x.mode==='priv_kyote'?'border-amber-300 text-amber-300 bg-[#181202]':x.mode.startsWith('nat')?'border-emerald-300 text-emerald-300 bg-[#051810]':'border-sky-300 text-sky-300 bg-[#071326]'} px-2 py-1 text-[10px]">${L[x.idx][0]}[${modeLabel(x.mode).split('・')[1]}] <span class="text-red-400">×</span></button>`).join('')||'<span class="text-neutral-400 text-[11px]">未選択（全入校のみ）</span>';
-
-  const fBtns=[['all','すべて'],['文','文系'],['理','理系'],['医','医歯薬'],['難関','難関'],['国公立','国公立'],['MARCH関関同立','MARCH関関'],['中堅','中堅']];
-  H('app-uni-filters').innerHTML=fBtns.map(([k,lbl])=>`<button onclick="setAppUniFilter('${k}')" class="rpg-cmd px-2 py-1 text-[10px] ${appUniFilter===k?'border-yellow-300 text-yellow-300 bg-[#141a33]':'text-neutral-300'}">${lbl}</button>`).join('');
-
-  const filtered=L.slice(0,-1).map((s,i)=>({s,i})).filter(({s})=>{
-    if(q&&!s[0].includes(q))return false;
-    const m=s[2]||{};
-    if(appUniFilter==='all')return true;
-    if(['文','理','医'].includes(appUniFilter))return m.bunri===appUniFilter||m.bunri==='共';
-    if(appUniFilter==='国公立')return m.isNat;
-    return m.grp===appUniFilter;
-  });
-
-  H('app-uni-list').innerHTML=filtered.slice(0,80).map(({s,i})=>{
-    const meta=getUniMeta(s);
-    const mismatch=!isBunriMatch(S.bunri,meta.bunri);
-    if(meta.isNat){
-      const onZenki=S.ap.some(x=>x.idx===i&&x.mode==='nat_zenki');
-      const onKoki=S.ap.some(x=>x.idx===i&&x.mode==='nat_koki');
-      const onEarly=S.ap.some(x=>x.idx===i&&x.mode==='early');
-      const ashikiri=ktPct<meta.ashikiriPct;
-      const diffPct=Math.round((ktPct-meta.ktBorderPct)*10)/10;
-      const bCol=ashikiri?'text-red-400':diffPct>=0?'text-emerald-300':'text-yellow-300';
-      return`<div class="border ${onZenki||onKoki||onEarly?'border-emerald-300 bg-[#071812]':'border-neutral-600 bg-[#0c0c14]'} p-2.5 space-y-1.5">
-        <div class="flex justify-between items-center gap-1">
-          <span class="font-bold text-white"><span class="text-[10px] border border-emerald-400 text-emerald-300 px-1 mr-1">国公立・${meta.bunri}</span>${s[0]}</span>
-          <span class="text-[10px] text-neutral-300 shrink-0">目安${s[1]}</span>
-        </div>
-        <div class="text-[10px] text-neutral-300 flex justify-between">
-          <span>共テボーダー ${meta.ktBorderPct}%（足切り ${meta.ashikiriPct}%）${mismatch?' <b class="text-red-400">⚠文理不一致</b>':''}</span>
-          <span class="font-bold ${bCol}">${ashikiri?'⚠足切り危険':(diffPct>=0?'+':'')+diffPct.toFixed(1)+'%'}</span>
-        </div>
-        <div class="grid ${meta.hasKoki?'grid-cols-2':'grid-cols-1'} gap-1.5 pt-0.5">
-          <button onclick="toggleUniApp(${i},'nat_zenki')" class="rpg-cmd py-2 px-2 min-h-[38px] text-[11px] font-bold ${onZenki?'border-yellow-300 text-yellow-300 bg-[#141a33]':'text-emerald-300 border-emerald-400'}">
-            ${onZenki?'☑ 前期 出願中':'▶ 前期日程に出願'}
-          </button>
-          ${meta.hasKoki?`<button onclick="toggleUniApp(${i},'nat_koki')" class="rpg-cmd py-2 px-2 min-h-[38px] text-[11px] font-bold ${onKoki?'border-yellow-300 text-yellow-300 bg-[#141a33]':'text-teal-300 border-teal-400'}">
-            ${onKoki?'☑ 後期 出願中':'▶ 後期日程に出願'}
-          </button>`:''}
-        </div>
-        ${S.meta?.earlyInvite?`<button onclick="toggleUniApp(${i},'early')" class="rpg-cmd w-full py-2 px-2 min-h-[38px] text-[11px] font-bold ${onEarly?'border-yellow-300 text-yellow-300 bg-[#141a33]':'text-amber-200 border-amber-400'}">${onEarly?'☑ 招待制・早期進学選抜 出願中':'✉ 招待制・早期進学選抜で出願'}</button>`:''}
-      </div>`;
+function attemptEarlySelection(){
+  if(!S||S.si!==1||S.earlySelectionUsed||S.earlyTargetIndex==null)return;
+  const target=EARLY_UNIVERSITIES[S.earlyTargetIndex];
+  if(!target)return;
+  const wellness=(S.h-60)*0.035+(S.m-60)*0.025+(S.c-50)*0.045;
+  const noise=G(S.seed,S.t+30000,770)*1.35;
+  const score=Math.round((S.a+wellness+noise)*10)/10;
+  const gap=score-target.dev;
+  const chance=1/(1+Math.exp(-(gap-2.5)/2.6));
+  const passed=RR(S.seed,S.t+30000,771)<chance;
+  S.earlySelectionUsed=true;
+  S.earlySelectionResult={name:target.name,dev:target.dev,score,prob:chance,passed};
+  S.log.push(`【大学特例選抜】${target.name}を受験。評価指数 ${score.toFixed(1)}／基準 ${target.dev}。結果を待つ。`);
+  if(!passed){
+    S.ex=true;
+    S.earlySelectionFailed=true;
+  }else{
+    S.earlyUniPassed=true;
+    S.earlyUniName=target.name;
+    S.over=true;
+  }
+  save();
+  H('exam-phase-sub').textContent='★ 特別選抜・最終審査 ★';
+  H('exam-boss-header').textContent='大学選抜委員会からの通知';
+  H('kyotsu-battle-box').innerHTML=`
+    <div class="rpg-window p-4 text-center space-y-3">
+      <div class="text-[11px] text-amber-200">${target.name}　特例選抜</div>
+      <div class="text-xs text-neutral-300">提出された成績・実績を最終確認しています。</div>
+      <div id="early-result-stage" class="text-lg font-bold text-white">選考結果を照合中……</div>
+      <div id="early-result-value" class="text-3xl font-bold text-yellow-300 announcement-pulse">？？？</div>
+      <div id="early-result-detail" class="hidden text-xs text-neutral-300">評価指数 ${score.toFixed(1)} ／ 選抜基準 ${target.dev}</div>
+      <div id="early-result-actions" class="hidden space-y-2"></div>
+    </div>`;
+  H('choice-buttons-container').innerHTML='';
+  const token=window._earlySelectionToken=(window._earlySelectionToken||0)+1;
+  setTimeout(()=>{
+    if(window._earlySelectionToken!==token||!S||S.v!=='early')return;
+    H('early-result-stage').textContent='選考結果が届きました。';
+    H('early-result-value').classList.remove('announcement-pulse');
+    H('early-result-value').textContent=passed?'合格':'不合格';
+    H('early-result-value').className='text-3xl font-bold '+(passed?'text-yellow-300':'text-red-400');
+    H('early-result-detail').classList.remove('hidden');
+    const actions=H('early-result-actions');
+    actions.classList.remove('hidden');
+    if(passed){
+      S.log.push(`【特例選抜合格】${target.name}への進学が決定した！`);
+      const r=ld('jg_r')||{pl:[],tt:{}};
+      r.n=(r.n||0)+1;
+      r.pl=r.pl||[];
+      r.pl.unshift(['大学特例選抜',target.name,Math.round(score*100),new Date().toLocaleDateString('ja-JP')]);
+      r.pl=r.pl.slice(0,30);
+      sv('jg_r',r);
+      save();
+      actions.innerHTML=btn("go('res')",'大学進学の結果を見る','text-yellow-300 border-yellow-300');
+      if(typeof RetroAudio!=='undefined')RetroAudio.playSE('pass');
     }else{
-      const onIppan=S.ap.some(x=>x.idx===i&&x.mode==='priv_ippan');
-      const onKyote=S.ap.some(x=>x.idx===i&&x.mode==='priv_kyote');
-      const onEarly=S.ap.some(x=>x.idx===i&&x.mode==='early');
-      const pzIppan=Math.round(100/(1+Math.exp(-(S.a-(mismatch?5.5:0)-s[1])/2.4)));
-      const diffKyote=Math.round((ktPct-meta.kyoteBorderPct)*10)/10;
-      const pzKyote=Math.round(100/(1+Math.exp(-diffKyote/1.35)));
-      return`<div class="border ${onIppan||onKyote||onEarly?'border-yellow-300 bg-[#121629]':'border-neutral-600 bg-[#0c0c14]'} p-2.5 space-y-1.5">
-        <div class="flex justify-between items-center gap-1">
-          <span class="font-bold text-white"><span class="text-[10px] border border-sky-400 text-sky-300 px-1 mr-1">私立・${meta.bunri}</span>${s[0]}</span>
-          <span class="text-[10px] text-neutral-300 shrink-0">目安${s[1]} ${mismatch?'<b class="text-red-400">⚠不一致</b>':''}</span>
-        </div>
-        <div class="grid grid-cols-2 gap-1.5 pt-0.5">
-          <button onclick="toggleUniApp(${i},'priv_ippan')" class="rpg-cmd py-2 px-2 min-h-[40px] text-left text-[10px] ${onIppan?'border-yellow-300 text-yellow-300 bg-[#1a2240]':'text-sky-200 border-sky-400'}">
-            <div class="font-bold">${onIppan?'☑ 一般入試':'▶ 一般入試'}</div>
-            <div class="text-neutral-300">二次勝負 (${pzIppan}%)</div>
-          </button>
-          <button onclick="toggleUniApp(${i},'priv_kyote')" class="rpg-cmd py-2 px-2 min-h-[40px] text-left text-[10px] ${onKyote?'border-yellow-300 text-yellow-300 bg-[#241c04]':'text-amber-200 border-amber-400'}">
-            <div class="font-bold">${onKyote?'☑ 共テ利用':'▶ 共テ利用'}</div>
-            <div class="text-neutral-300">ボーダー${meta.kyoteBorderPct}% (${pzKyote}%)</div>
-          </button>
-        </div>
-        ${S.meta?.earlyInvite?`<button onclick="toggleUniApp(${i},'early')" class="rpg-cmd w-full py-2 px-2 min-h-[38px] text-[11px] font-bold ${onEarly?'border-yellow-300 text-yellow-300 bg-[#141a33]':'text-amber-200 border-amber-400'}">${onEarly?'☑ 招待制・早期進学選抜 出願中':'✉ 招待制・早期進学選抜で出願'}</button>`:''}
-      </div>`;
+      S.log.push('【特例選抜不合格】招待選抜は不合格。通常の高校受験に切り替える。');
+      save();
+      actions.innerHTML=btn("S.t>=S.len?go('app'):go('play')",'高校受験へ戻る','text-sky-300 border-sky-300');
+      if(typeof RetroAudio!=='undefined')RetroAudio.playSE('fail');
     }
-  }).join('')+(filtered.length>80?`<p class="text-[10px] text-neutral-400 text-center py-1">ほか ${filtered.length-80}件（検索ワードで絞り込めます）</p>`:'')||'<p class="text-xs text-neutral-400 py-2 text-center">該当する大学・学部が見つかりません</p>';
+  },2600);
 }
-
-/* =================================================================
-   Phase C (大学受験): 2月 共テ利用速報 ＆ 二次試験（個別学力試験）本番
-   ================================================================= */
 
 /* ===== 科学・言語オリンピック等（目安の対象学年・時期） ===== */
 const OLY=[
@@ -3431,92 +3291,78 @@ function olyEnter(id){const o=OLY.find(x=>x[0]===id),k=id+'_'+S.si+'_'+Math.floo
  S.h=cl(S.h-6);S.m=cl(S.m-3+g[1]);S.c=cl(S.c+g[2]);S.y=cl(S.y+g[3]);
  cur.forEach((c,i)=>{if(o[3].includes(c.key))S.subA[i]=Math.min(AMAX(S),S.subA[i]+g[4])});syncOverallFromSubs(S);
  S.oly[k]=g[0];S.log.push(`【コンテスト】${o[1]}で「${g[0]}」！`);
- if(g[0]==='金賞'){
-   const meta=ensureCareerMeta(S);meta.olyGoldCount++;
-   if(meta.olyGoldCount===2){showAchievementSparkle('gold');grantEarlyUniversityInvite(S,'オリンピック系コンテストで金賞を2回獲得')}
+ if(g[0]==='金賞'||g[0]==='銀賞'){
+   const meta=ensureCareerMeta(S);
+   if(g[0]==='金賞')meta.olyGoldCount++;
+   // 中学生の間にオリンピック系で金賞または銀賞を1回以上。
+   if(S.si===1){
+     meta.middleOlyMedalCount=(meta.middleOlyMedalCount||0)+1;
+     if(g[0]==='金賞')meta.middleOlyGoldCount++;
+     if(meta.middleOlyMedalCount===1)showAchievementSparkle(g[0]==='金賞'?'gold':'a');
+     checkEarlyUniversityQualification(S);
+   }
  }
  save();Play();showToast(`＊ ${o[1]}：${g[0]}`)}
 
-function startNijiPhase(){
-  S.kyoteChecked=false;
-  S.nijiStrat=1;
-  go('niji');
-}
 
-function Niji(){
+function App(){
   show('exam');
-  if(!S.kyoteChecked)evalKyoteEarly(S);
-  const L=SCH[2];
-  const nijiApps=(S.ap||[]).filter(x=>x.mode!=='priv_kyote');
-  const kyotePassed=(S.kyoteResults||[]).filter(x=>x.ok);
 
-  H('exam-phase-sub').textContent='★ 2月 共テ利用速報 ＆ 二次試験（個別学力試験） ★';
-  H('exam-boss-header').textContent='2月決戦：共テ利用速報 ＆ 二次試験';
-  H('kyotsu-battle-box').classList.add('hidden');
+  const L=SCH[S.si];
+  if(!S.ap)S.ap=auto(S);
+  H('exam-phase-sub').textContent='★ 入学試験 本番 ★';
+  H('exam-boss-header').textContent=ST[S.si]+'　出願';
+  H('boss-battle-arena').classList.add('hidden');
   H('exam-announcement-area').classList.add('hidden');
-  H('boss-battle-arena').classList.remove('hidden');
+  H('kyotsu-battle-box').classList.remove('hidden');
 
-  const strats=[
-    ['堅実・安全策（基礎完答重視）','ケアレスミスを徹底防止。実力相応校を確実に仕留める安定型。'],
-    ['標準・実力通り（バランス配分）','普段通りの時間配分で自分の実力をそのまま発揮する。'],
-    ['勝負の攻め（難問完答チャレンジ）','格上校逆転を狙い難問に踏み込む！大当たりすれば爆発力＋、失敗リスクあり。']
-  ];
-
-  H('boss-battle-arena').innerHTML=`
-    <div class="rpg-window p-3 text-xs space-y-2">
-      <div class="text-amber-300 font-bold">▼ 2月上旬 共通テスト利用入試 合格速報</div>
-      ${(S.kyoteResults||[]).length?S.kyoteResults.map(r=>`
-        <div class="border ${r.ok?'border-yellow-300 bg-[#181302]':'border-neutral-700'} p-2 flex justify-between items-center">
-          <div>
-            <div class="font-bold text-white">${r.name}【共テ利用】</div>
-            <div class="text-[10px] text-neutral-300">得点 ${r.myScore}点 ／ ボーダー ${r.borderScore}点</div>
-          </div>
-          <b class="${r.ok?'text-yellow-300':'text-red-400'}">${r.ok?'🌸 合格！':'💀 不合格'}</b>
-        </div>`).join(''):'<p class="text-neutral-400">共通テスト利用入試の出願はありません。</p>'}
-      ${kyotePassed.length?'<div class="text-emerald-300 text-[11px] font-bold">＊ 共テ利用合格で安心感を獲得！（やる気+8・自信+10）</div>':''}
+  H('kyotsu-battle-box').innerHTML=`
+    <div class="flex items-center justify-between gap-2">
+      <span id="app-count-label" class="text-yellow-300 font-bold">▼ 出願校を選ぶ（${S.ap.length}/4校）</span>
+      <button onclick="S.ap=auto(S);renderAppList()" class="rpg-cmd text-[11px] px-2.5 py-1 min-h-[34px] text-sky-300 border-sky-300 shrink-0">▶ おすすめ自動選択</button>
     </div>
-
-    ${nijiApps.length?`
-    <div class="rpg-window p-3 text-xs space-y-2">
-      <div class="text-sky-300 font-bold">▼ 2月 二次試験・私立一般 受験校一覧（${nijiApps.length}校）</div>
-      <div class="space-y-1">
-        ${nijiApps.map(x=>`<div class="border border-neutral-700 px-2.5 py-1.5 flex justify-between gap-2"><span class="truncate">${L[x.idx][0]}</span><span class="text-neutral-300 shrink-0">${modeLabel(x.mode)}</span></div>`).join('')}
-      </div>
-    </div>
-
-    <div class="rpg-window-gold p-3 text-xs space-y-2">
-      <div class="text-yellow-300 font-bold">▼ 二次試験（個別学力試験）の作戦を選ぶ</div>
-      <div class="space-y-1.5">
-        ${strats.map((st,idx)=>`<button onclick="S.nijiStrat=${idx};Niji()" class="rpg-cmd w-full p-2.5 min-h-[46px] text-left ${S.nijiStrat===idx?'border-yellow-300 text-yellow-300 bg-[#141a33]':''}">
-          <div class="font-bold"><span class="cursor-arrow">▶</span> ${st[0]}</div>
-          <div class="text-[10px] text-neutral-300 pl-3.5 mt-0.5">${st[1]}</div>
-        </button>`).join('')}
-      </div>
-    </div>`:`<div class="rpg-window p-3 text-xs text-neutral-300">2月の個別学力試験（二次試験）の出願はありません。</div>`}
-
+    <p class="text-neutral-300">模試間補正指数：<b class="text-yellow-300">${S.avgMock!=null?S.avgMock.toFixed(1):'未受験'}</b> ／ 直近模試偏差値：<b class="text-sky-300">${S.lastMock!=null?S.lastMock.toFixed(1):'未受験'}</b></p>
+    <div id="app-selected-chips" class="flex flex-wrap gap-1.5 border border-neutral-700 p-2 bg-[#050508]"></div>
+    <input id="app-search-input" type="text" oninput="renderAppList()" placeholder="🔍 出願校を検索..." class="w-full bg-[#08080c] border border-white focus:border-yellow-300 px-3 py-2 text-xs text-white outline-none min-h-[40px]">
+    <div id="app-school-list" class="space-y-1.5 max-h-72 overflow-y-auto pr-1"></div>
     <div class="fixed bottom-0 left-0 right-0 z-20 px-3 pb-3 pt-2 bg-gradient-to-t from-[#08080c] via-[#08080c] to-transparent pointer-events-none">
       <div class="max-w-[540px] mx-auto pointer-events-auto">
-        ${btn('finUni()',nijiApps.length?'二次試験を受験し、最終合格発表へ！':'最終合格発表（進路確定）へ進む','text-red-400 border-red-400 bg-[#1a0508] shadow-lg')}
+        ${btn('fin()','この出願校で本番にのぞむ！','text-red-400 border-red-400 bg-[#1a0508] shadow-lg')}
       </div>
     </div>`;
+  renderAppList();
   save();
 }
 
-function awardScholarship(x,surplus){
-  const L=SCH[x.si];
-  if(x.bn==null||x.bn===L.length-1||!Number.isFinite(surplus)||surplus<8){x.scholarship=null;return;}
-  const tier=surplus>=14?'S特待':surplus>=11?'A特待':'B特待';
-  const benefit=tier==='S特待'?'入学金＋授業料 全額免除':tier==='A特待'?'授業料 全額免除':'授業料 半額免除';
-  x.scholarship={tier,benefit,margin:Math.round(surplus*10)/10,school:L[x.bn][0]};
-  if(x===S)showAchievementSparkle('scholarship');
-  x.log=x.log||[];
-  x.log.push(`【特待生認定】${x.scholarship.school}に${tier}で合格！${benefit}。`);
+function renderAppList(){
+  const L=SCH[S.si];
+  const q=(H('app-search-input')?.value||'').trim();
+  H('app-count-label').textContent=`▼ 出願校を選ぶ（${S.ap.length}/4校）`;
+  H('app-selected-chips').innerHTML=S.ap.map(i=>`<button onclick="tg(${i})" class="inline-flex items-center gap-1 border border-yellow-300 bg-[#161202] text-yellow-300 px-2 py-1 text-[11px]">${L[i][0]} <span class="text-red-400">×</span></button>`).join('')||'<span class="text-neutral-400 text-[11px]">未選択（全入校のみ）</span>';
+  const filtered=L.slice(0,-1).map((s,i)=>({s,i})).filter(x=>okSx(S,x.s)&&(!q||x.s[0].includes(q)||sxName(x.s).includes(q)));
+  H('app-school-list').innerHTML=filtered.map(({s,i})=>{
+    const on=S.ap.includes(i);
+    const pz=Math.round(100/(1+Math.exp(-(S.a-s[1]+PZ0)/2.5)));
+    const badge=pz>=75?'text-emerald-300':pz>=45?'text-yellow-300':'text-red-400';
+    return`<button onclick="tg(${i})" class="rpg-cmd w-full p-2.5 min-h-[44px] text-left flex items-center justify-between ${on?'border-yellow-300 text-yellow-300 bg-[#141a33]':''}"><span><span class="cursor-arrow">${on?'☑':'▶'}</span> ${s[0]} ${sxTag(s)}</span><span class="text-[11px] shrink-0 ml-2">目安${s[1]} <b class="${badge}">(${pz}%)</b></span></button>`;
+  }).join('')||'<p class="text-xs text-neutral-400 py-2 text-center">該当する学校が見つかりません</p>';
 }
-function finUni(){
-  const x=examUniFull(S);
-  S.rv=x.rv;S.bn=x.bn;S.xr=x.res;S.admissionSurplus=x.bestSurplus;
-  awardScholarship(S,x.bestSurplus);
-  S.an=analyze(S);rec();go('ann');
+
+function tg(i){const k=S.ap.indexOf(i);if(k>=0)S.ap.splice(k,1);else if(S.ap.length<4)S.ap.push(i);renderAppList();save()}
+
+/* 特待生判定：私立校に合格し、合格ラインを大きく上回った場合のみ（公立・国立附属は対象外） */
+function awardScholarship(S,surplus){
+  S.scholarship=null;
+  const L=SCH[S.si];
+  if(S.bn==null||S.bn===L.length-1||!Number.isFinite(surplus))return;
+  const school=L[S.bn][0];
+  if(/県立|都立|府立|道立|市立|区立|公立|筑波大附属|筑波大学附属|お茶の水女子大附属|東京学芸大附属|大阪教育大附属|広島大附属|金沢大附属|東京科学大附属/.test(school))return;
+  let tier=null,benefit='';
+  if(surplus>=9){tier='S特待生';benefit='入学金・授業料が全額免除';}
+  else if(surplus>=6.5){tier='A特待生';benefit='授業料が全額免除';}
+  else if(surplus>=4.5){tier='特待生';benefit='授業料が半額免除';}
+  if(!tier)return;
+  S.scholarship={tier,school,benefit,margin:surplus};
 }
 function fin(){
   const x=exam(S,S.ap);S.rv=x.rv;S.bn=x.bn;S.xr=x.res;S.admissionSurplus=x.bestSurplus;
@@ -3535,10 +3381,8 @@ function Ann(){
   // 画面を開き直した際、前回のタイマーが混ざらないよう世代番号で管理。
   const announceToken=window._announcementToken=(window._announcementToken||0)+1;
   const results=S.xr||[];
-  const anyPass=S.si===2?results.some(x=>x.ok):(S.bn!=L.length-1);
-  const resultItems=S.si===2
-    ?(results.length?results.map(x=>({name:L[x.idx][0],meta:`[${modeLabel(x.mode)}]`,detail:x.detail||'',ok:!!x.ok})):[{name:'一般・共通テスト利用',meta:'',detail:'出願はありません',ok:null}])
-    :results.map(x=>({name:L[x[0]][0],meta:'',detail:'',ok:!!x[2]}));
+  const anyPass=S.bn!=L.length-1;
+  const resultItems=results.map(x=>({name:L[x[0]][0],meta:'',detail:'',ok:!!x[2]}));
 
   const rowsHtml=resultItems.map((item,i)=>`
     <div id="announcement-row-${i}" class="rpg-window announcement-card is-pending p-2.5 flex justify-between items-center gap-2 text-xs">
@@ -3629,7 +3473,7 @@ function Ann(){
   };
   function revealChoices(){
     if(!stillHere())return;
-    H('choice-buttons-container').innerHTML=(S.si==2&&S.len==34&&S.rv<L[S.fi][1]?btn('ro()','もう1年がんばる（浪人する）','text-red-400 border-red-400'):'')+btn("go('res')",'結果の分析を見る','text-yellow-300 border-yellow-300');
+    H('choice-buttons-container').innerHTML=btn("go('res')",'結果の分析を見る','text-yellow-300 border-yellow-300');
   }
   const countdownTick=()=>{
     if(!stillHere())return;
@@ -3646,26 +3490,25 @@ function Ann(){
   later(720,countdownTick);
 }
 
-function ro(){
-  S.len=46;
-  S.ap=null;
-  S.kt=null;
-  S.kyoteResults=null;
-  S.kyoteChecked=false;
-  S.h=cl(S.h+20);
-  S.m=cl(S.m+10);
-  rollEv(S);
-  go('play');
-}
-
 function Res(){
   show('result');
+  if(S.earlyUniPassed){
+    H('result-clear-badge').textContent='★ 大学特例選抜 合格！ ★';
+    H('result-player-label').textContent=`受験生『${S.name}』の中学生特例進学記録`;
+    H('result-summary-headline').textContent=`${S.earlyUniName} への進学決定`;
+    H('result-sub-detail').textContent=`選抜評価指数 ${S.earlySelectionResult.score.toFixed(1)} ／ 選抜基準 ${S.earlySelectionResult.dev} ／ 通常の高校受験を経ずに特例進学`;
+    H('result-earned-titles').innerHTML='<span class="border border-yellow-300 text-yellow-300 px-2 py-0.5 text-[11px]">大学特例選抜 合格</span>';
+    H('result-epilogue-text').textContent='中学生のうちに極めて稀な実績を積み、大学からの特別選抜に合格。通常の高校受験ルートを経ずに、選んだ大学への進学が決定しました。';
+    H('result-next-box').innerHTML='<button onclick="goHome()" class="rpg-cmd w-full py-3.5 px-3 min-h-[50px] text-sm font-bold text-yellow-300 border-yellow-300">▶ タイトルへ戻る</button>';
+    const badge=H('result-clear-badge');badge.innerHTML='<span class="tw">✦</span> '+badge.textContent+' <span class="tw">✦</span>';
+    return;
+  }
   const L=SCH[S.si],a=S.an,ok=S.bn!=L.length-1,last=S.k+1>=S.stages.length;
-  const avgStr=S.avgMock!=null?`総合 ${S.avgMock.toFixed(1)} / 直近 ${S.lastMock!=null?S.lastMock.toFixed(1):S.avgMock.toFixed(1)}`:`実力 ${S.a.toFixed(1)}`;
+  const avgStr=S.avgMock!=null?`模試間補正指数 ${S.avgMock.toFixed(1)} / 直近模試偏差値 ${S.lastMock!=null?S.lastMock.toFixed(1):'未受験'}`:`実力 ${S.a.toFixed(1)}`;
   H('result-clear-badge').textContent=ok?'★ 合格クリア！ ★':'★ 全入の進路へ ★';
   H('result-player-label').textContent=`受験生『${S.name}』の${ST[S.si]}戦歴`;
   H('result-summary-headline').textContent=`${avgStr} → ${L[S.bn][0]}`;
-  H('result-sub-detail').textContent=`スコア ${a.sc.toLocaleString()} ／ 勉強 ${Math.round(S.hrs)}時間`+(S.si===2&&S.kt?` ／ 共テ ${S.kt.total}/1000点`:'');
+  H('result-sub-detail').textContent=`スコア ${a.sc.toLocaleString()} ／ 勉強 ${Math.round(S.hrs)}時間`;
   H('result-earned-titles').innerHTML=(S.nt&&S.nt.length?S.nt.map(t=>`<span class="border border-yellow-300 text-yellow-300 px-2 py-0.5 text-[11px]">${t}</span>`).join(''):'<span class="text-[11px] text-neutral-400">（今回はなし）</span>');
   H('result-epilogue-text').innerHTML=['生まれ','運','選択','努力','結果'].map((n,i)=>`${n}：上位 ${a.p[i]}%`).join('<br>')+`<br><span class="text-neutral-300">運だけがちがう4人の自分：${a.sv.map(i=>L[i][0]).join(' / ')}</span><br><span class="text-neutral-400">スコアはふつう約10,000です</span>`+(S.sk?`<br><span class="text-yellow-300">【秘密の特性】${S.bg}：得意 ${SUBN[S.sk.s]}／苦手 ${SUBN[S.sk.w]||'なし'}</span>`:'');
   const nb=H('result-next-box');
@@ -3689,10 +3532,10 @@ function Res(){
 
 function copyResultText(){
   if(!S)return;
+  if(S.earlyUniPassed){const txt=`【受験ガチャ】${S.name}｜大学特例選抜 合格：${S.earlyUniName}｜評価指数 ${S.earlySelectionResult.score.toFixed(1)}`;const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');showToast('＊ 戦歴テキストをコピーしました！')}catch(e){showToast('＊ コピーに失敗しました')};document.body.removeChild(ta);return;}
   const L=SCH[S.si],a=S.an;
-  const avgStr=S.avgMock!=null?`平均偏差値${S.avgMock.toFixed(1)}(直近${(S.lastMock??S.avgMock).toFixed(1)})`:`偏差値${S.a.toFixed(1)}`;
-  const ktStr=S.si===2&&S.kt?`｜共テ${S.kt.total}/1000点`:'';
-  const txt=`【受験ガチャ】${S.name}（${ST[S.si]}）｜${avgStr}${ktStr} → ${L[S.bn][0]}｜スコア ${a.sc.toLocaleString()}（上位${a.p[4]}%）`;
+  const avgStr=S.avgMock!=null?`模試間補正指数${S.avgMock.toFixed(1)}(直近模試偏差値${(S.lastMock??S.avgMock).toFixed(1)})`:`偏差値${S.a.toFixed(1)}`;
+  const txt=`【受験ガチャ】${S.name}（${ST[S.si]}）｜${avgStr} → ${L[S.bn][0]}｜スコア ${a.sc.toLocaleString()}（上位${a.p[4]}%）`;
   const ta=document.createElement('textarea');
   ta.value=txt;
   document.body.appendChild(ta);
@@ -3711,70 +3554,73 @@ function copyResultText(){
 function renderMocksModal(){
   if(!S)return;
   const mocks=S.mocks||[];
-  const spec=getMockSpec(S);
-  const jumpPen=calcJumpPenalty(S,spec);
-  H('modal-mocks-summary').textContent=mocks.length?`平均偏差値：${S.avgMock.toFixed(1)} ／ 直近模試：${(S.lastMock??mocks[mocks.length-1].score).toFixed(1)}（全${mocks.length}回）`:`まだ模試を受験していません（次回：${nextMockLabel(S)}）`;
+  const next=getNextMockInfo(S);
+  H('modal-mocks-summary').textContent=mocks.length?`模試間補正・学力指数：${S.avgMock.toFixed(1)} ／ 直近の模試偏差値：${(S.lastMock??mocks[mocks.length-1].score).toFixed(1)}（全${mocks.length}回）`:`受験済み：0回`;
+  const nextCard=`<div class="border border-sky-400/60 bg-[#08121c] p-3 rounded space-y-1.5"><div class="font-bold text-sky-300">次回の模試</div>${next?`<div class="text-sm font-bold text-white">${next.month}月：${next.spec.name}</div><div class="text-[11px] text-neutral-300">${next.spec.tag} ／ 実施月：${MOCK_MONTHS_LABEL(next.spec.months||[])}</div><div class="text-[11px] text-neutral-300">${next.spec.desc}</div>`:`<div class="text-sm text-neutral-300">今期の予定はありません。</div>`}<div class="text-[10px] text-neutral-400">日程は2026年度の公開情報を参考にしたゲーム内モデルです。地域・年度・回によって実際の日程は変わります。</div></div>`;
   if(!mocks.length){
-    H('modal-mocks-body').innerHTML=`<div class="border border-neutral-600 p-3 text-neutral-300 space-y-1.5"><p>模試は <b>4月・6月・9月・11月・1月</b> に実施されます。</p><p class="text-amber-300">現在の設定：${jumpPen>0?`【飛び級-${jumpPen}】`:''}${spec.name}（${spec.tag}）</p></div>`;
+    H('modal-mocks-body').innerHTML=nextCard+`<div class="border border-neutral-700 bg-[#0c0c14] p-3 rounded space-y-1"><div class="font-bold text-amber-300">模試の受験設定</div><p class="text-[11px] text-neutral-300">模試は高校受験をしない進路でも受けられます。受ける模試の種類や地域設定は「進路」から変更できます。</p><button onclick="closeModal('modal-mocks');openModal('modal-target')" class="rpg-cmd w-full min-h-[48px] text-sm text-sky-300 border-sky-300">▶ 進路・模試設定を開く</button></div>`;
     return;
   }
-  H('modal-mocks-body').innerHTML=mocks.map((m,idx)=>{
-    const subAvg=(mocks.slice(0,idx+1).reduce((a,b)=>a+b.score,0)/(idx+1)).toFixed(1);
+  H('modal-mocks-body').innerHTML=nextCard+mocks.map((m,idx)=>{
+    const subAvg=(mockIndexAverage(mocks.slice(0,idx+1))??m.aEst??m.score).toFixed(1);
     const barW=Math.max(8,Math.min(100,(m.score-25)*1.7));
     const subLine=(m.subs||[]).map(x=>`${x.short}${x.dev.toFixed(0)}`).join(' ');
-    return`<button onclick="closeModal('modal-mocks');openMockReportModal(${idx})" class="rpg-cmd w-full p-2.5 text-left space-y-1">
-      <div class="flex justify-between text-[11px]"><span class="text-neutral-300">${m.lab}｜${m.judgment||''}判定</span><span class="text-amber-300">${m.jumpPen>0?`飛び級-${m.jumpPen}・`:''}${m.tag}</span></div>
-      <div class="font-bold text-white flex justify-between"><span><span class="cursor-arrow">▶</span> ${m.name}</span><span class="text-[10px] text-amber-200">成績票を見る</span></div>
-      <div class="flex items-center justify-between text-xs">
-        <span>総合：<b class="text-sky-300">${m.score.toFixed(1)}</b></span>
-        <span>累積平均：<b class="text-yellow-300">${subAvg}</b></span>
-      </div>
+    const judgeLabel=m.judgment?`${m.judgment}判定`:'大学先取り評価';
+    return`<button onclick="closeModal('modal-mocks');openMockReportModal(${idx})" class="rpg-cmd w-full p-3 text-left space-y-1.5 rounded">
+      <div class="flex justify-between gap-2 text-[11px]"><span class="text-neutral-300">${m.lab}｜${judgeLabel}</span><span class="text-amber-300 shrink-0">${m.jumpPen>0?`飛び級-${m.jumpPen}・`:''}${m.tag}</span></div>
+      <div class="font-bold text-white flex justify-between gap-2"><span class="min-w-0">▶ ${m.name}</span><span class="text-[10px] text-sky-300 shrink-0">成績票を見る</span></div>
+      <div class="flex items-center justify-between text-xs"><span>偏差値：<b class="text-sky-300">${m.score.toFixed(1)}</b></span><span>模試間補正指数：<b class="text-yellow-300">${subAvg}</b></span><span class="text-neutral-300">順位：${m.natRank.toLocaleString()}位*</span></div>
       ${subLine?`<div class="text-[10px] text-neutral-300 truncate">${subLine}</div>`:''}
-      <div class="w-full h-1.5 bg-neutral-900"><div class="h-full bg-yellow-300" style="width:${barW}%"></div></div>
+      <div class="w-full h-1.5 bg-neutral-900 rounded"><div class="h-full bg-yellow-300 rounded" style="width:${barW}%"></div></div>
     </button>`;
-  }).reverse().join('');
+  }).reverse().join('')+`<p class="text-[10px] text-neutral-400 px-1">*順位はゲーム内シミュレーションによる推定値で、実際の模試順位・参加者数ではありません。</p>`;
 }
 
 function renderTargetModal(){
   if(!S)return;
-  const L=SCH[S.si],list=getMockList(S),g=curGrade(S);
+  const L=SCH[S.si],list=getMockList(S),g=curGrade(S),next=getNextMockInfo(S);
   const gNames=STAGE_GRADE_NAMES[S.si];
+  const autoInfo=getNextMockInfo({...S,mockMode:'auto',mockIdx:null});
   H('modal-target-body').innerHTML=`
-    ${S.si===1?`<div class="border border-yellow-300/60 bg-[#120e02] p-2.5 flex items-center justify-between gap-2">
-      <div class="min-w-0">
-        <div class="text-yellow-300 font-bold">▼ 高校受験の選択（いつでも変更可）</div>
-        <div class="text-[10px] text-neutral-300 mt-0.5 truncate">現在：${S.ex===false?(S.jhSchool?S.jhSchool+'から内部進学（受験しない）':'高校受験しない'):'高校受験する'}</div>
-      </div>
-      <button onclick="toggleHighSchoolExam(${S.ex===false?'true':'false'})" class="rpg-cmd px-2.5 py-1.5 min-h-[38px] text-xs font-bold shrink-0 ${S.ex===false?'text-yellow-300 border-yellow-300':'text-red-400 border-red-400'}">
-        ▶ ${S.ex===false?'やっぱりやる':'やっぱり辞める'}
+    ${S.si===1?`<section class="border-2 border-yellow-300/70 bg-[#120e02] p-3 rounded space-y-2">
+      <div class="text-yellow-300 text-sm font-bold">① 高校受験の進路</div>
+      <div class="text-xs text-white">現在の設定：<b>${S.ex===false?(S.jhSchool?S.jhSchool+'から内部進学・高校受験なし':'高校受験しない'):'高校受験する'}</b></div>
+      <p class="text-[11px] text-neutral-300">高校受験をしない選択をしても、模試・学習・成績記録は続きます。この設定はここからいつでも変更できます。</p>
+      <button onclick="toggleHighSchoolExam(${S.ex===false?'true':'false'})" class="rpg-cmd w-full px-3 py-3 min-h-[50px] text-sm font-bold ${S.ex===false?'text-emerald-300 border-emerald-300':'text-red-300 border-red-300'}">▶ ${S.ex===false?'高校受験をする設定に変更':'高校受験を辞める設定に変更'}</button>
+    </section>`:''}
+    <section class="border border-sky-400/60 bg-[#08121c] p-3 rounded space-y-2">
+      <div class="text-sky-300 text-sm font-bold">② 模試の受験設定</div>
+      <div class="text-xs text-white">現在の学年：<b>${gNames[g]}</b></div>
+      ${next?`<div class="border border-neutral-700 bg-[#0c0c14] p-2.5 rounded"><div class="text-[10px] text-neutral-400">次回予定</div><div class="text-sm font-bold text-amber-200">${next.month}月　${next.spec.name}</div><div class="text-[10px] text-neutral-300">${next.spec.tag} ／ 実施月：${MOCK_MONTHS_LABEL(next.spec.months||[])}</div></div>`:`<div class="text-xs text-neutral-300">今期の模試予定はありません。</div>`}
+      <p class="text-[11px] text-neutral-300">模試ごとに対象学年・実施月・受験者層が異なります。選んだ模試が実施月に来ると受験します。上の学年を選ぶ場合は飛び級ペナルティがかかります。</p>
+      <button onclick="setMockSetting('auto',0,true)" class="rpg-cmd w-full p-3 min-h-[52px] text-left ${S.mockMode!=='manual'?'border-yellow-300 text-yellow-200 bg-[#141a33]':''}">
+        <span class="font-bold">▶ おすすめ自動設定</span><span class="block text-[10px] text-neutral-300 mt-1">${autoInfo?`次回は ${autoInfo.month}月：${autoInfo.spec.name}`:'対象学年の次回予定に合わせて自動選択'}</span>
       </button>
-    </div>`:''}
-    <div class="space-y-1.5">
-      <div class="text-amber-300 font-bold">▼ 受ける模試の設定（現在：${gNames[g]}｜飛び級受験も選択可）</div>
-      <p class="text-[10px] text-neutral-300">上の学年の模試を受けると偏差値は-13〜-20（冠模試は-25〜-30、最低25.0）と厳しく出ます。</p>
-      <button onclick="setMockSetting('auto',0,true)" class="rpg-cmd w-full p-2.5 min-h-[44px] text-left ${S.mockMode!=='manual'?'border-yellow-300 text-yellow-300 bg-[#141a33]':''}">
-        <span class="cursor-arrow">▶</span> 学年・志望校連動オート（現在：${list[autoMockIdx(S.si,S.fi||0,g)].name}）
-      </button>
-      <div class="space-y-1.5 pt-1">
+      <div class="text-sm font-bold text-amber-200 pt-1">模試を個別に選ぶ（実施月に自動受験）</div>
+      <div class="space-y-2">
         ${list.map((m,idx)=>{
           if(m.grade<g)return'';
           const active=S.mockMode==='manual'&&S.mockIdx===idx;
           const pen=calcJumpPenalty(S,m);
-          return`<button onclick="setMockSetting('manual',${idx},true)" class="rpg-cmd w-full p-2.5 min-h-[46px] text-left ${active?'border-yellow-300 text-yellow-300 bg-[#141a33]':''}">
-            <div class="flex justify-between font-bold gap-1">
-              <span><span class="cursor-arrow">▶</span> ${m.name}</span>
-              <span class="text-[10px] ${pen>0?'text-red-400':'text-amber-300'} shrink-0">${pen>0?`飛び級-${pen}`:m.tag}</span>
-            </div>
-            <div class="text-[10px] text-neutral-300 pl-3.5 mt-0.5">${m.desc}</div><div class="text-[10px] text-sky-300 pl-3.5">第一志望（${L[S.fi][0]}）の目安 ${examT(m,L[S.fi])}（合格可能性80%）</div>
+          const gradeText=m.grade===3?'大学別特例':gNames[m.grade];
+          const schedule=MOCK_MONTHS_LABEL(m.months||[]);
+          const resultLine=(m.isUniversityCrown||m.isUniversityPrep)?'大学形式の総合評価（高校受験A〜E判定なし）':m.name==='中3 駿台高校受験公開テスト'?(/県立|都立|府立|道立|市立/.test(L[S.fi][0])?'公立型・5教科':'私立型・3教科'):`第一志望の目安偏差値 ${examT(m,L[S.fi])}`;
+          return`<button onclick="setMockSetting('manual',${idx},true)" class="rpg-cmd w-full p-3 min-h-[72px] text-left space-y-1 rounded ${active?'border-yellow-300 text-yellow-200 bg-[#141a33]':''}">
+            <div class="flex items-start justify-between gap-2"><span class="font-bold text-xs leading-snug">▶ ${m.name}</span><span class="text-[11px] shrink-0 ${pen>0?'text-red-300':'text-amber-200'}">${pen>0?`飛び級-${pen}`:gradeText}</span></div>
+            <div class="text-[11px] text-neutral-300">対象：${gradeText}　｜　実施月：${schedule}</div>
+            <div class="text-[11px] text-neutral-300 leading-snug">${m.desc}</div>
+            <div class="text-[11px] text-sky-200">${resultLine}</div>
           </button>`;
         }).join('')}
       </div>
-    </div>
-    <div class="border-t border-neutral-700 pt-2.5 space-y-1.5">
-      <div class="text-sky-300 font-bold">▼ 第一志望校の変更（現在：${L[S.fi][0]}／目安 ${L[S.fi][1]}）</div>
-      <input id="modal-target-search" type="text" oninput="renderTargetModalList()" placeholder="🔍 大学名・学部名・学校名で検索..." class="w-full bg-[#08080c] border border-white focus:border-yellow-300 px-2.5 py-1.5 text-xs text-white outline-none min-h-[38px]">
-      <div id="modal-target-list" class="space-y-1.5 max-h-48 overflow-y-auto pr-1"></div>
-    </div>`;
+      <div class="text-[11px] leading-relaxed text-neutral-300">※中3駿台全国模試と中3駿台高校受験公開テストは別の模試です。前者は中高一貫校の中3生向け大学先取り型、後者は高校入試対策です。2026年度はどちらも10月25日実施のため、ゲームでは同日に両方受けず、選択した方を受験します。</div>
+    </section>
+    <section class="border border-neutral-600 bg-[#0c0c14] p-3 rounded space-y-2">
+      <div class="text-amber-200 text-sm font-bold">③ 第一志望校</div>
+      <div class="text-xs text-white">現在：<b>${L[S.fi][0]}</b> ／ 目安偏差値 ${L[S.fi][1]}</div>
+      <input id="modal-target-search" type="text" oninput="renderTargetModalList()" placeholder="学校名で検索" class="w-full bg-[#08080c] border border-white focus:border-yellow-300 px-3 py-2.5 text-sm text-white outline-none min-h-[46px] rounded">
+      <div id="modal-target-list" class="space-y-1.5 max-h-56 overflow-y-auto pr-1"></div>
+    </section>`;
   renderTargetModalList();
 }
 
@@ -3788,13 +3634,13 @@ function renderTargetModalList(){
 function renderTitles(){const r=ld('jg_r')||{tt:{}};H('modal-titles-list').innerHTML=TT.map(t=>{const n=r.tt[t[0]];return`<div class="border border-neutral-600 p-2.5">${n?`<b style="color:${CC[RA.indexOf(t[1])]}">${t[1]}</b>　${t[0]} ×${n}`:'<span class="text-neutral-400">？？？</span>'}</div>`}).join('')}
 function executeClearRecords(){const r=ld('jg_r')||{tt:{}};r.pl=[];r.n=0;sv('jg_r',r);closeModal('modal-reset');Home()}
 
-H('guide-body').innerHTML=`<p><span class="text-yellow-300">【１】生まれガチャ</span><br>家庭環境・地元・才能の3つで生まれが決まります。とくに<b>「才能（地頭）」</b>は初期偏差値+13.5＆成長1.75倍と偏差値に最も強く影響します！</p><p><span class="text-yellow-300">【２】1週間1時間単位の科目別勉強配分</span><br>1週間の勉強時間を各科目に1時間単位で自由に割り振れます。多く割り振った科目ほど伸びやすく、<b>0時間の科目は演習不足で偏差値が下がります</b>。合計勉強時間が多すぎると体調・やる気が消耗します。</p><p><span class="text-yellow-300">【３】中学受験 → 高校受験</span><br>小4から中学受験に挑み、合格後も高校受験する・しないを選択できます（途中から「やっぱり辞める・やる」の変更も可能）。出来事は学年ごとに変わります。</p><p><span class="text-yellow-300">【サウンド設定】</span><br>画面上部の<b>「♪ON / ♪OFF」</b>でいつでも一発ミュート切替、<b>「音」</b>ボタンからBGM・効果音の個別ON/OFFや音量調整、BGM試聴ができます。<br><br><span class="text-yellow-300">【４】模試 個人成績返却票 ＆ 飛び級模試</span><br>模試は4月・6月・9月・11月・1月に実施され、受験した月には<b>各教科偏差値・合計偏差値・A〜E判定・全国順位・志望校内順位</b>が記載された個人成績返却票が届きます。</p>`;
+H('guide-body').innerHTML=`<p><span class="text-yellow-300">【１】生まれガチャ</span><br>家庭環境・地元・才能の3つで生まれが決まります。とくに<b>「才能（地頭）」</b>は初期偏差値と成長に強く影響します。</p><p><span class="text-yellow-300">【２】科目別勉強配分</span><br>1週間の勉強時間を科目ごとに割り振ります。多く割り振った科目ほど伸びやすく、0時間の科目は演習不足で下がります。</p><p><span class="text-yellow-300">【３】進路</span><br>通常ルートは高校入学まで。中学受験後に高校受験をする・しないを選べます。高校受験をしない場合も模試・勉強・成績記録は続きます。設定は画面上部の「進路」から変更できます。</p><p><span class="text-yellow-300">【４】模試のしくみ</span><br>模試はすべて同じ月に行われるわけではありません。各模試ごとに対象学年・目的・実施月が異なり、設定した模試の実施月に受験します。中1・中2の駿台学力テストは年4回（6・8・11・1月のモデル）、中3駿台高校受験公開テストは高校入試対策、中3駿台全国模試は中高一貫校の中3向け大学先取り型（10月のモデル）です。後者2つは別の模試です。Vもぎ・北辰・神奈川全県模試は地域別の高校受験模試です。</p><p><span class="text-yellow-300">【５】成績票・順位</span><br>成績票には教科別偏差値・得点・総合偏差値・志望校判定（対象模試のみ）・順位が表示されます。順位・受験者母集団はゲーム内能力値によるシミュレーションで、実際の模試の参加者数・全国順位ではありません。模試間の偏差値もそのまま比較できません。</p><p><span class="text-yellow-300">【サウンド設定】</span><br>画面上部の「♪ON / ♪OFF」でミュート、「音」からBGM・効果音・音量を調整できます。</p>`;
 
 const X=()=>ld('jg_x');
 function dflt(){S.fi=auto(S)[0]||0}
-function setB(x,r){S.b[x]=r;Object.assign(S,st0(S.b,S.si));init();dflt();go('setup')}
+function setB(x,r){S.b[x]=r;Object.assign(S,st0(S.b));init();dflt();go('setup')}
 function setJ(i){S.juku=i;S.jb=JUKU[S.si][i][1]/150;save();Setup()}
-function rollG(){if(typeof RetroAudio!=='undefined')RetroAudio.playSE('gacha');S.b={f:roll(Math.random(),'f'),t:roll(Math.random(),'t'),k:roll(Math.random(),'k')};const gotSSR=Object.values(S.b).some(v=>v===0);Object.assign(S,st0(S.b,S.si));init();dflt();go('setup');if(gotSSR)showAchievementSparkle('ssr')}
+function rollG(){if(typeof RetroAudio!=='undefined')RetroAudio.playSE('gacha');S.b={f:roll(Math.random(),'f'),t:roll(Math.random(),'t'),k:roll(Math.random(),'k')};const gotSSR=Object.values(S.b).some(v=>v===0);Object.assign(S,st0(S.b));init();dflt();go('setup');if(gotSSR)showAchievementSparkle('ssr')}
 function resetCode(){try{localStorage.removeItem('jg_x')}catch(e){}S.b={};S.juku=null;showToast('＊ 秘密コードをリセットしました');go('setup')}
 function chkCode(){if(H('secret-code').value.trim()=='923710'){sv('jg_x',1);go('setup')}else H('code-msg').textContent='コードがちがいます'}
 function toggleHighSchoolExam(wantExam){
@@ -3817,12 +3663,9 @@ function toggleHighSchoolExam(wantExam){
 function nx2(doExam){const k=S.k+1,pr=S.si,pass=S.bn!=SCH[pr].length-1;
  if(k>=S.stages.length){try{localStorage.removeItem('jg_s')}catch(e){}return Home()}
  if(pr===0)S.jhSchool=pass?SCH[0][S.bn][0]:null;
- S.ex=typeof doExam==='boolean'?doExam:!(pr==0&&pass);S.p=S.rv>40?S.rv:Math.max(44,bd(S.b)-2);S.k=k;S.si=S.stages[k];init();dflt();
+ S.ex=typeof doExam==='boolean'?doExam:!(pr==0&&pass);S.p=S.rv>40?S.rv:Math.max(44,bd(S.b)-2);S.k=k;S.si=S.stages[k];S.mockMode='auto';S.mockIdx=null;S.mockName=null;S.mockConfigVersion=3;init();dflt();
  if(!S.ex){S.juku=null;S.jb=0;S.log.push(`【進路】${S.jhSchool?S.jhSchool+'に進学し、':''}高校受験はしない選択をした。（途中から「やっぱりやる」に変更可）`);go('play')}
  else{S.log.push(`【進路】${S.jhSchool?S.jhSchool+'に進学したうえで、':''}高校受験に挑戦する！（途中から「やっぱり辞める」に変更可）`);go('setup')}}
-
-let setupUniFilter='all';
-function setSetupUniFilter(f){setupUniFilter=f;renderSetupMockAndList();}
 
 function setSx(v){if(!S||S.k>0)return;S.sx=v;applySex(v);dflt();save();Setup()}
 function Setup(){
@@ -3830,7 +3673,7 @@ function Setup(){
  applySex(S.sx||'m');if(!okSx(S,SCH[S.si][S.fi||0]))dflt();
  ['m','f'].forEach(v=>{const e=H('sx-'+v);e.className='rpg-cmd p-2 min-h-[44px] text-sm '+((S.sx||'m')===v?'border-yellow-300 text-yellow-300 bg-[#141a33]':'');e.disabled=S.k>0||!!S.isDiag});
  const K=['f','t','k'],N=['家庭環境','地元','才能'],T=[FAM,TWN,TAL],L=SCH[S.si],cx=X()&&S.k==0;
- if(cx&&S.b.f==null){S.b={f:2,t:2,k:2};Object.assign(S,st0(S.b,S.si));init();dflt()}
+ if(cx&&S.b.f==null){S.b={f:2,t:2,k:2};Object.assign(S,st0(S.b));init();dflt()}
  const ok=S.b.f!=null;
  H('setup-mode-title').textContent='▼ '+ST[S.si]+'の準備';
  H('input-player-name').value=S.name||'ロト';
@@ -3845,7 +3688,7 @@ function Setup(){
  if(!X()&&S.k==0)c+=`<div class="border-t border-neutral-700 pt-2.5 text-left flex items-center gap-1.5"><input id="secret-code" type="password" inputmode="numeric" placeholder="秘密コード" class="bg-[#08080c] border border-white px-2.5 py-1.5 text-xs text-white outline-none w-32 min-h-[38px]"> <button onclick="chkCode()" class="rpg-cmd text-xs px-3 py-1.5 min-h-[38px]">▶ 入力</button> <span id="code-msg" class="text-[10px] text-red-400"></span></div>`;
  H('gacha-result-card').innerHTML=c;
 
- H('setup-uni-count-badge').textContent=S.si===2?'全61大学・'+(L.length-1)+'学部':'全'+(L.length-1)+'校';
+ H('setup-uni-count-badge').textContent='全'+(L.length-1)+'校';
  H('setup-search-wrap').classList.toggle('hidden',!ok);
  H('setup-mock-config-box').classList.toggle('hidden',!ok);
 
@@ -3856,22 +3699,18 @@ function Setup(){
  }
  H('btn-begin-adventure').disabled=!ok;
  const quitWrap=H('setup-quit-hs-wrap');
- if(S.si===1){
-   const qHtml=`<div id="setup-quit-hs-wrap" class="pt-1.5"><button onclick="toggleHighSchoolExam(false)" class="rpg-cmd w-full py-2.5 px-3 min-h-[42px] text-xs font-bold text-red-400 border-red-400"><span class="cursor-arrow">▶</span> やっぱり高校受験を辞める（${S.jhSchool?S.jhSchool+'から内部進学':'受験せず進む'}）</button></div>`;
-   if(quitWrap)quitWrap.outerHTML=qHtml;
-   else H('btn-begin-adventure').insertAdjacentHTML('afterend',qHtml);
- }else if(quitWrap){
-   quitWrap.remove();
- }
+ if(quitWrap)quitWrap.remove();
 }
 
 function renderSetupMockAndList(){
   const L=SCH[S.si];
   const target=L[S.fi||0];
-  const spec=getMockSpec(S);
+  const next=getNextMockInfo(S);
+  const spec=next?next.spec:null;
   const pen=calcJumpPenalty(S,spec);
   const list=getMockList(S);
-  const bTag=target[2]?.bunri&&target[2].bunri!=='共'?` [${target[2].bunri}]`:'';
+  const autoSpec=getNextMockInfo({...S,mockMode:'auto',mockIdx:null});
+  const bTag='';
 
   H('setup-mock-config-box').innerHTML=`
     <div class="flex justify-between items-center gap-1">
@@ -3881,36 +3720,25 @@ function renderSetupMockAndList(){
       <label class="block text-[10px] text-amber-200">▼ 受ける模試コース（上の学年の模試への飛び級受験も可）</label>
       <select onchange="this.value==='auto'?setMockSetting('auto',0,false):setMockSetting('manual',+this.value,false)"
         class="w-full bg-[#08080c] border border-amber-300 px-2.5 py-2 text-xs text-white outline-none min-h-[40px]">
-        <option value="auto" ${S.mockMode!=='manual'?'selected':''}>★ 学年・志望校連動オート（${list[autoMockIdx(S.si,S.fi||0,0)].name}）</option>
+        <option value="auto" ${S.mockMode!=='manual'?'selected':''}>★ おすすめ自動設定（${autoSpec?autoSpec.month+'月 '+autoSpec.spec.name:'予定なし'}）</option>
         ${list.map((m,idx)=>{
           const p=calcJumpPenalty(S,m);
-          return`<option value="${idx}" ${S.mockMode==='manual'&&S.mockIdx===idx?'selected':''}>${p>0?`[飛び級-${p}] `:''}${m.name}（${m.tag}）</option>`;
+          return`<option value="${idx}" ${S.mockMode==='manual'&&S.mockIdx===idx?'selected':''}>${p>0?`[飛び級-${p}] `:''}${m.name}（${MOCK_MONTHS_LABEL(m.months||[])}）</option>`;
         }).join('')}
       </select>
-      <p class="text-[10px] text-neutral-300 leading-snug">${pen>0?`<span class="text-red-400 font-bold">※飛び級ペナルティ（偏差値-${pen}／最低25.0）が適用されます。</span> `:''}${spec.desc}</p>
+      <p class="text-[10px] text-neutral-300 leading-snug">${pen>0?`<span class="text-red-400 font-bold">※飛び級ペナルティ（偏差値-${pen}／最低25.0）が適用されます。</span> `:''}${spec?spec.desc:'現在の設定で選べる次回模試はありません。模試の種類を変更してください。'}</p>
     </div>`;
 
-  if(S.si===2){
-    const fBtns=[['all','すべて'],['文','文系'],['理','理系'],['医','医歯薬'],['難関','難関'],['国公立','国公立'],['MARCH関関同立','MARCH関関'],['中堅','中堅']];
-    H('setup-filter-bar').innerHTML=fBtns.map(([k,lbl])=>`<button onclick="setSetupUniFilter('${k}')" class="rpg-cmd px-2 py-1 text-[10px] ${setupUniFilter===k?'border-yellow-300 text-yellow-300 bg-[#141a33]':'text-neutral-300'}">${lbl}</button>`).join('');
-  }else{
-    H('setup-filter-bar').innerHTML='';
-  }
+  H('setup-filter-bar').innerHTML='';
 
   const q=(H('setup-search-input')?.value||'').trim();
   const filtered=L.slice(0,-1).map((s,i)=>({s,i})).filter(({s})=>{
     if(q&&!s[0].includes(q))return false;
-    if(S.si!==2||setupUniFilter==='all')return true;
-    const m=s[2]||{};
-    if(['文','理','医'].includes(setupUniFilter))return m.bunri===setupUniFilter||m.bunri==='共';
-    if(setupUniFilter==='国公立')return m.isNat;
-    return m.grp===setupUniFilter;
+    return true;
   });
 
   H('uni-selection-list').innerHTML=filtered.slice(0,90).map(({s,i})=>{
-    const m=s[2]||{};
-    const tag=S.si===2?`<span class="text-[9px] border ${m.isNat?'border-emerald-400 text-emerald-300':'border-sky-400 text-sky-300'} px-1 mr-1">${m.isNat?'国':'私'}${m.bunri}</span>`:'';
-    return`<button onclick="selectTargetSchool(${i},false)" class="rpg-cmd w-full p-2.5 min-h-[44px] text-left text-xs flex justify-between items-center ${S.fi==i?'border-yellow-300 text-yellow-300 bg-[#141a33]':''}"><span class="truncate pr-1"><span class="cursor-arrow">▶</span> ${tag}${s[0]}</span><span class="text-[11px] text-neutral-300 shrink-0">目安 ${s[1]}</span></button>`;
+    return`<button onclick="selectTargetSchool(${i},false)" class="rpg-cmd w-full p-2.5 min-h-[44px] text-left text-xs flex justify-between items-center ${S.fi==i?'border-yellow-300 text-yellow-300 bg-[#141a33]':''}"><span class="truncate pr-1"><span class="cursor-arrow">▶</span> ${s[0]}</span><span class="text-[11px] text-neutral-300 shrink-0">目安 ${s[1]}</span></button>`;
   }).join('')+(filtered.length>90?`<p class="text-[10px] text-neutral-400 text-center py-1">ほか ${filtered.length-90}件（検索ワードで絞り込めます）</p>`:'')||'<p class="text-xs text-neutral-400 py-2 text-center">該当する学校・学部が見つかりません</p>';
 }
 
@@ -3940,7 +3768,7 @@ const HERO='<svg class="sprite" width="22" height="22" viewBox="0 0 8 8" shape-r
 function bkExport(){const d=JSON.stringify({s:ld('jg_s'),r:ld('jg_r'),x:ld('jg_x')});try{navigator.clipboard.writeText(d).then(()=>showToast('＊ バックアップをコピーしました'),()=>prompt('このテキストを保存してください',d))}catch(e){prompt('このテキストを保存してください',d)}}
 function bkImport(){const t=prompt('バックアップのテキストを貼り付けてください');if(!t)return;try{const d=JSON.parse(t);if(d.s)sv('jg_s',d.s);if(d.r)sv('jg_r',d.r);if(d.x)sv('jg_x',d.x);showToast('＊ 復元しました');Home()}catch(e){showToast('＊ 読み込めませんでした')}}
 
-const EVC=S=>EV.map((e,i)=>i).filter(i=>(!EV[i][3]||EV[i][3].includes(S.si))&&!/大学|共通テスト|二次試験/.test(EV[i][0]));
+const EVC=S=>EV.map((e,i)=>i).filter(i=>!EV[i][3]||EV[i][3].includes(S.si));
 EV.push(
 ['塾の宿題が山のように出た',['全部やりきる',[-4,-2,3,-2,.8]],['優先順位をつけて絞る',[0,2,1,1,.5]],[0]],
 ['夏期講習の季節。友達も参加するらしい',['朝から夜まで通い詰める',[-6,-3,2,-4,1]],['半分だけ参加して家で復習',[-1,1,1,2,.5]],[0]],
@@ -4011,5 +3839,201 @@ EV.push(
 
 Home();
   </script>
-</body>
+<script>
+/* 表示・操作設定／模試成績票レイアウト／操作性・ゲーム性の追加（既存ロジックは壊さず、あとから包む形で追加） */
+var JG_LAYOUTS=[
+ ['rpg','オリジナルRPG','今までのドットRPG風の画面','#08080c','#ffd400','#ffffff','double'],
+ ['report','白基調','黒・白・水色・黄緑色で構成したシンプルなレイアウト','#ffffff','#38bdf8','#111111','solid']
+];
+var JG_FONTS=[
+ ['dot','ドット文字（オリジナル）','レトロRPG風のドットフォント',"'DotGothic16',monospace"],
+ ['sans','標準ゴシック','端末の標準ゴシック体',"'Hiragino Sans','Noto Sans JP','Yu Gothic UI',sans-serif"],
+ ['maru','丸ゴシック','平成丸ゴシックW4（なければ Zen丸ゴシック）',"'Heisei Maru Gothic W4','HeiseiMaruGo-W4','Zen Maru Gothic','Hiragino Maru Gothic ProN',sans-serif"],
+ ['mincho','平成明朝体 W3','平成明朝（なければ ヒラギノ明朝などの明朝体）',"'Heisei Mincho W3','HeiseiMin-W3','Hiragino Mincho ProN','Yu Mincho',serif"],
+ ['gothic7','平成ゴシック体 W7','平成角ゴシックW7（なければ 近いゴシック体）',"'Heisei Kaku Gothic W7','HeiseiKakuGo-W7','Hiragino Kaku Gothic ProN','Noto Sans JP',sans-serif"]
+];
+var JG_DIFF={easy:['ゆるめ','成長が少し速い（×1.08）',1.08],normal:['ふつう','標準（×1.00）',1],hard:['きびしめ','成長が少し遅い（×0.93）',0.93]};
+function jgAttr(a){return document.documentElement.getAttribute(a)}
+function jgSave(attr,key,val){document.documentElement.setAttribute(attr,val);try{localStorage.setItem(key,val)}catch(e){}jgRenderThemes();jgSync()}
+function jgSetLayout(k){jgSave('data-layout','jg_layout',k)}
+function jgSetFont(k){jgSave('data-font','jg_font',k)}
+function jgSetLatin(k){jgSave('data-latin','jg_latin',k)}
+function jgSetZoom(k){jgSave('data-zoom','jg_zoom',k)}
+function jgDiffOf(s){var d=s&&s.diff;if(!d){try{d=localStorage.getItem('jg_diff')}catch(e){}}return JG_DIFF[d]?d:'normal'}
+function jgSetDiff(k){try{localStorage.setItem('jg_diff',k)}catch(e){}try{if(S){S.diff=k;save()}}catch(e){}jgRenderThemes()}
+function jgRenderThemes(){
+  var ly=jgAttr('data-layout'),fo=jgAttr('data-font'),la=jgAttr('data-latin'),zo=jgAttr('data-zoom'),df=jgDiffOf(typeof S!=='undefined'?S:null);
+  var h='<div class="font-bold text-yellow-300">① ゲーム画面のレイアウト</div>';
+  JG_LAYOUTS.forEach(function(t){
+    var on=t[0]===ly;
+    h+='<button onclick="jgSetLayout(\''+t[0]+'\')" class="rpg-cmd w-full p-2.5 text-left flex items-center gap-3'+(on?' border-yellow-300':'')+'">'
+     +'<span style="flex:none;width:64px;height:48px;display:flex;align-items:center;justify-content:center;background:'+t[3]+';color:'+t[5]+';border:3px '+t[6]+' '+t[4]+';font-size:15px;font-weight:700">'+(t[0]==='report'?'B判定':'あ62')+'</span>'
+     +'<span class="min-w-0"><b class="text-white">'+(on?'✔ ':'')+t[1]+'</b><br><span class="text-neutral-300">'+t[2]+'</span></span></button>';
+  });
+  h+='<div class="font-bold text-yellow-300 pt-2">② フォント</div>';
+  JG_FONTS.forEach(function(f){
+    var on=f[0]===fo;
+    h+='<button onclick="jgSetFont(\''+f[0]+'\')" class="rpg-cmd w-full p-2.5 text-left'+(on?' border-yellow-300':'')+'">'
+     +'<b class="text-white">'+(on?'✔ ':'')+f[1]+'</b><br><span class="text-neutral-300">'+f[2]+'</span><br>'
+     +'<span style="font-family:'+f[3]+'!important;font-size:16px" class="text-white">受験ガチャ 偏差値62.5 学力+3</span></button>';
+  });
+  h+='<div class="font-bold text-yellow-300 pt-2">③ 英数字のフォント</div><div class="grid grid-cols-2 gap-2">'
+   +'<button onclick="jgSetLatin(\'off\')" class="rpg-cmd p-2.5 text-left'+(la==='off'?' border-yellow-300':'')+'"><b class="text-white">'+(la==='off'?'✔ ':'')+'そのまま</b><br><span class="text-neutral-300">日本語フォントと同じ</span></button>'
+   +'<button onclick="jgSetLatin(\'century\')" class="rpg-cmd p-2.5 text-left'+(la==='century'?' border-yellow-300':'')+'"><b class="text-white">'+(la==='century'?'✔ ':'')+'Century Old Style</b><br><span class="text-neutral-300"><span style="font-family:\'Century Old Style\',\'CenturyOldst\',\'Sorts Mill Goudy\',serif!important;font-size:16px">Aa 0123456789</span></span></button></div>'
+   +'<div class="text-[10px] text-neutral-300">※ 平成書体とCentury Old Styleは端末に入っている場合のみ表示されます（無い端末では近い書体に自動で切り替わります）。</div>';
+  h+='<div class="font-bold text-yellow-300 pt-2">④ 文字サイズ</div><div class="grid grid-cols-3 gap-2">';
+  [['0','標準'],['1','大'],['2','特大']].forEach(function(z){h+='<button onclick="jgSetZoom(\''+z[0]+'\')" class="rpg-cmd p-2.5 text-center'+(zo===z[0]?' border-yellow-300':'')+'"><b class="text-white">'+(zo===z[0]?'✔ ':'')+z[1]+'</b></button>'});
+  h+='</div>';
+  h+='<div class="font-bold text-yellow-300 pt-2">⑤ 難易度（いまの冒険にも反映）</div><div class="grid grid-cols-3 gap-2">';
+  Object.keys(JG_DIFF).forEach(function(k){var d=JG_DIFF[k];h+='<button onclick="jgSetDiff(\''+k+'\')" class="rpg-cmd p-2 text-center'+(df===k?' border-yellow-300':'')+'"><b class="text-white">'+(df===k?'✔ ':'')+d[0]+'</b><br><span class="text-[10px] text-neutral-300">'+d[1]+'</span></button>'});
+  h+='</div>';
+  document.getElementById('theme-list').innerHTML=h;
+}
+function jgOpenTheme(){jgRenderThemes();openModal('modal-theme')}
+
+/* ---------- 難易度：成長倍率にだけ掛ける ---------- */
+(function(){
+  if(typeof applyAct!=='function')return;
+  var o=applyAct;
+  window.applyAct=function(s){o(s);var d=JG_DIFF[jgDiffOf(s)];if(d&&d[2]!==1)s.actMul=(s.actMul||1)*d[2]};
+})();
+
+/* ---------- 月間目標 ---------- */
+var JG_GOALS=[
+ {t:'体調を55以上に保つ',rw:'やる気+3',ok:function(s){return s.h>=55},ap:function(s){s.m=cl(s.m+3)}},
+ {t:'やる気を55以上に保つ',rw:'体調+3',ok:function(s){return s.m>=55},ap:function(s){s.h=cl(s.h+3)}},
+ {t:'基準の勉強時間をこなす',rw:'自信+3',ok:function(s){var p=s.paces;return !!(p&&p.length&&p[p.length-1]>=BASE_WEEK_HRS[s.si])},ap:function(s){s.c=cl(s.c+3)}},
+ {t:'青春度を40以上に保つ',rw:'やる気+2・自信+2',ok:function(s){return s.y>=40},ap:function(s){s.m=cl(s.m+2);s.c=cl(s.c+2)}}
+];
+function jgGoalFor(s){return JG_GOALS[Math.floor(RR(s.seed,s.t+500*s.si,555)*JG_GOALS.length)]}
+(function(){
+  if(typeof st1!=='function')return;
+  var o=st1;
+  window.st1=function(){
+    var g=null,t0=0;
+    try{g=jgGoalFor(S);t0=S.t}catch(e){}
+    var r=o.apply(this,arguments);
+    try{
+      if(g&&S.t>t0){
+        S.goalTry=(S.goalTry||0)+1;
+        if(g.ok(S)){g.ap(S);S.goalHit=(S.goalHit||0)+1;S.log.push('🎯 月間目標「'+g.t+'」達成！ご褒美：'+g.rw);S.log=S.log.slice(-40);showToast('＊ 🎯 月間目標達成！'+g.rw)}
+      }
+    }catch(e){}
+    return r;
+  };
+})();
+
+/* ---------- ひとつ前に戻す（1回の冒険で3回まで） ---------- */
+var JG_UNDO=[];
+function jgSnap(){try{if(S&&window._curScr==='game'){JG_UNDO.push(JSON.stringify(S));if(JG_UNDO.length>6)JG_UNDO.shift()}}catch(e){}}
+['nx','au','auMock','pick'].forEach(function(n){
+  var f=window[n];if(typeof f!=='function')return;
+  window[n]=function(){jgSnap();return f.apply(this,arguments)};
+});
+function jgUndoLeft(){return(S&&S.undoLeft!=null)?S.undoLeft:3}
+function jgUndo(){
+  try{
+    if(!S||!JG_UNDO.length)return showToast('＊ 戻せる操作がありません');
+    if(jgUndoLeft()<=0)return showToast('＊ この冒険で戻せる回数を使い切りました');
+    var snap=JSON.parse(JG_UNDO.pop());
+    if(snap.seed!==S.seed){JG_UNDO.length=0;return showToast('＊ 戻せる操作がありません')}
+    snap.undoLeft=jgUndoLeft()-1;
+    S=snap;
+    var m=document.getElementById('modal-mock-report');if(m)m.classList.add('hidden');
+    save();R();
+    showToast('＊ ひとつ前に戻しました（あと'+snap.undoLeft+'回）');
+  }catch(e){showToast('＊ 戻せませんでした')}
+}
+
+/* ---------- 成績個人票（レイアウト「模試 成績個人票風」） ---------- */
+function jgEsc(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+var KW_J={A:['#84cc16','80%以上'],B:['#38bdf8','65%前後'],C:['#111111','50%'],D:['#38bdf8','30%'],E:['#111111','20%未満']};
+var KW_C={A:'【安全圏】合格可能性80%以上。この調子で盤石に固めよう。',B:'【有力圏】合格可能性65%前後。十分に合格が狙える位置。',C:'【ボーダー圏】合格可能性50%。弱点科目の底上げがカギ。',D:'【努力圏】合格可能性30%。配分時間を見直して追い上げよう。',E:'【要奮起】合格可能性20%未満。基礎から学習計画を立て直そう。'};
+function jgKwToggle(){try{S.ui=S.ui||{};S.ui.kwDetail=!S.ui.kwDetail;save();jgReport()}catch(e){}}
+function jgReport(){
+  var host=document.getElementById('screen-game'),ex=document.getElementById('jg-report'),on=false;
+  try{on=jgAttr('data-layout')==='report'&&window._curScr==='game'&&!!S}catch(e){}
+  if(!on||!host){if(ex)ex.remove();return}
+  var h='';
+  try{
+    S.ui=S.ui||{};
+    var m=(S.mocks&&S.mocks.length)?S.mocks[S.mocks.length-1]:null;
+    var te=document.getElementById('hud-target-uni'),tgt=te?te.textContent:'';
+    tgt=tgt.replace(/^第一志望：/,'').replace(/^模試判定校：/,'');
+    var J=m&&m.judgment;
+    h+='<div class="kw-head"><span class="kw-title">成績個人票</span><span class="kw-meta">'+jgEsc(lab(S))+' 現在 ／ '+jgEsc(ST[S.si])+'</span></div>';
+    h+='<table class="kw-table"><tr><th>氏名</th><td class="l">'+jgEsc(S.name||'ロト')+'</td><th>残り</th><td>あと'+(S.len-S.t)+'か月</td></tr>'
+      +'<tr><th>志望校</th><td class="l" colspan="3">'+jgEsc(tgt)+'</td></tr></table>';
+    h+='<div class="kw-sum">'
+      +'<div class="kw-cell"><div class="kw-cap">総合偏差値</div><div class="kw-big">'+(m?m.score.toFixed(1):'―')+'</div><div class="kw-sub">'+(S.avgMock!=null?'学力指数 '+S.avgMock.toFixed(1):'未受験')+'</div></div>'
+      +'<div class="kw-cell"><div class="kw-cap">合計得点</div><div class="kw-big">'+(m&&m.totMax?m.totScore+'<small>/'+m.totMax+'</small>':'―')+'</div><div class="kw-sub">'+(m&&m.natTopPct!=null?'上位 '+m.natTopPct.toFixed(1)+'%':'')+'</div></div>'
+      +'<div class="kw-cell"><div class="kw-cap">全国順位</div><div class="kw-big">'+(m&&m.natRank!=null?m.natRank.toLocaleString()+'<small>位</small>':'―')+'</div><div class="kw-sub">ゲーム内推定</div></div></div>';
+    h+='<div class="kw-mock">'+(m?'直近：'+jgEsc(m.name)+'（'+jgEsc(m.lab)+'実施）':'まだ模試を受けていません　'+jgEsc(nextMockLabel(S)))+'</div>';
+    h+='<div class="kw-judge"><div>志望校<br>判定</div>';
+    ['A','B','C','D','E'].forEach(function(k){var on2=J===k;h+='<div'+(on2?' class="on" style="background:'+KW_J[k][0]+'"':'')+'><b>'+k+'</b><span>'+KW_J[k][1]+'</span></div>'});
+    h+='</div>';
+    if(J)h+='<div class="kw-comment">'+jgEsc(KW_C[J])+(m.targetDev!=null?'　（目安偏差値 '+m.targetDev+'）':'')+'</div>';
+    if(S.ui.kwDetail){
+      var subs=(m&&m.subs)||[];
+      if(subs.length){
+        h+='<div class="kw-sec">教科別成績</div><table class="kw-table"><tr><th>教科</th><th>得点</th><th>偏差値</th><th>前回比</th><th>順位</th></tr>';
+        subs.forEach(function(s){var d=s.delta==null?'―':(s.delta>=0?'+':'')+s.delta.toFixed(1);h+='<tr><td>'+jgEsc(s.name)+'</td><td>'+s.score+'<small>/'+s.maxPts+'</small></td><td class="b">'+s.dev.toFixed(1)+'</td><td class="'+(s.delta==null?'':(s.delta>=0?'up':'dn'))+'">'+d+'</td><td>'+s.rank.toLocaleString()+'</td></tr>'});
+        h+='</table><div class="kw-sec">教科別 偏差値グラフ（点線＝偏差値50）</div><div class="kw-bars">';
+        subs.forEach(function(s){var w=Math.max(4,Math.min(100,(s.dev-30)*2));h+='<div class="kw-bar"><span>'+jgEsc(s.name)+'</span><div class="kw-track"><i style="width:'+w+'%"></i><b style="left:40%"></b></div><em>'+s.dev.toFixed(1)+'</em></div>'});
+        h+='</div>';
+      }
+      var pts=(S.mocks||[]).slice(-10).map(function(x){return x.score});
+      if(pts.length){
+        var W=300,Hh=110,pl=26,pr=10,pt=8,pb=16;
+        var X=function(i){return pl+(pts.length<2?(W-pl-pr)/2:i*(W-pl-pr)/(pts.length-1))},Y=function(v){return pt+(80-Math.max(30,Math.min(80,v)))/50*(Hh-pt-pb)};
+        var g='<svg viewBox="0 0 '+W+' '+Hh+'" xmlns="http://www.w3.org/2000/svg">';
+        for(var v=30;v<=80;v+=10)g+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Y(v)+'" y2="'+Y(v)+'" stroke="#38bdf8" stroke-width="1"/><text x="'+(pl-4)+'" y="'+(Y(v)+3)+'" font-size="9" text-anchor="end" fill="#111111">'+v+'</text>';
+        if(m&&typeof m.targetDev==='number')g+='<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+Y(m.targetDev)+'" y2="'+Y(m.targetDev)+'" stroke="#84cc16" stroke-width="1" stroke-dasharray="4 3"/><text x="'+(W-pr)+'" y="'+(Y(m.targetDev)-3)+'" font-size="9" text-anchor="end" fill="#111111">志望校目安 '+m.targetDev+'</text>';
+        g+='<polyline fill="none" stroke="#38bdf8" stroke-width="2" points="'+pts.map(function(p,i){return X(i)+','+Y(p)}).join(' ')+'"/>';
+        pts.forEach(function(p,i){g+='<circle cx="'+X(i)+'" cy="'+Y(p)+'" r="3" fill="#38bdf8"/>';if(i===pts.length-1||pts.length<=4)g+='<text x="'+X(i)+'" y="'+(Y(p)-6)+'" font-size="9" text-anchor="middle" fill="#111111" font-weight="700">'+p.toFixed(1)+'</text>'});
+        g+='</svg>';
+        h+='<div class="kw-sec">偏差値の推移（直近'+pts.length+'回）</div>'+g;
+      }
+      h+='<div class="kw-note">※順位・母集団はゲーム内の能力値から算出したシミュレーションです。実際の模試の参加者数・順位ではありません。</div>';
+    }
+    h+='<button class="kw-tg" onclick="jgKwToggle()">'+(S.ui.kwDetail?'▲ 詳細をとじる':'▼ 教科別成績・偏差値推移を見る')+'</button>';
+  }catch(e){h='<div class="kw-head"><span class="kw-title">成績個人票</span></div>'}
+  if(ex&&ex.getAttribute('data-k')===h)return;
+  if(!ex){ex=document.createElement('div');ex.id='jg-report';host.insertBefore(ex,host.firstChild)}
+  ex.innerHTML=h;ex.setAttribute('data-k',h);
+}
+
+/* ---------- 常時表示バー（戻す／次へ）と月間目標カード ---------- */
+function jgBar(){
+  var on=false;try{on=window._curScr==='game'&&!!S&&S.t<S.len}catch(e){}
+  var bar=document.getElementById('jg-bar');
+  if(!on){if(bar)bar.style.display='none';document.documentElement.classList.remove('jg-bar-on');return}
+  if(!bar){bar=document.createElement('div');bar.id='jg-bar';document.body.appendChild(bar)}
+  bar.style.display='flex';document.documentElement.classList.add('jg-bar-on');
+  var nb=document.querySelector('#command-panel button[onclick="nx()"]');
+  var lab2=nb?nb.textContent.replace('▶','').trim():'';
+  lab2=lab2.replace(/（.*）/,'')+(/模試/.test(nb?nb.textContent:'')?'（★模試月）':'');
+  var left=jgUndoLeft(),can=JG_UNDO.length>0&&left>0;
+  var html='<div><button class="rpg-cmd px-3 text-xs text-sky-300 border-sky-300" '+(can?'':'disabled ')+'onclick="jgUndo()" aria-label="ひとつ前に戻す">↩ 戻す<br><span class="text-[10px]">あと'+left+'回</span></button>'
+   +(nb?'<button id="jg-next" class="rpg-cmd px-3 text-sm text-yellow-300 border-yellow-300" onclick="nx()">▶ '+lab2+'</button>'
+        :'<button id="jg-next" class="rpg-cmd px-3 text-xs text-neutral-300" disabled>↑ 出来事の選択肢を選んでね</button>')+'</div>';
+  if(bar.getAttribute('data-k')!==html){bar.innerHTML=html;bar.setAttribute('data-k',html)}
+  var cp=document.getElementById('command-panel');
+  if(cp&&S.ev==null&&!document.getElementById('jg-goal')){
+    try{var g=jgGoalFor(S);
+      cp.insertAdjacentHTML('afterbegin','<div id="jg-goal" class="border border-sky-300 p-2 text-[11px] text-sky-300 leading-relaxed">🎯 今月の目標：<b>'+g.t+'</b>　達成で <b>'+g.rw+'</b>'+(S.goalTry?'<span class="text-neutral-300">　（これまで '+(S.goalHit||0)+'/'+S.goalTry+'回）</span>':'')+'</div>')}catch(e){}
+  }
+}
+function jgSync(){
+  var g=document.getElementById('screen-game');
+  document.documentElement.setAttribute('data-scr',(g&&!g.classList.contains('hidden'))?'game':'other');
+  jgReport();jgBar();
+}
+(function(){
+  var q=false;function sched(){if(q)return;q=true;requestAnimationFrame(function(){q=false;jgSync()})}
+  var g=document.getElementById('screen-game');
+  if(g)new MutationObserver(sched).observe(g,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
+  sched();
+})();
+</script></body>
 </html>
