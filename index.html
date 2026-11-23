@@ -413,6 +413,8 @@ html[data-layout="report"][data-scr="game"] [class*="bg-black/9"]{background-col
 #jg-report .kw-tg{background:#e0f2fe;color:#111;border-color:#38bdf8}
 
 #command-panel button[onclick="nx()"]{display:none}
+@keyframes brkFlash{0%{opacity:0}18%{opacity:1}100%{opacity:0}}
+#brk-flash{position:fixed;inset:0;z-index:70;pointer-events:none;background:rgba(254,249,195,.62);animation:brkFlash .9s ease-out forwards}
 #modal-say{position:fixed;inset:0;z-index:60;display:flex;align-items:flex-end;justify-content:center;padding:12px 12px calc(12px + env(safe-area-inset-bottom,0px));background:rgba(0,0,0,.35)}
 #modal-say.hidden{display:none}
 #say-box{width:100%;max-width:540px;min-height:140px;padding:12px 16px;background:var(--bg,#08080c);color:var(--text,#fff);border:4px double var(--acc,#facc15);position:relative}
@@ -531,7 +533,7 @@ html[data-layout="report"][data-scr="game"] [class*="bg-black/9"]{background-col
         <div class="pt-0.5">
           <button onclick="openModal('modal-titles')"
             class="rpg-cmd w-full py-2.5 px-3 min-h-[44px] text-xs text-center text-white">
-            <span class="cursor-arrow">▶</span> 称号図鑑を見る（全26種）
+            <span class="cursor-arrow">▶</span> 称号図鑑を見る（全24種）
           </button>
         </div>
       </div>
@@ -901,7 +903,7 @@ html[data-layout="report"][data-scr="game"] [class*="bg-black/9"]{background-col
     <div id="modal-titles" class="fixed inset-0 z-50 hidden bg-black/90 flex items-center justify-center p-3">
       <div class="rpg-window w-full max-w-md max-h-[84vh] flex flex-col overflow-hidden">
         <div class="p-3 border-b-4 border-double border-white flex items-center justify-between bg-[#08080c]">
-          <h3 class="text-sm font-bold text-yellow-300">▼ 称号図鑑（全26種）</h3>
+          <h3 class="text-sm font-bold text-yellow-300">▼ 称号図鑑（全24種）</h3>
           <button onclick="closeModal('modal-titles')" class="rpg-cmd text-xs px-3 py-1.5 min-h-[38px] text-white shrink-0">
             ▶ 閉じる
           </button>
@@ -1613,7 +1615,7 @@ const TWN=[['教育環境トップの都心',3],['塾も学校も充実した街
 const TAL=[['神童レベルの地頭',1.75,13.5],['覚えが早い',1.35,6.5],['ふつうの吸収力',1.0,0],['ゆっくり型',0.8,-3.5],['数理センスが突出（理系科目が伸びる）',2,26,'sci'],['言語センスが突出（文系科目が伸びる）',2,26,'lang']];
 const AFF={sci:['math','sci','info'],lang:['eng','jpn','soc']};
 const AMAX=S=>100;
-const affMul=(S,k)=>{const a=TAL[S.b.k][3],q=S.sk?(S.sk.s===k?1.3:S.sk.w===k?.8:1):1;return q*(a?(AFF[a].includes(k)?1.35:.95):1)};
+const affMul=(S,k)=>{const a=TAL[S.b.k][3],q=S.sk?(S.sk.s===k?1.3:S.sk.w===k?.8:1):1;return q*(a?(AFF[a].includes(k)?1.35:.95):1)*((S.brkK||[]).includes(k)?1.1:1)};
 const roll=(r,k)=>r<.001?(k==='k'?(r<.0005?4:5):4):r<.01?0:r<.15?1:r<.5?2:3;
 const bd=b=>50+FAM[b.f][1]+TWN[b.t][1]+TAL[b.k][2],st0=b=>({a:bd(b)-2,p:bd(b)});
 
@@ -1991,7 +1993,7 @@ const EV=[
 ['勉強が楽しいと感じられた日',['その感覚を大切に習慣にする',[1,9,4,2,.4]],['特に意識せず過ごす',[0,2,1,0,.1]]]
 ];
 
-const TT=[['はじめの一歩','N',()=>true],['青春を謳歌','N',(p,S)=>S.y>=80],['健康第一','N',(p,S)=>S.h>=80],['全入の洗礼','N',(p,S)=>S.bn===SCH[S.si].length-1],['悪運の持ち主','N',p=>p[1]>=97],['勉強の虫','R',(p,S)=>S.hrs>=6000],['鉄のメンタル','R',(p,S)=>S.m>=85],['自信満々','R',(p,S)=>S.c>=90],['模試マニア','R',(p,S)=>(S.mocks||[]).length>=10],['塾選びの達人','R',(p,S)=>(S.jb||0)>=.06&&S.bn!==SCH[S.si].length-1],['努力の鬼','R',p=>p[3]<=5],['判断の天才','R',p=>p[2]<=5],['全教科バランス','SR',(p,S)=>!!S.subA&&Math.max(...S.subA)-Math.min(...S.subA)<=6],['一点突破','SR',(p,S)=>!!S.subA&&Math.max(...S.subA)-Math.min(...S.subA)>=22],['苦手を克服','SR',(p,S)=>{if(!S.sk)return false;const c=getCurriculum(S).findIndex(x=>x.key===S.sk.w);return c>=0&&S.subA[c]>=S.a}],['才能を努力で超えた','SR',(p,S)=>S.b.k===3&&S.rv>=62],['最貧からの勝利','SR',(p,S)=>S.b.f===3&&S.b.t===3&&p[4]<=15],['生まれながらの勝者','SR',p=>p[0]<=5&&p[4]<=10],['強運の持ち主','SR',p=>p[1]<=3],['難関突破','SR',(p,S)=>S.rv>=66],['奇跡の下剋上','SSR',p=>p[0]>=60&&p[4]<=5],['全SSRの生まれ','SSR',(p,S)=>!S.b.f&&!S.b.t&&!S.b.k],['頂点に立つ者','SSR',(p,S)=>S.rv>=70],['通し人生・全勝','SSR',(p,S)=>S.stages.length===2&&(S.rvh||[]).length>=2&&S.rvh.slice(-2).every(v=>v>=62)],['自己分析の達人','R',(p,S)=>!!S.isDiag],['リアル下剋上','SSR',(p,S)=>!!S.isDiag&&p[0]>=45&&p[4]<=10]];
+const TT=[['はじめの一歩','N',()=>true],['青春を謳歌','N',(p,S)=>S.y>=80],['健康第一','N',(p,S)=>S.h>=80],['全入の洗礼','N',(p,S)=>S.bn===SCH[S.si].length-1],['悪運の持ち主','N',p=>p[1]>=97],['勉強の虫','R',(p,S)=>S.hrs>=6000],['鉄のメンタル','R',(p,S)=>S.m>=85],['自信満々','R',(p,S)=>S.c>=90],['模試マニア','R',(p,S)=>(S.mocks||[]).length>=10],['塾選びの達人','R',(p,S)=>(S.jb||0)>=.06&&S.bn!==SCH[S.si].length-1],['努力の鬼','R',p=>p[3]<=5],['判断の天才','R',p=>p[2]<=5],['全教科バランス','SR',(p,S)=>!!S.subA&&Math.max(...S.subA)-Math.min(...S.subA)<=6],['一点突破','SR',(p,S)=>!!S.subA&&Math.max(...S.subA)-Math.min(...S.subA)>=22],['苦手を克服','SR',(p,S)=>{if(!S.sk)return false;const c=getCurriculum(S).findIndex(x=>x.key===S.sk.w);return c>=0&&S.subA[c]>=S.a}],['才能を努力で超えた','SR',(p,S)=>S.b.k===3&&S.rv>=62],['最貧からの勝利','SR',(p,S)=>S.b.f===3&&S.b.t===3&&p[4]<=15],['生まれながらの勝者','SR',p=>p[0]<=5&&p[4]<=10],['強運の持ち主','SR',p=>p[1]<=3],['難関突破','SR',(p,S)=>S.rv>=66],['奇跡の下剋上','SSR',p=>p[0]>=60&&p[4]<=5],['全SSRの生まれ','SSR',(p,S)=>!S.b.f&&!S.b.t&&!S.b.k],['頂点に立つ者','SSR',(p,S)=>S.rv>=70],['通し人生・全勝','SSR',(p,S)=>S.stages.length===2&&(S.rvh||[]).length>=2&&S.rvh.slice(-2).every(v=>v>=62)]];
 const ld=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},sv=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
 let S=null;
 const makeCareerMeta=()=>({qualificationVersion:2,sundai10:false,olyGoldCount:0,middleOlyGoldCount:0,middleOlyMedalCount:0,universityCrownTop1Count:0,crownTop1Streak:0,earlyInvite:false,earlyInviteSources:[]});
@@ -2284,7 +2286,7 @@ function analyze(S){
  return{p:[rk(B,S.p0),rk(Lr,S.rv),rk(C,S.rv),rk(E,S.hrs),rk(P,S.rv)],sc:Math.round(10000*Math.exp((S.rv-med)/10)),sv:L.slice(0,4).map(x=>x.bn)}}
 
 function rec(){const r=ld('jg_r')||{pl:[],tt:{}},a=S.an;S.nt=[];(S.rvh=S.rvh||[]).push(S.rv);
- TT.forEach(t=>{if(t[2](a.p,S)){if(!r.tt[t[0]])S.nt.push(t[0]);r.tt[t[0]]=(r.tt[t[0]]||0)+1}});
+ if(!S.isDiag)TT.forEach(t=>{if(t[2](a.p,S)){if(!r.tt[t[0]])S.nt.push(t[0]);r.tt[t[0]]=(r.tt[t[0]]||0)+1}});
  r.n=(r.n||0)+1;(r.sch=r.sch||{})[SCH[S.si][S.bn][0]]=1;r.pl.unshift([ST[S.si],SCH[S.si][S.bn][0],a.sc,new Date().toLocaleDateString('ja-JP')]);r.pl=r.pl.slice(0,30);sv('jg_r',r)}
 
 function init(){
@@ -2492,6 +2494,66 @@ function buildDiagResult(){
   dflt();
 }
 
+function diagKeys(){return S.si===0?['math','jpn','sci','soc']:['eng','math','jpn','sci','soc']}
+function DiagInput(){
+  show('diag');
+  const ks=diagKeys(),d=S.diagIn||{dv:{}};
+  const cls='w-full bg-[#08080c] border-2 border-white focus:border-yellow-300 px-3 py-2 text-sm text-white outline-none min-h-[42px]';
+  const num=(id,v,ph)=>`<input id="${id}" type="number" inputmode="decimal" step="0.1" value="${v==null?'':v}" placeholder="${ph}" class="${cls}">`;
+  const sel=(id,arr,v)=>`<select id="${id}" class="${cls}">${arr.map((x,i)=>`<option value="${i}" ${i==v?'selected':''}>${x[0]}</option>`).join('')}</select>`;
+  const row=(l,h)=>`<label class="block text-xs text-yellow-300 space-y-1"><span>▶ ${l}</span>${h}</label>`;
+  H('screen-diag').innerHTML=`
+    <div class="rpg-window p-2.5 flex items-center justify-between">
+      <span class="text-xs sm:text-sm font-bold text-amber-300">▼ あなたの診断（入力式）</span>
+      <button onclick="diagBack()" class="rpg-cmd text-xs px-2.5 py-1.5 min-h-[36px]"><span class="cursor-arrow">▶</span> コース選択へ</button>
+    </div>
+    <div class="rpg-window p-3 space-y-3 animate-retro-pop">
+      <p class="text-[11px] text-neutral-300 leading-relaxed">いまの実際の成績や生活を入力してください。生まれ・才能・得意苦手・初期ステータスを自動で判定します。</p>
+      ${row('性別',`<select id="dg-sx" class="${cls}"><option value="m" ${d.sx!=='f'?'selected':''}>♂ 男の子</option><option value="f" ${d.sx==='f'?'selected':''}>♀ 女の子</option></select>`)}
+      <div class="text-xs text-yellow-300">▶ 教科別の偏差値（直近の模試など・25〜90）</div>
+      <div class="grid grid-cols-2 gap-2">${ks.map(k=>row(SUBN[k],num('dg-'+k,d.dv[k],'例 55'))).join('')}</div>
+      <div class="grid grid-cols-2 gap-2">
+        ${row('週の勉強時間（h）',num('dg-hrs',d.hrs,'例 15'))}
+        ${row('平日の睡眠（h）',num('dg-slp',d.slp,'例 7'))}
+      </div>
+      ${row('家庭の環境',sel('dg-fam',FAM,d.f==null?2:d.f))}
+      ${row('地元の環境',sel('dg-twn',TWN,d.t==null?2:d.t))}
+      ${btn('diagSubmit()','この内容で診断する','text-yellow-300 border-yellow-300 bg-[#111936]')}
+    </div>`;
+}
+function diagSubmit(){
+  const ks=diagKeys(),dv={};let bad=0;
+  ks.forEach(k=>{const v=parseFloat(H('dg-'+k).value);if(!(v>=25&&v<=90))bad=1;dv[k]=v});
+  if(bad)return showToast('＊ 各教科の偏差値を25〜90で入力してください');
+  S.diagIn={dv,hrs:Math.max(0,Math.min(65,+H('dg-hrs').value||0)),slp:Math.max(3,Math.min(12,+H('dg-slp').value||7)),sx:H('dg-sx').value,f:+H('dg-fam').value,t:+H('dg-twn').value};
+  buildDiagResult2();S.diagStep=7;
+  if(typeof RetroAudio!=='undefined')RetroAudio.playSE('diag_done');
+  save();Diag();
+}
+function buildDiagResult2(){
+  const I=S.diagIn,ks=Object.keys(I.dv),vs=ks.map(k=>I.dv[k]);
+  const avg=vs.reduce((a,b)=>a+b,0)/vs.length,rg=Math.max(...vs)-Math.min(...vs);
+  const grp=a=>a.length?a.reduce((x,k)=>x+I.dv[k],0)/a.length:avg;
+  const sc=grp(['math','sci'].filter(k=>k in I.dv)),lg=grp(['eng','jpn','soc'].filter(k=>k in I.dv)),gap=sc-lg;
+  let k=avg>=68?0:avg>=58?1:avg>=45?2:3;
+  if(gap>=8&&sc>=55)k=4;else if(gap<=-8&&lg>=55)k=5;
+  S.b={f:I.f,t:I.t,k};S.sx=I.sx;PSX=I.sx;applySex(I.sx);
+  S.a=avg;S.p=Math.min(100,avg+8);init();
+  const cur=getCurriculum(S);
+  cur.forEach((c,i)=>{S.subA[i]=Math.max(25,Math.min(100,I.dv[c.key]))});
+  syncOverallFromSubs(S);S.a0=S.a;S.p0=S.p;
+  S.h=cl(70+(I.slp-7)*7);S.m=cl(60+(I.hrs-15)*.8);S.c=cl(30+(avg-40)*1.2);S.y=cl(55-(I.hrs-15)*.6);
+  const hi=ks.reduce((a,b)=>I.dv[b]>I.dv[a]?b:a),lo=ks.reduce((a,b)=>I.dv[b]<I.dv[a]?b:a);
+  S.sk={s:hi,w:rg>=5?lo:null};
+  let t='堅実チャレンジャー';
+  if(avg>=65&&rg<=6)t='オールラウンドな優等生';
+  else if(k===4)t='理数に強い論理派';else if(k===5)t='言語・文系に強い読解派';
+  else if(I.hrs>=30)t='圧倒的な努力家';else if(I.slp<6)t='睡眠を削る徹夜型';
+  else if(avg<45)t='伸びしろ無限の下剋上候補';
+  S.bg=t;
+  S.diagDesc=`平均偏差値${avg.toFixed(1)}、得意は${SUBN[hi]}${rg>=5?'、苦手は'+SUBN[lo]:''}。週${I.hrs}h勉強・睡眠${I.slp}hから初期の体調・やる気を判定しました。`;
+  dflt();
+}
 function Diag(){
   show('diag');
   const st=S.diagStep||0;
@@ -2563,7 +2625,8 @@ function Diag(){
     return;
   }
 
-  // 質問定義（Step 0: コース選択、Step 1〜6: 診断質問）
+  if(st>=1)return DiagInput();
+  // 質問定義（Step 0: コース選択）
   const subs=S.si===0?[['math','算数'],['jpn','国語'],['sci','理科'],['soc','社会']]:[['eng','英語'],['math','数学'],['jpn','国語'],['sci','理科'],['soc','社会']];
   const questions=[
     {
@@ -3837,6 +3900,105 @@ EV.push(
 ['堀大好きが「トップ校を見に行ったら学生が遊んでたから進学をやめた」と語っている',['「自分は合格して勉強も遊びも全力で楽しむ！」とやる気が出た！',[0,9,5,2,0.5]],['「たしかに今こんなに頑張る意味ある？」とやる気が下がった',[1,-8,-4,2,-0.2]]]
 );
 
+const MMX=`0|脳内で「それってあなたの感想ですよね？」と自分の勉強法にツッコミが入った|成績データで検証し直す|感想で押し切る
+0|「ぬるぽ」と書いたら誰かが「ガッ」と返してくれた気がした|ニヤけて気分よく再開|ネット掲示板に入り浸る
+0|積読ならぬ「積み問題集」が机の上でタワーになった|1冊ずつ片付ける|新しい1冊を足す
+0|「草」しか言わない友達に数学を質問してしまった|解説動画で自力解決|草で終わって諦める
+0|「逆に考えるんだ、解けなくてもいいさと」の名言が流れてきた|発想を転換して別解を探す|開き直って寝る
+0|「ンゴ」が語尾の友達が模試の点を見せてきた|ライバル心で奮起|ンゴが移って気が抜ける
+0|入試問題に「やったぜ。」と書きたくなる超簡単問題が出た|油断せず見直す|浮かれてケアレスミス
+0|問題を見て「ファッ！？」と声が出た。見たことない形式だ|落ち着いて条件を整理|頭が真っ白になる
+0|試験前日、友達が「バルス！」で緊張をほぐしてくれた|笑って切り替える|ふざけすぎて集中切れ
+2|ガチャで爆死した。「ゆるさん」と叫んだ|切り替えて勉強で巻き返す|課金寸前でスマホを握る
+0|ひたすら「ワイは天才やで」と自己暗示をかけてみた|自信をつけて挑戦|過信して基礎を飛ばす
+2|「あとで読む」で保存した記事が300件になった|1件だけ今すぐ読む|保存して満足する
+0|「ポモドーロ」を試したらタイマーが可愛くて楽しい|25分集中を4セット|タイマー選びで30分溶ける
+2|「既読スルー」されて落ち込んだ|気にせず勉強に没頭|返事を待って画面を見続ける
+0|ChatGPTに宿題を丸投げしたくなった|ヒントだけ聞いて自力で解く|答えを丸写しする
+0|AIが出した解説に「それ間違ってるよ」と気づいた|自分で検算して理解が深まる|信じ込んで間違いを覚える
+2|Wikipedia沼に落ちて気づけば「中世ヨーロッパの下水道」を読んでいた|1ページで切り上げる|さらに深く潜る
+0|「ほんとだよ…」と呟く先生ミームを思い出して眠気が覚めた|もう一度板書を見直す|笑いが止まらない
+2|猫がキーボード（教材）の上に乗って動かない|猫を撫でて癒やされる|猫をどかして強行突破
+1|「3時のおやつは文明」を実践したくなった|軽く食べて糖分補給|お菓子を食べすぎる
+1|「睡眠は最強のバフ」という動画を見た|今夜は早く寝る|動画を見ながら夜ふかし
+0|「ワンチャンある」と赤本を開いた|ワンチャンを実力に変える努力|ワンチャンだけに賭ける
+0|友達が「知らんけど」で勉強法を教えてくれた|参考にしつつ検証する|知らんけどを鵜呑みにする
+2|「それは草」「いや草」と友達と草しりとりが止まらない|3分で切り上げる|1時間が溶ける
+0|「やればできる子」と言われ「やらないからできない子」と気づいた|今日から1問やる|名言を壁に貼って満足
+2|サブスクの「次のエピソード」ボタンを見つめた|自分に勝って閉じる|あと1話だけ…
+0|「まあええか」の魔力に負けそうになった|ええことにせず見直す|ええか、で提出
+0|「うっかり八兵衛」級のケアレスミスをした|ミスノートに記録|笑ってごまかす
+0|「ですよね〜」しか言わない塾の先生の授業が催眠的|メモを取って耐える|ですよね〜で夢の中
+2|「エモい」と言って風景写真を撮りに行きたくなった|10分だけ散歩して戻る|撮影で夕方まで過ごす
+0|テスト用紙の裏に「解の公式の歌」を書いて暗記|歌って覚える|歌に夢中で解けない
+2|推しが「受験生ガンバレ」と投稿した|推しに誓って集中|SNSを遡って沼にハマる
+2|ショート動画が止まらない。気づけば1時間|スマホを別室に置く|あと1本だけ…
+0|「諦めたらそこで試合終了ですよ」の名台詞が頭をよぎった|もう1問だけ粘る|試合終了を受け入れる
+0|「やれるだけやった」と言いたいが、まだやれることがある|最後まで詰める|言い訳に使う
+2|友達が「今日は勉強しない日にしよ？」と誘ってきた|断って1時間だけ勉強|全力でゲームする
+0|「ガバガバ」な計画表を作ってしまった|修正して現実的にする|そのまま貼って放置
+0|「解けたら天才」と言われた難問に挑戦|粘って解く|解説を即見る
+2|友達が「ごめん寝」している猫の画像を送ってきた|癒やされて再開|猫画像を探し続ける
+0|「勉強しろ」とだけ書かれた匿名の応援メッセージが届いた|ありがたく受け止める|うるさいとスルー
+0|「合格したらパーティー」を想像してニヤけた|ご褒美を原動力に|妄想で1時間終了
+0|過去問の解説を読んで「なるほど完全に理解した」と呟いた|説明できるか試す|分かった気で終わる
+2|「もうおしまいだぁ…」とテスト前に呟いてしまった|深呼吸して基礎に戻る|そのまま絶望して寝る
+0|「全部覚えた」と言う友達に抜き打ちテストを出した|一緒に復習し直す|勝ち誇って満足
+0|「天才は1%の努力」と書かれた名言を見つけた|残り99%を埋める|1%だけ頑張る
+1|「水を飲め」とだけ書かれたリマインダーが届いた|水を飲んで集中復活|コーヒーだけ飲み続ける
+1|「大丈夫、寝れば治る」と言われた|ちゃんと寝る|寝ずに勉強して悪化
+2|「今北産業」と友達に言われ、勉強の進捗を3行で説明した|整理されて頭がスッキリ|説明しきれず気落ち
+0|「記憶にございません」と模試の復習で口走った|ノートを見返して記憶を定着|忘れたことにして放置
+0|友達が「ここテストに出るよ」と言った。「知らんけど」付きで|周辺も一応確認|ピンポイントで賭ける
+2|「バズりたい」とSNSに勉強垢を作ってみた|報告のために継続|フォロワー数ばかり気になる
+0|「勉強垢」の「#積み上げ」を見て刺激を受けた|自分も記録を始める|比較して落ち込む
+0|「サボりたい」と「サボれない」が脳内で議論している|15分だけやると決める|議論が長引いて時間切れ
+0|「手が止まった」ので音読に切り替えた|声に出して理解|眠くなって寝落ち
+2|「お前もか」と友達と一緒に宿題を忘れていた|笑ってすぐ片付ける|開き直って提出を遅らせる
+2|「悲報」と書かれたタイトルで偏差値が下がった記事を読んだ|冷静に原因を探る|スレをひたすら読む
+2|「朗報」と書かれたタイトルで気分が上がった|勢いで1科目進める|喜びすぎて満足
+0|「正解は〜」のCMの後に答えが出る問題集にイライラ|ストップして自力で考える|ページをめくって見てしまう
+0|「地獄のミサワ」並みのポジティブ発言で自分を鼓舞した|本当に実力に変える|言うだけで満足
+0|「あと5分だけ」と言い続けて30分経った|タイマーを使う|さらに5分延ばす
+1|「筋肉は裏切らない」と言われ腕立て10回してみた|頭もスッキリして再開|筋肉痛で勉強に響く
+0|「焼け石に水」と言われた苦手科目に取り組む|少しずつ積み上げる|見ないふり
+0|「戦場は教室」と掲げて自習室に行った|自習室で集中|ずっとスマホを見る
+2|テスト後に「手応えは…ない」と呟いてフラグを立てた|結果を待つ間も復習|不安で眠れない
+0|「勉強しろ」の手紙が過去の自分から届いた|素直に従う|未来の自分に丸投げ
+2|友達が「宿題写させて」と言ってきた|断って一緒に考える|写させて自分も満足
+0|「理解した」と思ったら「解けない」だった|説明をもう一度読む|運が悪かったと決めつける
+0|「ぴえん」な点数を取ってしまった|復習して切り替え|ぴえんのまま落ち込む
+0|「やる気スイッチ」を探すも見つからない|スイッチを作る（まず机に座る）|待ち続ける
+2|「スマホを見ない」誓いを立てて3分で破った|もう一度誓う|もう誓わない
+1|「栄養ドリンク」を飲んで「実質無敵」になった|適量で止める|飲みすぎて眠れない
+0|「天才ってそういうことか」と分かった瞬間があった|その感覚をメモ|調子に乗って次を飛ばす
+0|「お気持ち表明」を勉強ノートに書いてしまった|整理して再開|ポエムが止まらない
+0|「ガチ勢」のノートを見て感動した|真似して整理術を採用|差を感じて萎える
+2|「コスパ」「タイパ」を考えすぎて動けない|とにかく1問解く|効率を調べ続ける
+0|「正論パンチ」を先生から食らった|受け止めて改善|反発して聞き流す
+0|「ネ申ノート」を友達が貸してくれた|ありがたく写して理解|写して満足
+2|「推し活」のライブが近い。チケットは取れた|ご褒美として頑張る|準備で勉強時間が消える
+0|「爆速」で終わらせた宿題にミスが多発|見直す習慣をつける|爆速を自慢して終わり
+0|「解説動画」を倍速で見た。頭に入った気がする|ノートにまとめて確認|分かった気のまま
+0|「検索ワード：受験 勝ち方」を延々と調べてしまった|1つだけ実行|検索で夜が明ける
+2|友達が「一緒に配信観ようぜ」と誘ってきた|断って勉強|1時間だけ観る
+0|「ほぼほぼ合ってる」の答案が減点された|細部を詰める癖をつける|ほぼほぼで満足
+0|「あれ、これ前にやったな」とデジャヴの問題に遭遇|思い出して即解く|思い出せずパニック
+1|「お布団の誘惑」が最強の敵になった|立ち上がって顔を洗う|あと5分で2時間
+0|「秒で理解」というタイトルの参考書を購入した|本当に秒で理解できるか試す|買っただけで安心
+0|「ワイ氏」の成績が急上昇したニュースを聞いた|ワイ氏に続く|ワイ氏は特別だと決めつける
+2|「それな」しか返事しない友達と勉強会|黙って集中|おしゃべりで時間切れ
+0|「いや、まだだ」と最後まで粘って解けた|その粘りを習慣に|解けたことで燃え尽き
+0|「謎の自信」が湧いてきた。根拠はない|根拠を作るために演習|自信だけで本番に突入
+1|「寝落ち」したらノートによだれが…|笑って復習し直す|ノートを捨てたくなる
+2|「推しの子」ならぬ「推しの参考書」を見つけた|本気で使い込む|布教のしすぎで自分は未使用
+0|「結果にコミット」したくなる気分になった|目標を数字にする|言葉だけでコミット
+0|「ここまで来たら全部やるしかない」と思った|優先順位を決める|全部やろうとして崩れる
+2|「ミーム」を勉強ノートに描いたら先生に爆笑された|息抜きで再開|描くのが本業になる
+0|「最後に笑うのは自分」とノートの端に書いた|その言葉を胸に継続|書いて安心して終了`.split('\n').map(l=>l.split('|'));
+const MMP=[[[0,7,4,0,.5],[-1,-6,-4,0,-.1]],[[6,5,1,2,0],[-5,-3,0,1,0]],[[2,6,0,6,-.2],[0,-4,-1,-2,.3]]];
+MMX.forEach(r=>{const p=MMP[+r[0]]||MMP[0];EV.push([r[1],[r[2],p[0]],[r[3],p[1]]])});
+
 Home();
   </script>
 <script>
@@ -4034,6 +4196,42 @@ function jgSync(){
   var g=document.getElementById('screen-game');
   if(g)new MutationObserver(sched).observe(g,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});
   sched();
+})();
+
+/* ---------- 壁を越えるひらめきイベント（毎月1%・初期偏差値45未満の科目がある人だけ） ---------- */
+var JG_BRK=['「…あ、そういうことか！」バラバラだった知識が一本につながった。これが勉強！','何かコツをつかんだ。今までの苦手がうそのように見える！','頭の中で「カチッ」と音がした。やっと理解できた気がする！','解説の一行がストンと腹に落ちた。勉強って、こういうことか！'];
+function jgBrkFlash(){var d=document.createElement('div');d.id='brk-flash';document.body.appendChild(d);setTimeout(function(){d.remove()},1000)}
+function jgSayRaw(title,text){
+  JG_SAY_FULL=text;H('say-title').textContent=title;
+  var el=H('say-text'),i=0;el.textContent='';H('say-next').style.visibility='hidden';
+  H('modal-say').classList.remove('hidden');clearInterval(JG_SAY_T);
+  JG_SAY_T=setInterval(function(){i++;el.textContent=JG_SAY_FULL.slice(0,i);if(i>=JG_SAY_FULL.length)jgSayDone()},22);
+}
+(function(){
+  if(typeof st1!=='function')return;
+  var o=st1;
+  window.st1=function(){
+    try{if(!S.subA0||S.subA0.length!==S.subA.length)S.subA0=S.subA.slice()}catch(e){}
+    var t0=S.t,r=o.apply(this,arguments);
+    try{
+      if(S.t>t0&&Math.random()<0.01){
+        var cur=getCurriculum(S),c=[];
+        S.subA0.forEach(function(v,i){if(v<45&&S.subA[i]<55)c.push(i)});
+        if(c.length){
+          var i=c[Math.floor(Math.random()*c.length)],up=4+Math.random()*2;
+          S.subA[i]=Math.min(AMAX(S),S.subA[i]+up);syncOverallFromSubs(S);
+          S.m=cl(S.m+8);S.c=cl(S.c+8);
+          S.brkK=S.brkK||[];if(S.brkK.indexOf(cur[i].key)<0)S.brkK.push(cur[i].key);
+          var msg=JG_BRK[Math.floor(Math.random()*JG_BRK.length)];
+          S.log.push('💡 ひらめき！'+cur[i].name+'の壁を越えた（'+cur[i].name+'+'+up.toFixed(1)+'）');S.log=S.log.slice(-40);save();
+          jgBrkFlash();
+          if(typeof RetroAudio!=='undefined')RetroAudio.playSE('good');
+          jgSayRaw('💡 ひらめき！',msg+'\n'+cur[i].name+'の力が大きく伸びた！（+'+up.toFixed(1)+'）　やる気+8　自信+8\n今後、'+cur[i].name+'の伸び率が+10%！');
+        }
+      }
+    }catch(e){}
+    return r;
+  };
 })();
 </script></body>
 </html>
